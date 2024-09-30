@@ -27,3 +27,10 @@ mapy přidávat jednotlivé cesty, které obsahují informace o místě, datu a 
 	- Dominik Borek: React
 	- Radek Jestřabík: Vue
 	- Ondřej Hruboš: Svelte
+  
+## Zprovoznění a spuštění backendu
+- Ve složce ```api/``` proveďte následující příkazy (vytvoření a stažení knihoven stačí udělat jednou, spustit se musí vždy při otevření nové konzole):
+  - Vytvoření virtuálního prostředí: ```python -m venv .venv```
+  - Aktivování virtuálního prostředí: ```.venv\Scripts\activate```
+  - Stažení knihoven: ```pip install -r requirements.txt```
+  - Spuštění backendu: ```python main.py```
