@@ -17,6 +17,15 @@ class Trip:
         self.photos = photos
         self.advantages = advantages
         self.disadvantages = disadvantages
+    
+    def to_json(self):
+        # Vytvoříme kopii slovníku atributů objektu
+        trip_dict = self.__dict__.copy()
+
+        # Nahradíme subtrips slovníky každého subtripu
+        trip_dict["subtrips"] = [subtrip.__dict__ for subtrip in self.subtrips]
+
+        return trip_dict
 
 
 class Subtrip:

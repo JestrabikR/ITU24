@@ -22,5 +22,65 @@
         "photos": [],
         "subtrips": [],
         "until_date": "2022-04-04"
+    },
+    {
+        "advantages": [
+            "Relaxace",
+            "\u010cerstv\u00fd vzduch"
+        ],
+        "budget": 15000,
+        "description": "Letn\u00ed dovolen\u00e1 v p\u0159\u00edrod\u011b s p\u011b\u0161\u00edmi t\u00farami.",
+        "disadvantages": [
+            "Dlouh\u00e1 cesta"
+        ],
+        "from_date": "2023-07-01",
+        "id": "ab5b73d1-351c-431c-b3e5-dacf4aadd5d9",
+        "name": "Letn\u00ed dovolen\u00e1",
+        "photos": [
+            "main_photo.jpg"
+        ],
+        "subtrips": [
+            {
+                "description": "T\u0159\u00eddenn\u00ed p\u011b\u0161\u00ed t\u00fara v hor\u00e1ch",
+                "favourite": true,
+                "gps": "49.2827N, 123.1207W",
+                "name": "V\u00fdlet do hor",
+                "photos": [
+                    "photo1.jpg",
+                    "photo2.jpg"
+                ]
+            }
+        ],
+        "until_date": "2023-07-10"
+    },
+    {
+        "advantages": [
+            "Relaxace",
+            "\u010cerstv\u00fd vzduch"
+        ],
+        "budget": 15000,
+        "description": "Druh\u00e1 letn\u00ed dovolen\u00e1 v p\u0159\u00edrod\u011b s p\u011b\u0161\u00edmi t\u00farami.",
+        "disadvantages": [
+            "Dlouh\u00e1 cesta"
+        ],
+        "from_date": "2023-07-01",
+        "id": "ad79520f-c792-4136-a934-4dbecc4ffbf7",
+        "name": "Letn\u00ed dovolen\u00e1",
+        "photos": [
+            "main_photo.jpg"
+        ],
+        "subtrips": [
+            {
+                "description": "T\u0159\u00eddenn\u00ed p\u011b\u0161\u00ed t\u00fara v hor\u00e1ch.",
+                "favourite": true,
+                "gps": "49.2827N, 123.1207W",
+                "name": "V\u00fdlet do hor",
+                "photos": [
+                    "photo1.jpg",
+                    "photo2.jpg"
+                ]
+            }
+        ],
+        "until_date": "2023-07-10"
     }
 ]

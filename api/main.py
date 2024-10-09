@@ -9,14 +9,14 @@ from datetime import datetime
 
 import json
 
-from trip import Trip
+from trip import Trip, Subtrip
 from country import Country
 
 app = Flask(__name__)
 
 def json_from_file(file):
     ret = None 
-    with open(file, "r") as f:
+    with open(file, "r", encoding="utf-8") as f:
         data = f.read()    
         ret = json.loads(data)
 
@@ -42,6 +42,22 @@ def get_trip(id):
     
     return make_response("Trip not found", 204)
 
+@app.route("/trip/update/<id>", methods=["PUT"])
+def update_trip(id):
+    put_data = json.loads(request.data.decode('utf8').replace("'", '"'))
+
+    trips = json_from_file("./trips.json")
+    
+    for i, trip in enumerate(trips):
+        if(trip["id"] == id):
+            new_trip = Trip(**put_data)
+            trips[i] = new_trip.__dict__
+    
+    with open("./trips.json", "w", encoding="utf-8") as trips_file:
+        trips_file.write(json.dumps(trips, indent=4, sort_keys=True, default=str))
+
+    return make_response("Successfully updated trip", 200) # no need to return anything
+
 @app.route("/trip/add", methods=["POST"])
 def add_trip():
     post_data = json.loads(request.data.decode('utf8').replace("'", '"'))
@@ -50,21 +66,13 @@ def add_trip():
 
     trip = None
     try:
-        name = post_data["name"]
-        from_date = post_data["from_date"]
-        until_date = post_data["until_date"]
-
-        date_formatter = "%Y-%m-%d"
-        from_date_object = datetime.strptime(from_date, date_formatter).date()
-        until_date_object = datetime.strptime(until_date, date_formatter).date()
-
-        trip = Trip(name, from_date_object, until_date_object, 9999, "Ahoj")
+        trip = Trip(**post_data)
     except Exception as e:
-        return make_response("Nastala chyba :-(: " + str(e), 400)
+        return make_response("Nastala chyba :-( :" + str(e), 400)
 
     trips.append(trip.__dict__) # no need for to_json method because we only need dictionary
 
-    with open("./trips.json", "w") as trips_file:
+    with open("./trips.json", "w", encoding="utf-8") as trips_file:
         trips_file.write(json.dumps(trips, indent=4, sort_keys=True, default=str))
 
     return make_response("Successfully added trip", 200) # no need to return anything
@@ -80,11 +88,11 @@ def delete_trip(id):
         else:
             trips_.append(trip)
 
-    with open("./trips.json", "w") as trips_file:
+    with open("./trips.json", "w", encoding="utf-8") as trips_file:
         trips_file.write(json.dumps(trips_, indent=4, sort_keys=True, default=str))
 
     return make_response("Correctly deleted " + str(id), 200)
 
 
 if __name__ == '__main__':
-    app.run(debug=True) # TODO: debug=True
+    app.run(debug=True) # TODO: debug=True oddelat
