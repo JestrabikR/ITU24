@@ -3,9 +3,12 @@ export default {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      screens: {
+        'to-xs': [{'min': '480px', 'max': '640px'}],
+      },
       fontFamily: {
         sans: ['Nunito', 'sans-serif']
-      }
+      },
     },
   },
   variants: {
