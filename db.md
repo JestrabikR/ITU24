@@ -12,7 +12,6 @@ Vylet
   }> Podvylety
  - List<Photo> samostatne fotky
  - budget
- - List<Stat> ktere byly/budou navstivene
  - List<str> plusy
  - List<str> minusy
  - poznamky
