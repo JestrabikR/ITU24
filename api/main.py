@@ -70,6 +70,22 @@ def add_trip():
 
     return make_response(jsonify(trips), 200)
 
+@app.route("/trip/del/<id>")
+def delete_trip(id):
+    trips = json_from_file("./trips.json")
+    trips_ = [] 
+
+    for trip in trips:
+        if(trip["id"] == id):
+            continue;
+        else:
+            trips_.append(trip)
+
+    with open("./trips.json", "w") as trips_file:
+        trips_file.write(json.dumps(trips_, indent=4, sort_keys=True, default=str))
+
+    return make_response("Correctly deleted " + str(id), 200)
+
 
 if __name__ == '__main__':
     app.run()
