@@ -1,10 +1,26 @@
 [
     {
+        "advantages": [],
         "budget": 9999,
         "description": "Ahoj",
-        "from_date": "2022-03-03",
-        "id": "d48a9baf-5ca7-4982-b744-ddfa38012312",
-        "name": "TADASDASDASDD",
+        "disadvantages": [],
+        "from_date": "2022-01-03",
+        "id": "13a03b74-98e9-4cd5-959b-9e2677627522",
+        "name": "vylet2",
+        "photos": [],
+        "subtrips": [],
+        "until_date": "2022-04-04"
+    },
+    {
+        "advantages": [],
+        "budget": 9999,
+        "description": "Ahoj",
+        "disadvantages": [],
+        "from_date": "2022-01-03",
+        "id": "c2eb02e7-c1ce-4d58-8685-9a110bd6cc11",
+        "name": "vylet3",
+        "photos": [],
+        "subtrips": [],
         "until_date": "2022-04-04"
     }
 ]

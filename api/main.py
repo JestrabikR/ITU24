@@ -32,16 +32,15 @@ def trips():
     return make_response(jsonify(trips), 200)
 
 @app.route("/trip/<id>")
-def trip(id):
+def get_trip(id):
     trips = json_from_file("./trips.json")
     
     for trip in trips:
         if(trip["id"] == id):
+            # trip_obj = Trip(**trip) # Trip object can be created this way directly from json
             return make_response(jsonify(trip), 200)
     
     return make_response("Trip not found", 204)
-    
-
 
 @app.route("/trip/add", methods=["POST"])
 def add_trip():
@@ -63,14 +62,14 @@ def add_trip():
     except Exception as e:
         return make_response("Nastala chyba :-(: " + str(e), 400)
 
-    trips.append(trip.to_json())
+    trips.append(trip.__dict__) # no need for to_json method because we only need dictionary
 
     with open("./trips.json", "w") as trips_file:
         trips_file.write(json.dumps(trips, indent=4, sort_keys=True, default=str))
 
-    return make_response(jsonify(trips), 200)
+    return make_response("Successfully added trip", 200) # no need to return anything
 
-@app.route("/trip/del/<id>")
+@app.route("/trip/del/<id>", methods=["DELETE"])
 def delete_trip(id):
     trips = json_from_file("./trips.json")
     trips_ = [] 
@@ -88,4 +87,4 @@ def delete_trip(id):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True) # TODO: debug=True
