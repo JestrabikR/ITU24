@@ -28,9 +28,8 @@ def home():
 
 @app.route("/trips")
 def trips():
-    t = Trip("test", date(2022, 3, 3), date(2022, 4, 4), 9999, "Ahoj")
-    r = Response(response=t.to_json(), status=200, mimetype="application/json")
-    return r
+    trips = json_from_file("./trips.json")
+    return make_response(jsonify(trips), 200)
 
 @app.route("/trip/<id>")
 def trip(id):
