@@ -1,0 +1,14 @@
+[
+    {
+        "code": "CZ",
+        "name": "\u010cesko",
+        "visited": true,
+        "wanted": true
+    },
+    {
+        "code": "DE",
+        "name": "Germany",
+        "visited": false,
+        "wanted": false
+    }
+]
