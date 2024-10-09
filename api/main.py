@@ -3,7 +3,10 @@ from flask import Response
 from flask import make_response
 from flask import jsonify
 from flask import request
+
 from datetime import date
+from datetime import datetime
+
 import json
 
 from trip import Trip
@@ -30,16 +33,24 @@ def add_trip():
 
     post_data = json.loads(request.data.decode('utf8').replace("'", '"'))
 
+    trip = None
     try:
         name = post_data["name"]
-        #from_date = 
-        #until_date = 
-    except Exception:
-        return make_response("Nastala chyba :-(", 400)
+        from_date = post_data["from_date"]
+        until_date = post_data["until_date"]
 
-    print(name)
+        date_formatter = "%Y-%m-%d"
+        from_date_object = datetime.strptime(from_date, date_formatter).date()
+        until_date_object = datetime.strptime(until_date, date_formatter).date()
+
+        trip = Trip(name, from_date_object, until_date_object, 9999, "Ahoj")
+    except Exception as e:
+        return make_response("Nastala chyba :-(: " + str(e), 400)
+
+    trips.append(trip.to_json())
+
     with open("./trips.json", "w") as trips_file:
-        trips_file.write(json.dumps(trips, indent=4))
+        trips_file.write(json.dumps(trips, indent=4, sort_keys=True, default=str))
 
     return make_response(jsonify(trips), 200)
 

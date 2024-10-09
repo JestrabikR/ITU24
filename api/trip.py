@@ -17,7 +17,11 @@ class Trip:
         self.disadvantages = disadvantages
 
     def to_json(self):
-        return json.dumps(self.__dict__, indent=4, sort_keys=True, default=str)
+        return {
+            "name": self.name,
+            "from_date": self.from_date,
+            "until_date": self.until_date
+        }
 
 class Subtrip:
     

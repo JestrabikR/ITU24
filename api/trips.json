@@ -1,1 +1,22 @@
-[]
+[
+    {
+        "from_date": "2022-03-03",
+        "name": "name",
+        "until_date": "2022-04-04"
+    },
+    {
+        "from_date": "2022-03-03",
+        "name": "name",
+        "until_date": "2022-04-04"
+    },
+    {
+        "from_date": "2022-03-03",
+        "name": "name",
+        "until_date": "2022-04-04"
+    },
+    {
+        "from_date": "2022-03-03",
+        "name": "TADASDASDASDD",
+        "until_date": "2022-04-04"
+    }
+]
