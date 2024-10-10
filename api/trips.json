@@ -4,17 +4,17 @@
         "budget": 9999,
         "description": "Ahoj",
         "disadvantages": [],
-        "from_date": "2022-01-03",
+        "from_date": "2024-10-9",
         "id": "13a03b74-98e9-4cd5-959b-9e2677627522",
-        "name": "vylet2",
+        "name": "Aktualni",
         "photos": [],
         "subtrips": [],
-        "until_date": "2022-04-04"
+        "until_date": "2024-12-31"
     },
     {
         "advantages": [],
         "budget": 9999,
-        "description": "Ahoj",
+        "description": "Minuly",
         "disadvantages": [],
         "from_date": "2022-01-03",
         "id": "c2eb02e7-c1ce-4d58-8685-9a110bd6cc11",
@@ -33,9 +33,9 @@
         "disadvantages": [
             "Dlouh\u00e1 cesta"
         ],
-        "from_date": "2023-07-01",
+        "from_date": "2025-07-01",
         "id": "ab5b73d1-351c-431c-b3e5-dacf4aadd5d9",
-        "name": "Letn\u00ed dovolen\u00e1",
+        "name": "Planovany",
         "photos": [
             "main_photo.jpg"
         ],
@@ -51,7 +51,7 @@
                 ]
             }
         ],
-        "until_date": "2023-07-10"
+        "until_date": "2025-07-10"
     },
     {
         "advantages": [
@@ -63,9 +63,9 @@
         "disadvantages": [
             "Dlouh\u00e1 cesta"
         ],
-        "from_date": "2023-07-01",
+        "from_date": "2025-08-01",
         "id": "ad79520f-c792-4136-a934-4dbecc4ffbf7",
-        "name": "Letn\u00ed dovolen\u00e1",
+        "name": "Planovany 2",
         "photos": [
             "main_photo.jpg"
         ],
@@ -81,6 +81,6 @@
                 ]
             }
         ],
-        "until_date": "2023-07-10"
+        "until_date": "2025-08-10"
     }
 ]
