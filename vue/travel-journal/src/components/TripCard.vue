@@ -1,13 +1,40 @@
 <script setup>
-import { defineProps } from 'vue';
+import { ref, computed, defineProps, onMounted } from 'vue';
 
 // defineProps allows passing values to component
-defineProps({
+const props = defineProps({
     title: {
         type: String,
         //default: '' // optional default can be added
+    },
+    country: {
+        type: String,
+    },
+    from_date: {
+        type: String,
+    },
+    until_date: {
+        type: String,
+    },
+    image: { //TODO
+        type: String,
     }
 })
+
+const formattedFromDate = ref(null);
+const formattedUntilDate = ref(null);
+
+onMounted(() => {
+  if (props.from_date) {
+    const dateParts = props.from_date.split('-');
+    formattedFromDate.value = `${dateParts[2]}.${dateParts[1]}.${dateParts[0]}`;
+  }
+  if (props.until_date) {
+    const dateParts = props.until_date.split('-');
+    formattedUntilDate.value = `${dateParts[2]}.${dateParts[1]}.${dateParts[0]}`;
+  }
+});
+
 </script>
 
 <template>
@@ -17,9 +44,9 @@ defineProps({
         <!-- Overlay and text -->
         <div class="absolute bottom-0 left-0 right-0 h-1/2.5 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-4">
         <div class="text-white">
-            <h2 class="text-3xl font-bold line-clamp-2">{{ title }}</h2>
-            <p class="text-lg">Česká republika</p>
-            <p class="">24.07.2024 - 31.07.2024</p>
+            <h2 class="text-3xl font-bold line-clamp-2 drop-shadow-lg">{{ title }}</h2>
+            <p class="text-lg drop-shadow-md">{{ country }}</p>
+            <p class="drop-shadow-sm">{{  formattedFromDate }} - {{ formattedUntilDate }}</p>
         </div>
         </div>
     </div>
