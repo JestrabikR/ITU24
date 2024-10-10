@@ -1,76 +1,13 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
-
-import Navbar from '@/components/Navbar.vue';
-import TripCard from '@/components/TripCard.vue';
-
-let trips = ref([]);
-let future_trips = ref([]);
-let past_trips = ref([]);
-let current_trips = ref([]);
-
-onMounted(async () => {
-    try {
-        const response = await axios.get('http://localhost:5000/trips')
-        trips.value = response.data;
-        
-        const today = new Date().setHours(0, 0, 0, 0);
-
-        past_trips.value = trips.value.filter((trip) => {
-          const tripEndDate = new Date(trip.until_date).setHours(0, 0, 0, 0);
-          return tripEndDate < today;
-        });
-
-        future_trips.value = trips.value.filter((trip) => {
-          const tripStartDate = new Date(trip.from_date).setHours(0, 0, 0, 0);
-          const tripEndDate = new Date(trip.until_date).setHours(0, 0, 0, 0);
-          return tripStartDate > today && tripEndDate > today;
-        });
-
-        current_trips.value = trips.value.filter((trip) => {
-          const tripStartDate = new Date(trip.from_date).setHours(0, 0, 0, 0);
-          const tripEndDate = new Date(trip.until_date).setHours(0, 0, 0, 0);
-          console.log(today, trip.from_date, tripStartDate, tripEndDate, "***");
-          return tripStartDate <= today && tripEndDate >= today;
-        });
-    } catch (error) {
-        console.error('Error fetching trips', error);
-    }
-})
+import { RouterView } from 'vue-router';
+import Navbar from '@/components/Navbar.vue'
 </script>
 
 <template>
 
 <div class="p-6 mx-auto max-w-full sm:max-w-[90%] lg:max-w-[75%]">
   <Navbar/>
-  <h1 class="text-2xl font-extrabold"><b>Cestovní deník</b></h1>
-  
-  <h2 class="text-xl font-extrabold">Právě probíhající cesty</h2>
-  <div class="grid grid-cols-1 to-xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 content-center">
-    <div v-for="trip in current_trips" :key="trip.id">
-      <TripCard :title="trip.name" :from_date="trip.from_date" :until_date="trip.until_date" />
-    </div>
-  </div>
-
-  <h2 class="text-xl font-extrabold">Plánované cesty</h2>
-  <div class="grid grid-cols-1 to-xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 content-center">
-    <div v-for="trip in future_trips" :key="trip.id">
-      <TripCard :title="trip.name" :from_date="trip.from_date" :until_date="trip.until_date" />
-    </div>
-  </div>
-
-  <h2 class="text-xl font-extrabold">Minulé cesty</h2>
-  <div class="grid grid-cols-1 to-xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 content-center">
-    <div v-for="trip in past_trips" :key="trip.id">
-      <TripCard :title="trip.name" :from_date="trip.from_date" :until_date="trip.until_date" />
-    </div>
-  </div>
-
+  <RouterView/>
 </div>
 
 </template>
-
-<style scoped>
-
-</style>

@@ -1,0 +1,22 @@
+import { createRouter, createWebHistory } from 'vue-router';
+
+import HomePage from '@/pages/HomePage.vue';
+import TripDetail from '@/pages/TripDetail.vue';
+
+const router = createRouter({
+    history: createWebHistory(import.meta.env.BASE_URL),
+    routes: [
+        {
+            path: '/',
+            name: 'home',
+            component: HomePage,
+        },
+        {
+            path: '/trip', //TODO /trip/<id>
+            name: 'tripDetail',
+            component: TripDetail
+        }
+    ]
+});
+
+export default router;
