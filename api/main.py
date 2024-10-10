@@ -12,7 +12,13 @@ import json
 from trip import Trip, Subtrip
 from country import Country
 
+
 app = Flask(__name__)
+# def add_cors_headers(response):
+#     response.headers['Access-Control-Allow-Origin'] = '*'  # Nebo zadej specifickou doménu
+#     response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+#     response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+#     return response
 
 def json_from_file(file):
     ret = None 
@@ -35,6 +41,7 @@ def home():
 @app.route("/trips")
 def trips():
     trips = json_from_file("./trips.json")
+    print(trips)
     return make_response(jsonify(trips), 200)
 
 #---------------/trip/<id>---------------

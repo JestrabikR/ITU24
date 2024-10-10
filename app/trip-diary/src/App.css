@@ -1,0 +1,43 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 10vmin; /* Výška loga */
+  pointer-events: none; /* Zamezení interakci s logem */
+  padding: 10px;
+}
+
+h1{
+  color: white;
+}
+
+body {
+  margin: 0; /* Odstraní okraje */
+  padding: 0; /* Odstraní výplně */
+  background-color: #282c34; /* Barva pozadí */
+}
+
+.App-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #282c34; /* Barva pozadí hlavičky */
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.App .Header-button {
+  text-decoration: none; 
+  font-size: 24px;
+  color: white;
+}
+
+@font-face {
+  font-family: 'Nunito-Bold';
+  src: url('./fonts/Nunito-Bold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
