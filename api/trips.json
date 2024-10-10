@@ -79,6 +79,16 @@
                     "photo1.jpg",
                     "photo2.jpg"
                 ]
+            },
+            {
+                "description": "T\u0159\u00eddenn\u00ed p\u011b\u0161\u00ed t\u00fara v hor\u00e1ch.",
+                "favourite": true,
+                "gps": "49.2827N, 123.1207W",
+                "name": "Druhy vylet",
+                "photos": [
+                    "photo1.jpg",
+                    "photo2.jpg"
+                ]
             }
         ],
         "until_date": "2025-08-10"

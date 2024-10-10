@@ -1,4 +1,5 @@
 <script setup>
+import { formatDate } from '@/helpers';
 import { ref, onMounted } from 'vue';
 
 // defineProps allows passing values to component
@@ -8,21 +9,12 @@ const props = defineProps({
     }
 })
 
-const formattedFromDate = ref(null);
-const formattedUntilDate = ref(null);
+let formattedFromDate = ref(null);
+let formattedUntilDate = ref(null);
 
 onMounted(() => {
-    const from_date = props.trip["from_date"];
-    const until_date = props.trip["until_date"];
-    
-    if (from_date) {
-        const dateParts = from_date.split('-');
-        formattedFromDate.value = `${dateParts[2]}.${dateParts[1]}.${dateParts[0]}`;
-    }
-    if (until_date) {
-        const dateParts = until_date.split('-');
-        formattedUntilDate.value = `${dateParts[2]}.${dateParts[1]}.${dateParts[0]}`;
-    }
+    formattedFromDate.value = formatDate(props.trip["from_date"]);
+    formattedUntilDate.value = formatDate(props.trip["until_date"]);
 });
 
 </script>

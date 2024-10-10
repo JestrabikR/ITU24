@@ -40,6 +40,11 @@ onMounted(async () => {
 </script>
 
 <template>
+    <!--TODO? na urovni tlacitka udelat listu jako z navrhu?-->
+    <div class="flex justify-end">
+        <RouterLink to="/trips/add"><button class="my-3 font-extrabold text-3xl bg-blue-700 px-4 text-white rounded-full">+</button></RouterLink>
+    </div>
+
     <h2 class="pt-2 sm:pt-4 text-2xl font-extrabold">Právě probíhající cesty</h2>
     <div class="grid grid-cols-1 to-xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 content-center">
         <div v-for="trip in current_trips.slice(0, limit || current_trips.length)" :key="trip.id">
