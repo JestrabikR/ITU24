@@ -35,6 +35,57 @@ body {
   color: white;
 }
 
+.trips-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 16px;
+  padding: 20px;
+}
+
+.trip-card {
+  width: calc(25% - 32px);
+  min-width: 250px;
+  margin: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.trip-card:hover {
+  transform: scale(1.05);
+}
+
+.trip-image {
+  position: relative;
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 16px;
+}
+
+.trip-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  text-align: left;
+}
+
+.trip-content h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.trip-content p {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
 @font-face {
   font-family: 'Nunito-Bold';
   src: url('./fonts/Nunito-Bold.ttf') format('truetype');

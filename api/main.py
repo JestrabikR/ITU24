@@ -3,6 +3,7 @@ from flask import Response
 from flask import make_response
 from flask import jsonify
 from flask import request
+from flask_cors import CORS
 
 from datetime import date
 from datetime import datetime
@@ -14,6 +15,7 @@ from country import Country
 
 
 app = Flask(__name__)
+CORS(app)
 # def add_cors_headers(response):
 #     response.headers['Access-Control-Allow-Origin'] = '*'  # Nebo zadej specifickou doménu
 #     response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
@@ -41,7 +43,6 @@ def home():
 @app.route("/trips")
 def trips():
     trips = json_from_file("./trips.json")
-    print(trips)
     return make_response(jsonify(trips), 200)
 
 #---------------/trip/<id>---------------
