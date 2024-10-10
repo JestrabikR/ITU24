@@ -6,6 +6,10 @@ export default {
       screens: {
         'to-xs': [{'min': '480px', 'max': '640px'}],
       },
+      boxShadow: {
+        'card-shadow': '0 0px 12px 3px rgba(0, 0, 0, 0.2)',
+        'card-shadow-hover': '0 0px 15px 4px rgba(0, 0, 0, 0.3)',
+      },
       fontFamily: {
         sans: ['Nunito', 'sans-serif']
       },

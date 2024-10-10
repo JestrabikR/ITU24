@@ -5,9 +5,9 @@ import TripCard from '@/components/TripCard.vue';
 
 <template>
 
-<div class="bg-gray-100 p-6 mx-auto max-w-full sm:max-w-[90%] lg:max-w-[80%]">
+<div class="p-6 mx-auto max-w-full sm:max-w-[90%] lg:max-w-[75%]">
   <Navbar/>
-  <h1 class="text-2xl"><b>Cestovní deník</b></h1>
+  <h1 class="text-2xl font-extrabold"><b>Cestovní deník</b></h1>
 
   <div class="grid grid-cols-1 to-xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 content-center">
     <TripCard title="Praha"/>
