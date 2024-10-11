@@ -55,7 +55,7 @@ onMounted(async () => {
 
 <template>
     
-<h2 class="pt-2 sm:pt-4 text-2xl font-extrabold">{{ title }}</h2>
+<h2 class="py-3 sm:py-4 text-2xl font-extrabold">{{ title }}</h2>
 
 <TripCardsGrid>
     <div v-for="x in [1,2,3,4,5,6,7,8,9,10,11,12]">

@@ -21,7 +21,7 @@ onMounted(() => {
 
 <template>
     <RouterLink :to="`/trip/${props.trip['id']}`"> <!--TODO: to="/trip/,<trip.id>" -->
-        <div class="relative my-2 sm:my-3 max-w-80 to-xs:w-52 to-xs:h-44 sm:w-60 sm:h-52 md:w-72 md:h-64 lg:w-60 lg:h-52 xl:w-72 xl:h-64 rounded-lg overflow-hidden shadow-card-shadow transition-shadow duration-300 hover:shadow-card-shadow-hover ">
+        <div class="relative max-w-80 to-xs:w-52 to-xs:h-44 sm:w-60 sm:h-52 md:w-72 md:h-64 lg:w-60 lg:h-52 xl:w-60 xl:h-52 2xl:w-72 2xl:h-64 rounded-lg overflow-hidden shadow-card-shadow transition-shadow duration-300 hover:shadow-card-shadow-hover ">
             <img src="https://flowbite.com/docs/images/blog/image-1.jpg" class="w-full h-full object-cover">
             
             <!-- Overlay and text -->
