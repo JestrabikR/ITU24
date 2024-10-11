@@ -7,7 +7,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <h2 class="text-2xl">{{ props.subtrip["name"]}}</h2>
+    <h2 class="text-2xl pt-2">{{ props.subtrip["name"]}}</h2>
     <p class="text-lg">{{ props.subtrip["description"]}}</p>
     <!--TODO: zobrazit vice... na description-->
 

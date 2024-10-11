@@ -6,6 +6,7 @@ import { formatDate } from '@/helpers';
 import Subtrip from '@/components/Subtrip.vue';
 import PlusIcon from '@/assets/icons/PlusIcon.vue';
 import MinusIcon from '@/assets/icons/MinusIcon.vue';
+import TripPhoto from '@/components/TripPhoto.vue';
 
 const route = useRoute();
 const tripId = route.params.id;
@@ -19,6 +20,8 @@ onMounted(async () => {
         //TODO: pri nacitani nejsou videt data, udelat nejaky loader
         const response = await axios.get('http://localhost:5000/trip/' + tripId);
         trip.value = response.data;
+
+        console.log(trip.value.photos)
 
         formattedFromDate.value = formatDate(trip.value.from_date)
         formattedUntilDate.value = formatDate(trip.value.until_date);
@@ -41,6 +44,14 @@ onMounted(async () => {
     <h2 class="pt-4 sm:pt-5 text-2xl font-extrabold">Navštívená místa</h2>
     <div v-for="subtrip in trip.subtrips">
         <Subtrip :subtrip="subtrip"/>
+    </div>
+
+    <h2 class="text-2xl pt-2">Nezařazené fotografie</h2>
+    <!-- TODO: nezarazene fotky trip.photos -->
+     <div class="flex gap-4">
+        <div v-for="photo in trip.photos">
+            <TripPhoto :imageSrc="photo"/>
+        </div>
     </div>
 
     <!-- Description -->
