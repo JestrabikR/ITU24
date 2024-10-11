@@ -4,6 +4,8 @@ import { useRoute } from 'vue-router';
 import axios from 'axios';
 import { formatDate } from '@/helpers';
 import Subtrip from '@/components/Subtrip.vue';
+import PlusIcon from '@/assets/icons/PlusIcon.vue';
+import MinusIcon from '@/assets/icons/MinusIcon.vue';
 
 const route = useRoute();
 const tripId = route.params.id;
@@ -35,12 +37,47 @@ onMounted(async () => {
 
     <!--TODO: Obrazek-->
 
+    <!-- Visited places -->
     <h2 class="pt-4 sm:pt-5 text-2xl font-extrabold">Navštívená místa</h2>
     <div v-for="subtrip in trip.subtrips">
         <Subtrip :subtrip="subtrip"/>
     </div>
 
+    <!-- Description -->
     <h2 class="pt-4 sm:pt-5 text-2xl font-extrabold">Popis cesty</h2>
     <p class="text-lg">{{ trip.description}}</p>
     
+    
+    <!-- Advantages Disadvantages-->
+    <div class="grid grid-cols-1 to-xs:grid-cols-2 sm:grid-cols-2">
+        <div class="advantages">
+            <div class="flex">
+                <PlusIcon/>
+                <p class=" pl-1 pt-0.5 text-xl font-bold">Co se mi líbilo</p>
+            </div>
+            <ul class="list-inside pl-3.5" style="list-style-type: circle">
+                <div v-for="adv in trip.advantages">
+                    <li>{{ adv }}</li>
+                </div>
+            </ul>
+        </div>
+
+        <div class="disadvantages">
+            <div class="flex">
+                <MinusIcon/>
+                <p class="pl-1 pt-0.5 text-xl font-bold">Co se mi líbilo</p>
+            </div>
+            <ul class="list-inside pl-3.5" style="list-style-type: circle">
+                <div v-for="disadv in trip.disadvantages">
+                    <li>{{ disadv }}</li>
+                </div>
+            </ul>
+        </div>
+    </div>
 </template>
+
+<style scoped>
+ul li::marker {
+    font-size: 1.1rem; /* li circle size */
+}
+</style>

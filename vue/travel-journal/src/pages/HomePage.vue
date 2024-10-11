@@ -5,6 +5,7 @@ import TripCard from '@/components/TripCard.vue';
 import TripsSectionHeader from '@/components/TripsSectionHeader.vue';
 import { TripStatus } from '@/helpers';
 import TripCardsGrid from '@/components/TripCardsGrid.vue';
+import PlusCircleIcon from '@/assets/icons/PlusCircleIcon.vue';
 
 let trips = ref([]);
 let future_trips = ref([]);
@@ -45,7 +46,9 @@ onMounted(async () => {
 <template>
     <!--TODO? na urovni tlacitka udelat listu jako z navrhu?-->
     <div class="flex justify-end">
-        <RouterLink to="/trips/add"><button class="my-3 font-extrabold text-3xl bg-blue-700 px-4 text-white rounded-full">+</button></RouterLink>
+        <RouterLink to="/trips/add">
+            <PlusCircleIcon/>
+        </RouterLink>
     </div>
 
     <TripsSectionHeader sectionName="Právě probíhající cesty" :tripStatus="TripStatus.CURRENT"/>

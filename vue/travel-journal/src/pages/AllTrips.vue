@@ -14,7 +14,6 @@ let title = ref("");
 let trips = ref([]);
 
 onMounted(async () => {
-    //TODO: nacist vsechna data
     try {
         const response = await axios.get('http://localhost:5000/trips')
         trips.value = response.data;

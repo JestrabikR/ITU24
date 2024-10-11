@@ -1,5 +1,5 @@
 <script setup>
-import ArrowRight from '@/assets/icons/ArrowRight.vue';
+import ArrowRightIcon from '@/assets/icons/ArrowRightIcon.vue';
 import { TripStatus } from '@/helpers';
 
 const props = defineProps({
@@ -20,7 +20,7 @@ const props = defineProps({
     <RouterLink :to="`/trips/${props.tripStatus}`">
         <div class="flex items-center space-x-1">
             <p class="pr-0 to-xs:pr-1 sm:pr-1">Zobrazit všechny</p>
-            <ArrowRight />
+            <ArrowRightIcon />
         </div>
     </RouterLink>
 </div>

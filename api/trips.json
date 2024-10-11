@@ -61,7 +61,8 @@
         "budget": 15000,
         "description": "Druh\u00e1 letn\u00ed dovolen\u00e1 v p\u0159\u00edrod\u011b s p\u011b\u0161\u00edmi t\u00farami.",
         "disadvantages": [
-            "Dlouh\u00e1 cesta"
+            "Dlouh\u00e1 cesta",
+            "Draho"
         ],
         "from_date": "2025-08-01",
         "id": "ad79520f-c792-4136-a934-4dbecc4ffbf7",
