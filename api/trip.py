@@ -3,7 +3,37 @@ import uuid
 
 class Trip:
     """
-    Trip encapsulation class
+    Trip data class
+
+    @type name: string
+    @param name: Name of the trip
+
+    @type from_date: datetime.date
+    @param datetime.date from_date: Start date of the trip
+
+    @type until_date: datetime.date
+    @param until_date: End date of the trip
+
+    @type budget: float
+    @param budget: Either budget for future trip or cost of past trip
+
+    @type description: str
+    @param description: Description/notes for the trip
+
+    @type subtrips: list.<Subtrip>
+    @param substrips: Subtrips of the trip
+
+    @type photos: list.<Photo>
+    @param photos: Photos of the trip, encoded in base64
+
+    @type advantages: list.<string>
+    @param advantages
+
+    @type disadvantages: list.<string>
+    @param disadvantages
+
+    @type id: string
+    @param id: UUID4-type identifer [id=None]
     """
 
     def __init__(self, name, from_date, until_date, budget, description, subtrips=[], photos=[], advantages=[], disadvantages=[], id=None):
@@ -19,6 +49,11 @@ class Trip:
         self.disadvantages = disadvantages
     
     def to_json(self):
+        """
+        Returns instance as JSON object
+        """
+
+        #! Let's keep it in english
         # Vytvoříme kopii slovníku atributů objektu
         trip_dict = self.__dict__.copy()
 
@@ -29,6 +64,24 @@ class Trip:
 
 
 class Subtrip:
+    """
+    Subtrip data class.
+
+    @type name: string
+    @param name: Name of the subtrip
+
+    @type description: string
+    @param description: Description/notes for the subtrip
+
+    @type gps: !TBD
+    @param gps: GPS information for one location
+
+    @type favourite: boolean
+    @param favourite: Marked as favourite
+
+    @type photos: list.<Photo>
+    @param photos: List of photos from the subtrip
+    """
     
     def __init__(self, name, description, gps, favourite, photos=[]):
         self.name = name
