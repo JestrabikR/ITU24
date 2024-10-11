@@ -10,5 +10,5 @@ const props = defineProps({
   
 
 <template>
-    <img :src="imageSrc" alt="Image" class="rounded-3xl aspect-square max-w-64 max-h-64 w-full h-full object-cover"/>
+    <img :src="imageSrc" alt="Image" class="pt-2 rounded-3xl aspect-square w-36 h-36 to-xs:w-48 to-xs:h-48 sm:w-56 sm:h-56 object-cover"/>
 </template>

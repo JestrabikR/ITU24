@@ -21,8 +21,6 @@ onMounted(async () => {
         const response = await axios.get('http://localhost:5000/trip/' + tripId);
         trip.value = response.data;
 
-        console.log(trip.value.photos)
-
         formattedFromDate.value = formatDate(trip.value.from_date)
         formattedUntilDate.value = formatDate(trip.value.until_date);
 
@@ -36,9 +34,9 @@ onMounted(async () => {
 <template>
     <h1 class="pt-3 to-xs:pt-5 sm:pt-5 text-4xl font-extrabold">{{ trip.name }}</h1>
     <p class="font-light">{{ formattedFromDate }} - {{ formattedUntilDate }}</p>
-    <p class="">{{ trip.budget }} Kč</p>
+    <p class="">Náklady: {{ trip.budget }} Kč</p>
 
-    <!--TODO: Obrazek-->
+    <!--TODO: Mapa -->
 
     <!-- Visited places -->
     <h2 class="pt-4 sm:pt-5 text-2xl font-extrabold">Navštívená místa</h2>
@@ -46,10 +44,10 @@ onMounted(async () => {
         <Subtrip :subtrip="subtrip"/>
     </div>
 
-    <h2 class="text-2xl pt-2">Nezařazené fotografie</h2>
-    <!-- TODO: nezarazene fotky trip.photos -->
-     <div class="flex gap-4">
-        <div v-for="photo in trip.photos">
+    <!-- Unclassified photos -->
+    <h2 class="text-2xl pt-3">Nezařazené fotografie</h2>
+    <div class="flex gap-4 overflow-x-auto flex-nowrap">
+        <div v-for="photo in trip.photos" class="shrink-0">
             <TripPhoto :imageSrc="photo"/>
         </div>
     </div>
@@ -60,7 +58,7 @@ onMounted(async () => {
     
     
     <!-- Advantages Disadvantages-->
-    <div class="grid grid-cols-1 to-xs:grid-cols-2 sm:grid-cols-2">
+    <div class="pt-3 mb-16 grid grid-cols-1 to-xs:grid-cols-2 sm:grid-cols-2">
         <div class="advantages">
             <div class="flex">
                 <PlusIcon/>
