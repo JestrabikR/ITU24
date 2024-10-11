@@ -58,7 +58,7 @@ onMounted(async () => {
     
     
     <!-- Advantages Disadvantages-->
-    <div class="pt-3 mb-16 grid grid-cols-1 to-xs:grid-cols-2 sm:grid-cols-2">
+    <div class="pt-4 sm:pt-5 mb-16 grid grid-cols-1 to-xs:grid-cols-2 sm:grid-cols-2">
         <div class="advantages">
             <div class="flex">
                 <PlusIcon/>

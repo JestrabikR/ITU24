@@ -1,4 +1,5 @@
 <script setup>
+import ReadMore from './ReadMore.vue';
 import TripPhoto from './TripPhoto.vue';
 
 const props = defineProps({
@@ -10,8 +11,7 @@ const props = defineProps({
 
 <template>
     <h2 class="text-2xl pt-3">{{ props.subtrip["name"]}}</h2>
-    <p class="text-lg">{{ props.subtrip["description"]}}</p>
-    <!--TODO: zobrazit vice... na description-->
+    <ReadMore :text="props.subtrip['description']"/>
 
     <div class="flex gap-4 overflow-x-auto flex-nowrap">
         <div v-for="photo in subtrip['photos']" class="shrink-0">

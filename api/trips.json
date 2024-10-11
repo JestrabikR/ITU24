@@ -54,7 +54,7 @@
             "\u010cerstv\u00fd vzduch"
         ],
         "budget": 15000,
-        "description": "Druh\u00e1 letn\u00ed dovolen\u00e1 v p\u0159\u00edrod\u011b s p\u011b\u0161\u00edmi t\u00farami.",
+        "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, cum rem dolor in ratione sequi. Saepe amet neque fugiat esse at facilis veniam minus, non, aspernatur blanditiis vitae, sed quam! Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, cum rem dolor in ratione sequi. Saepe amet neque fugiat esse at facilis veniam minus, non, aspernatur blanditiis vitae, sed quam!Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, cum rem dolor in ratione sequi. Saepe amet neque fugiat esse at facilis veniam minus, non, aspernatur blanditiis vitae, sed quam! Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, cum rem dolor in ratione sequi. Saepe amet neque fugiat esse at facilis veniam minus, non, aspernatur blanditiis vitae, sed quam!",
         "disadvantages": [
             "Dlouh\u00e1 cesta",
             "Draho"
@@ -69,7 +69,7 @@
         ],
         "subtrips": [
             {
-                "description": "T\u0159\u00eddenn\u00ed p\u011b\u0161\u00ed t\u00fara v hor\u00e1ch.",
+                "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, cum rem dolor in ratione sequi. Saepe amet neque fugiat esse at facilis veniam minus, non, aspernatur blanditiis vitae, sed quam! Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, cum rem dolor in ratione sequi. Saepe amet neque fugiat esse at facilis veniam minus, non, aspernatur blanditiis vitae, sed quam!Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, cum rem dolor in ratione sequi. Saepe amet neque fugiat esse at facilis veniam minus, non, aspernatur blanditiis vitae, sed quam! Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere, cum rem dolor in ratione sequi. Saepe amet neque fugiat esse at facilis veniam minus, non, aspernatur blanditiis vitae, sed quam!",
                 "favourite": true,
                 "gps": "49.2827N, 123.1207W",
                 "name": "V\u00fdlet do hor",
