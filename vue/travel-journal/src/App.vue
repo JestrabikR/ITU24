@@ -5,7 +5,7 @@ import Navbar from '@/components/Navbar.vue'
 
 <template>
 
-<div class="p-6 mx-auto max-w-full sm:max-w-[90%] lg:max-w-[75%]">
+<div class="p-6 mx-auto max-w-full sm:max-w-[90%] lg:max-w-[60%]">
   <Navbar/>
   <RouterView/>
 </div>

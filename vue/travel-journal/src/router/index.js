@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '@/pages/HomePage.vue';
 import TripDetail from '@/pages/TripDetail.vue';
 import NotFound from '@/pages/NotFound.vue';
+import AllTrips from '@/pages/AllTrips.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,6 +17,11 @@ const router = createRouter({
             path: '/trip/:id',
             name: 'tripDetail',
             component: TripDetail
+        },
+        {
+            path: '/trips/:tripStatus',
+            name: 'allTrips',
+            component: AllTrips
         },
         {
             path: '/:catchAll(.*)',

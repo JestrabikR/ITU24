@@ -2,6 +2,9 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import TripCard from '@/components/TripCard.vue';
+import TripsSectionHeader from '@/components/TripsSectionHeader.vue';
+import { TripStatus } from '@/helpers';
+import TripCardsGrid from '@/components/TripCardsGrid.vue';
 
 let trips = ref([]);
 let future_trips = ref([]);
@@ -45,24 +48,25 @@ onMounted(async () => {
         <RouterLink to="/trips/add"><button class="my-3 font-extrabold text-3xl bg-blue-700 px-4 text-white rounded-full">+</button></RouterLink>
     </div>
 
-    <h2 class="pt-2 sm:pt-4 text-2xl font-extrabold">Právě probíhající cesty</h2>
-    <div class="grid grid-cols-1 to-xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 content-center">
+    <TripsSectionHeader sectionName="Právě probíhající cesty" :tripStatus="TripStatus.CURRENT"/>
+
+    <TripCardsGrid>
         <div v-for="trip in current_trips.slice(0, limit || current_trips.length)" :key="trip.id">
             <TripCard :trip="trip" />
         </div>
-    </div>
+    </TripCardsGrid>
 
-    <h2 class="text-2xl font-extrabold">Plánované cesty</h2>
-    <div class="grid grid-cols-1 to-xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 content-center">
+    <TripsSectionHeader sectionName="Plánované cesty" :tripStatus="TripStatus.FUTURE"/>
+    <TripCardsGrid>
         <div v-for="trip in future_trips.slice(0, limit || future_trips.length)" :key="trip.id">
             <TripCard :trip="trip" />
         </div>
-    </div>
+    </TripCardsGrid>
 
-    <h2 class="text-2xl font-extrabold">Minulé cesty</h2>
-    <div class="grid grid-cols-1 to-xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 content-center">
+    <TripsSectionHeader sectionName="Minulé cesty" :tripStatus="TripStatus.PAST"/>
+    <TripCardsGrid>
         <div v-for="trip in past_trips.slice(0, limit || past_trips.length)" :key="trip.id">
             <TripCard :trip="trip" />
         </div>
-    </div>
+    </TripCardsGrid>
 </template>
