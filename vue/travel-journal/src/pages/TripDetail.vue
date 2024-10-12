@@ -7,6 +7,7 @@ import Subtrip from '@/components/Subtrip.vue';
 import PlusIcon from '@/assets/icons/PlusIcon.vue';
 import MinusIcon from '@/assets/icons/MinusIcon.vue';
 import TripPhoto from '@/components/TripPhoto.vue';
+import TripMap from '@/components/TripMap.vue';
 
 const route = useRoute();
 const tripId = route.params.id;
@@ -37,6 +38,7 @@ onMounted(async () => {
     <p class="">Náklady: {{ trip.budget }} Kč</p>
 
     <!--TODO: Mapa -->
+    <TripMap/>
 
     <!-- Visited places -->
     <h2 class="pt-4 sm:pt-5 text-2xl font-extrabold">Navštívená místa</h2>
