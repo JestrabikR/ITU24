@@ -15,6 +15,7 @@ const tripId = route.params.id;
 let trip = ref({});
 let formattedFromDate = ref({});
 let formattedUntilDate = ref({});
+let subtripsGps = ref([]);
 
 onMounted(async () => {
     try {
@@ -24,6 +25,10 @@ onMounted(async () => {
 
         formattedFromDate.value = formatDate(trip.value.from_date)
         formattedUntilDate.value = formatDate(trip.value.until_date);
+
+        trip.value.subtrips.forEach((subtrip) => {
+            subtripsGps.value.push(subtrip.gps);
+        });
 
     } catch (error) {
         console.error('Error fetching trips', error);
@@ -37,8 +42,7 @@ onMounted(async () => {
     <p class="font-light">{{ formattedFromDate }} - {{ formattedUntilDate }}</p>
     <p class="">Náklady: {{ trip.budget }} Kč</p>
 
-    <!--TODO: Mapa -->
-    <TripMap/>
+    <TripMap :subtripsGps="subtripsGps"/>
 
     <!-- Visited places -->
     <h2 class="pt-4 sm:pt-5 text-2xl font-extrabold">Navštívená místa</h2>
