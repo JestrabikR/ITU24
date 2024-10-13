@@ -3,11 +3,10 @@ import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import statesData from '../../../../countries.geo.json';
 
-let countries = ref([]);
+let selectedCountries = ref([]);
 let geoJson = ref([]);
 const map = ref(null);
 const mapContainer = ref(null);
-const selectedCountries = ref([]);
 
 let isVisitedToggle = ref(true); // state of switch button 
 
@@ -58,16 +57,18 @@ const onEachFeature = (feature, layer) => {
         mouseout: resetHighlight,
         click: async (e) => {
             // is country selected
-            const index = selectedCountries.value.indexOf(layer);
+            let index = -1;
 
             let code = layer.feature.id;
             let name = layer.feature.properties.name;
 
-            if (index === -1) {
-                if ()
+            selectedCountries.value.forEach((country, i) => {
+                if (country.code === code) {
+                    index = i;
+                }
+            })
 
-                selectedCountries.value.push(layer);
-                layer.setStyle(isVisitedToggle.value ? visitedHighlightStyle : wantToVisitHighlightStyle);
+            if (index === -1) {
 
                 let newCountry = {
                     "code": code,
@@ -75,6 +76,9 @@ const onEachFeature = (feature, layer) => {
                     "visited": isVisitedToggle.value,
                     "wanted": !isVisitedToggle.value
                 };
+
+                selectedCountries.value.push(newCountry);
+                layer.setStyle(isVisitedToggle.value ? visitedHighlightStyle : wantToVisitHighlightStyle);
 
                 //TODO: pokud uz je vybrana a klikne se na ni znovu s tim ze se ma znovu dat jako ta stejna, tak ignorovat
                 
@@ -101,7 +105,7 @@ const onEachFeature = (feature, layer) => {
 onMounted(async () => {
     try {
         const response = await axios.get('http://localhost:5000/countries');
-        countries.value = response.data;
+        selectedCountries.value = response.data;
 
         // initialize map only once
         map.value = L.map(mapContainer.value).setView([50.0755, 14.4378], 4);
@@ -114,12 +118,12 @@ onMounted(async () => {
         // color countries got from api
         const style = (feature) => {
             // check whether country is visited
-            const isVisited = countries.value.find(
+            const isVisited = selectedCountries.value.find(
                 (country) => country.code === feature.id && country.visited
             );
             
             // check whether country is wanted
-            const isWanted = countries.value.find(
+            const isWanted = selectedCountries.value.find(
                 (country) => country.code === feature.id && country.wanted
             );
 
@@ -181,13 +185,13 @@ onMounted(async () => {
             </label>
 
             <p class="text-xl pt-4 md:pt-5 font-bold">Navštívil jsem</p>
-            <div v-for="country in countries">
-                <p v-if="country.visited">{{ country.name }}</p>
+            <div v-for="country in selectedCountries">
+                <p v-if="country.visited" class="pt-0.5">{{ country.name }}</p>
             </div>
 
             <p class="text-xl pt-3 md:pt-4 font-bold">Chci navštívit</p>
-            <div v-for="country in countries">
-                <p v-if="country.wanted">{{ country.name }}</p>
+            <div v-for="country in selectedCountries">
+                <p v-if="country.wanted" class="pt-0.5">{{ country.name }}</p>
             </div>
         </div>
     </div>
