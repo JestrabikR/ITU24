@@ -43,8 +43,8 @@ watchEffect(() => {
             map.value.setView(props.subtripsGps[0], 13);
         }
 
-        // Zajištění správného vykreslení
-        map.value.invalidateSize();
+        // const bounds = new L.LatLngBounds(props.subtripsGps);
+        // map.value.fitBounds(bounds, { padding: [20, 20] });
     }
 });
 

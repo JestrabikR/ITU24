@@ -17,8 +17,6 @@ const mapContainer = ref(null);
 watchEffect(() => {
     if (props.tripsGps.length > 0 && props.tripsGps[0].length > 0 && mapContainer.value) {
         if (!map.value) {
-            console.log(props.tripsGps[0]);
-            console.log(props.tripsGps[0][0]);
             // initialize map only once
             map.value = L.map(mapContainer.value).setView(props.tripsGps[0][0], 5);
 
