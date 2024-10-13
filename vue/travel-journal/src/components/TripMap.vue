@@ -20,6 +20,20 @@ watchEffect(() => {
             // initialize map only once
             map.value = L.map(mapContainer.value).setView(props.subtripsGps[0], 13);
 
+
+            // create lines between markers
+            for (var i = 0; i < props.subtripsGps.length - 1; i++) {
+                L.polygon([
+                    props.subtripsGps[i],
+                    props.subtripsGps[i+1],
+                ]).addTo(map.value);
+            }
+
+            // create markers
+            props.subtripsGps.forEach((gps) => {
+                L.marker(gps).addTo(map.value);
+            })
+
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
