@@ -34,17 +34,20 @@ function resetHighlight(e) {
     }
 }
 
+const visitedColor = '#8ac43f';
+const wantToVisitColor = '#f51d57';
+
 const wantToVisitHighlightStyle = {
-    color: '#ff0000',
+    color: wantToVisitColor,
     weight: 2,
-    fillColor: '#ff0000',
+    fillColor: wantToVisitColor,
     fillOpacity: 0.5,
 };
 
 const visitedHighlightStyle = {
-    color: '#00ff00',
+    color: visitedColor,
     weight: 2,
-    fillColor: '#00ff00',
+    fillColor: visitedColor,
     fillOpacity: 0.5,
 };
 
@@ -80,7 +83,6 @@ const onEachFeature = (feature, layer) => {
                 })
 
                 //TODO: check response
-                console.log(data);
 
             } else {
                 // if already selected, remove
@@ -98,7 +100,7 @@ onMounted(async () => {
         const response = await axios.get('http://localhost:5000/countries');
         visitedCountries.value = response.data;
 
-        // Inicializujeme mapu pouze jednou
+        // initialize map only once
         map.value = L.map(mapContainer.value).setView([50.0755, 14.4378], 4);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -106,10 +108,30 @@ onMounted(async () => {
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         }).addTo(map.value);
 
-        // Přidáme GeoJSON a přiřadíme funkce
+        // add geoJson
         geoJson.value = L.geoJson(statesData, {
             onEachFeature: onEachFeature,
         }).addTo(map.value);
+
+        const legend = L.control({position: 'topright'});
+
+        // add legend
+        legend.onAdd = function () {
+            const div = L.DomUtil.create('div', 'info legend bg-blue-100 p-1 px-2');
+            const grades = [0, 1];
+            const labels = ['Navštíveno', 'Chci navštívit'];
+            const colors = [visitedColor, wantToVisitColor];
+
+            // Přidání popisů k legendě
+            for (let i = 0; i < grades.length; i++) {
+                div.innerHTML += 
+                    `<p style="color: ${colors[i]}">${labels[i]}</p>`;
+            }
+
+            return div;
+        };
+
+        legend.addTo(map.value);
 
     } catch (error) {
         console.error('Error fetching visited countries', error);
