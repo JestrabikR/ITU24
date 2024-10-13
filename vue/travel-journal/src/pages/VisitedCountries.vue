@@ -3,7 +3,7 @@ import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import statesData from '../../../../countries.geo.json';
 
-let visitedCountries = ref([]);
+let countries = ref([]);
 let geoJson = ref([]);
 const map = ref(null);
 const mapContainer = ref(null);
@@ -64,7 +64,8 @@ const onEachFeature = (feature, layer) => {
             let name = layer.feature.properties.name;
 
             if (index === -1) {
-                // Pokud není, přidáme ji do výběru a změníme styl
+                if ()
+
                 selectedCountries.value.push(layer);
                 layer.setStyle(isVisitedToggle.value ? visitedHighlightStyle : wantToVisitHighlightStyle);
 
@@ -74,6 +75,8 @@ const onEachFeature = (feature, layer) => {
                     "visited": isVisitedToggle.value,
                     "wanted": !isVisitedToggle.value
                 };
+
+                //TODO: pokud uz je vybrana a klikne se na ni znovu s tim ze se ma znovu dat jako ta stejna, tak ignorovat
                 
                 // send to api add country
                 const {data} = await axios.post('http://localhost:5000/country/add', newCountry, {
@@ -98,7 +101,7 @@ const onEachFeature = (feature, layer) => {
 onMounted(async () => {
     try {
         const response = await axios.get('http://localhost:5000/countries');
-        visitedCountries.value = response.data;
+        countries.value = response.data;
 
         // initialize map only once
         map.value = L.map(mapContainer.value).setView([50.0755, 14.4378], 4);
@@ -111,12 +114,12 @@ onMounted(async () => {
         // color countries got from api
         const style = (feature) => {
             // check whether country is visited
-            const isVisited = visitedCountries.value.find(
+            const isVisited = countries.value.find(
                 (country) => country.code === feature.id && country.visited
             );
             
             // check whether country is wanted
-            const isWanted = visitedCountries.value.find(
+            const isWanted = countries.value.find(
                 (country) => country.code === feature.id && country.wanted
             );
 
@@ -167,8 +170,6 @@ onMounted(async () => {
     <h1 class="py-3 sm:py-4 text-2xl font-extrabold">Navštívené země</h1>
 
     <div class="grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5">
-        <!--TODO: layout 80%mapa | 20% seznam navštívených zemí pod sebou-->
-        <!--TODO ukladani na api, button presunout napravo od mapy do sloupce-->
         <div ref="mapContainer" class="w-full h-[80vh] col-span-4 shadow-card-shadow rounded-2xl"></div>
         
         <div>
@@ -178,6 +179,16 @@ onMounted(async () => {
                 <div class="relative min-w-11 w-11 h-6 mx-2 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-700"></div>
                 <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-500">Navštíveno</span>
             </label>
+
+            <p class="text-xl pt-4 md:pt-5 font-bold">Navštívil jsem</p>
+            <div v-for="country in countries">
+                <p v-if="country.visited">{{ country.name }}</p>
+            </div>
+
+            <p class="text-xl pt-3 md:pt-4 font-bold">Chci navštívit</p>
+            <div v-for="country in countries">
+                <p v-if="country.wanted">{{ country.name }}</p>
+            </div>
         </div>
     </div>
 </template>

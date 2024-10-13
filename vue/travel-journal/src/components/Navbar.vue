@@ -1,5 +1,7 @@
 <script setup>
 import { RouterLink } from 'vue-router';
+
+//TODO: zvyraznit vybrany item
 </script>
 
 <template>
