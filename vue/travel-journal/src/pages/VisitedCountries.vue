@@ -108,8 +108,31 @@ onMounted(async () => {
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         }).addTo(map.value);
 
+        // color countries got from api
+        const style = (feature) => {
+            // check whether country is visited
+            const isVisited = visitedCountries.value.find(
+                (country) => country.code === feature.id && country.visited
+            );
+            
+            // check whether country is wanted
+            const isWanted = visitedCountries.value.find(
+                (country) => country.code === feature.id && country.wanted
+            );
+
+            if (isVisited) {
+                return visitedHighlightStyle;
+            }
+            else if (isWanted) {
+                return wantToVisitHighlightStyle;
+            } else {
+                return { fillColor: '#D3D3D3', weight: 1, color: '#777', fillOpacity: 0.5 }; // default color
+            }
+        };
+
         // add geoJson
         geoJson.value = L.geoJson(statesData, {
+            style: style,
             onEachFeature: onEachFeature,
         }).addTo(map.value);
 
@@ -155,8 +178,6 @@ onMounted(async () => {
                 <div class="relative min-w-11 w-11 h-6 mx-2 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-700"></div>
                 <span class="ms-3 text-sm font-medium text-gray-900 dark:text-gray-500">Navštíveno</span>
             </label>
-
-            <button type="button" @click="saveSelected" class="bg-blue-700 rounded-xl mt-4 px-4 py-2 mr-3 text-white text-lg">ULOŽIT</button>
         </div>
     </div>
 </template>
