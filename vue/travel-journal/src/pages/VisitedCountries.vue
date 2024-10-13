@@ -53,11 +53,11 @@ const onEachFeature = (feature, layer) => {
     layer.on({
         mouseover: highlightFeature,
         mouseout: resetHighlight,
-        click: (e) => {
+        click: async (e) => {
             // is country selected
             const index = selectedCountries.value.indexOf(layer);
 
-            let id = layer.feature.id;
+            let code = layer.feature.id;
             let name = layer.feature.properties.name;
 
             if (index === -1) {
@@ -65,14 +65,27 @@ const onEachFeature = (feature, layer) => {
                 selectedCountries.value.push(layer);
                 layer.setStyle(isVisitedToggle.value ? visitedHighlightStyle : wantToVisitHighlightStyle);
 
+                let newCountry = {
+                    "code": code,
+                    "name": name,
+                    "visited": isVisitedToggle.value,
+                    "wanted": !isVisitedToggle.value
+                };
                 
-                //TODO: send to api add country
+                // send to api add country
+                const {data} = await axios.post('http://localhost:5000/country/add', newCountry, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+
+                //TODO: check response
+                console.log(data);
 
             } else {
                 // if already selected, remove
+                //TODO: const response = await axios.delete('http://localhost:5000/country/del/' + id);
                 
-                //TODO: send to api remove country
-
                 selectedCountries.value.splice(index, 1);
                 geoJson.value.resetStyle(layer);
             }
