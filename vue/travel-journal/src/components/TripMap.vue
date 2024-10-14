@@ -29,6 +29,8 @@ watchEffect(() => {
                 ]).addTo(map.value);
             }
 
+            //TODO: kliknuti na marker ukaze nejaky popup s detailem nebo moznost dostat se na trip aspon
+
             // create markers
             props.subtripsGps.forEach((gps) => {
                 L.marker(gps).addTo(map.value);

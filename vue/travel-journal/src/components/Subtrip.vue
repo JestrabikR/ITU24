@@ -15,7 +15,7 @@ const props = defineProps({
 
     <div class="flex gap-4 overflow-x-auto flex-nowrap">
         <div v-for="photo in subtrip['photos']" class="shrink-0">
-            <TripPhoto :imageSrc="photo"/>
+            <TripPhoto :imageSrc="photo"/> <!--TODO: po kliknuti zobrazit velky obrazek a at se da prechazet na dalsi-->
         </div>
     </div>
 </template>

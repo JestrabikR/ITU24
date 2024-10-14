@@ -7,6 +7,8 @@ import { TripStatus } from '@/helpers';
 import TripCardsGrid from '@/components/TripCardsGrid.vue';
 import PlusCircleIcon from '@/assets/icons/PlusCircleIcon.vue';
 import AllTripsMap from '@/components/AllTripsMap.vue';
+import MapIcon from '@/assets/icons/MapIcon.vue';
+import GridIcon from '@/assets/icons/GridIcon.vue';
 
 let trips = ref([]);
 let future_trips = ref([]);
@@ -70,9 +72,17 @@ function toggleMapView() {
     <!--TODO? na urovni tlacitka udelat listu jako z navrhu?-->
     <div class="flex justify-end">
         <button @click="toggleMapView" type="button" class="bg-blue-700 rounded-xl px-4 my-1 mr-3 text-white text-lg">
-            <a v-if="map_view">Dlaždice</a>
-            <a v-else>Mapa</a>
-        </button> <!--TODO: text at se zmeni na "mrizka" nebo neco po kliknuti-->
+            <div class="flex">
+                <a v-if="map_view" class="flex flex-row items-center">
+                    <GridIcon/>
+                    Dlaždice
+                </a>
+                <a v-else class="flex flex-row items-center">
+                    <MapIcon/>
+                    Mapa
+                </a>
+            </div>
+        </button>
         <RouterLink to="/add/trip">
             <PlusCircleIcon/>
         </RouterLink>
@@ -81,12 +91,11 @@ function toggleMapView() {
     <div v-if="map_view"> <AllTripsMap :tripsGps="trips_gps"/> </div>
 
     <section v-else>
-        <TripsSectionHeader sectionName="Právě probíhající cesty" :tripStatus="TripStatus.CURRENT"/>
-
+        <h2 v-if="current_trips.length > 0" class="pt-5 pb-2 sm:pt-6 sm:pb-3 text-2xl font-extrabold">
+            Právě probíhající cesta
+        </h2>
         <TripCardsGrid>
-            <div v-for="trip in current_trips.slice(0, limit || current_trips.length)" :key="trip.id">
-                <TripCard :trip="trip" />
-            </div>
+            <TripCard v-if="current_trips.length > 0" :trip="current_trips[0]" :full_width="true" />
         </TripCardsGrid>
 
         <TripsSectionHeader sectionName="Plánované cesty" :tripStatus="TripStatus.FUTURE"/>
