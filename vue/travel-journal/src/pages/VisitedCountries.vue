@@ -93,8 +93,10 @@ const onEachFeature = (feature, layer) => {
 
             } else {
                 // if already selected, remove
-                //TODO: const response = await axios.delete('http://localhost:5000/country/del/' + id);
+                const response = await axios.delete('http://localhost:5000/country/del/' + code);
                 
+                //TODO: check response
+
                 selectedCountries.value.splice(index, 1);
                 geoJson.value.resetStyle(layer);
             }

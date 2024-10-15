@@ -82,17 +82,5 @@
         "name": "Poland",
         "visited": false,
         "wanted": true
-    },
-    {
-        "code": "UKR",
-        "name": "Ukraine",
-        "visited": true,
-        "wanted": false
-    },
-    {
-        "code": "BLR",
-        "name": "Belarus",
-        "visited": false,
-        "wanted": true
     }
 ]
