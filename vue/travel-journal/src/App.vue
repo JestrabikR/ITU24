@@ -17,3 +17,9 @@ let is_wide_page = ref(false);
 </div>
 
 </template>
+
+<style>
+@import 'lightgallery/css/lightgallery.css';
+@import 'lightgallery/css/lg-thumbnail.css';
+@import 'lightgallery/css/lg-zoom.css';
+</style>
