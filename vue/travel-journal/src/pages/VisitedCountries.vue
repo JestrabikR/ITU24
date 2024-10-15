@@ -171,6 +171,7 @@ onMounted(async () => {
 </script>
 
 <template>
+    <!--TODO: GRAF a pocet navstivenych zemi-->
     <h1 class="py-3 sm:py-4 text-2xl font-extrabold">Navštívené země</h1>
 
     <div class="grid grid-cols-1 md:grid-cols-5 gap-3 md:gap-5">
