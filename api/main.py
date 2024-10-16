@@ -159,5 +159,22 @@ def add_country():
 
     return make_response("Successfully added country", 200)
 
+#---------------/country/del/<code>---------------
+@app.route("/country/del/<code>", methods=["DELETE"])
+def delete_country(code):
+    countries = json_from_file("./countries.json")
+    countries_ = [] 
+
+    for country in countries:
+        if(country["code"] == code):
+            continue
+        else:
+            countries_.append(country)
+
+    with open("./countries.json", "w", encoding="utf-8") as countries_file:
+        countries_file.write(json.dumps(countries_, indent=4, sort_keys=True, default=str))
+
+    return make_response("Correctly deleted " + str(code), 200)
+
 if __name__ == '__main__':
     app.run(debug=True) # TODO: debug=True oddelat
