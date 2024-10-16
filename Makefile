@@ -9,5 +9,7 @@ endif
 run:
 	cd ./api && python -m venv .venv && $(PYTHON_VENV) && pip install -r requirements.txt && python main.py
 
-svelte:
-	cd ./svelte && npm run dev -- --open
+svelte: # doesn't work on windows
+	cd ./svelte && npm run dev
+
+.PHONY: svelte
