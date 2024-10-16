@@ -3,6 +3,7 @@ from flask import Response
 from flask import make_response
 from flask import jsonify
 from flask import request
+from flask_cors import CORS
 
 from datetime import date
 from datetime import datetime
@@ -13,6 +14,7 @@ from trip import Trip, Subtrip
 from country import Country
 
 app = Flask(__name__)
+CORS(app) # allow CORS for all routes
 
 def json_from_file(file):
     ret = None 
