@@ -1,14 +1,86 @@
 [
     {
-        "code": "CZ",
-        "name": "\u010cesko",
+        "code": "CZE",
+        "name": "Czech Republic",
         "visited": true,
+        "wanted": false
+    },
+    {
+        "code": "AUT",
+        "name": "Austria",
+        "visited": true,
+        "wanted": false
+    },
+    {
+        "code": "DEU",
+        "name": "Germany",
+        "visited": true,
+        "wanted": false
+    },
+    {
+        "code": "SWE",
+        "name": "Sweden",
+        "visited": true,
+        "wanted": false
+    },
+    {
+        "code": "GBR",
+        "name": "United Kingdom",
+        "visited": true,
+        "wanted": false
+    },
+    {
+        "code": "ESP",
+        "name": "Spain",
+        "visited": true,
+        "wanted": false
+    },
+    {
+        "code": "ITA",
+        "name": "Italy",
+        "visited": true,
+        "wanted": false
+    },
+    {
+        "code": "POL",
+        "name": "Poland",
+        "visited": false,
         "wanted": true
     },
     {
-        "code": "DE",
-        "name": "Germany",
+        "code": "FRA",
+        "name": "France",
         "visited": false,
+        "wanted": true
+    },
+    {
+        "code": "SVK",
+        "name": "Slovakia",
+        "visited": false,
+        "wanted": true
+    },
+    {
+        "code": "EGY",
+        "name": "Egypt",
+        "visited": false,
+        "wanted": true
+    },
+    {
+        "code": "TUR",
+        "name": "Turkey",
+        "visited": false,
+        "wanted": true
+    },
+    {
+        "code": "POL",
+        "name": "Poland",
+        "visited": true,
         "wanted": false
+    },
+    {
+        "code": "POL",
+        "name": "Poland",
+        "visited": false,
+        "wanted": true
     }
 ]
