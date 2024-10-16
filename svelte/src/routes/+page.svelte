@@ -12,7 +12,7 @@
 	<div class="grid medium-space">
 		{#each data.trips as card}
 			<div class="s12 m6 l4">
-				<Card title={card.name} description={card.description} imageUrl={card.imageUrl} />
+				<Card title={card.name} description={card.description} imageUrl={card.photos[0]} id={card.id} />
 			</div>
 		{/each}
 	</div>
