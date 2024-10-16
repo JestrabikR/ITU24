@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import axios from 'axios';
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 import { formatDate } from '@/helpers';
 import Subtrip from '@/components/Subtrip.vue';
 import PlusIcon from '@/assets/icons/PlusIcon.vue';
@@ -16,10 +17,10 @@ let trip = ref({});
 let formattedFromDate = ref({});
 let formattedUntilDate = ref({});
 let subtripsGps = ref([]);
+let loading = ref(true);
 
 onMounted(async () => {
     try {
-        //TODO: pri nacitani nejsou videt data, udelat nejaky loader
         const response = await axios.get('http://localhost:5000/trip/' + tripId);
         trip.value = response.data;
 
@@ -32,12 +33,18 @@ onMounted(async () => {
 
     } catch (error) {
         console.error('Error fetching trips', error);
+    } finally {
+        loading.value = false;
     }
 });
 
 </script>
 
 <template>
+    <div v-if="loading" class="text-center mt-12 w-full">
+        <PulseLoader/>
+    </div>
+    <div v-else>
     <h1 class="pt-3 to-xs:pt-5 sm:pt-5 text-4xl font-extrabold">{{ trip.name }}</h1>
     <p class="font-light">{{ formattedFromDate }} - {{ formattedUntilDate }}</p>
     <p class="">Náklady: {{ trip.budget }} Kč</p>
@@ -88,6 +95,7 @@ onMounted(async () => {
                 </div>
             </ul>
         </div>
+    </div>
     </div>
 </template>
 

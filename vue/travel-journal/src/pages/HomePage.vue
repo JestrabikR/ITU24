@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 import TripCard from '@/components/TripCard.vue';
 import TripsSectionHeader from '@/components/TripsSectionHeader.vue';
 import { TripStatus } from '@/helpers';
@@ -17,6 +18,8 @@ let current_trips = ref([]);
 let trips_gps = ref([]);
 
 let map_view = ref(false);
+
+let loading = ref(true);
 
 const limit = 3; // how many trips are showing in each section
 
@@ -60,6 +63,8 @@ onMounted(async () => {
 
     } catch (error) {
         console.error('Error fetching trips', error);
+    } finally {
+        loading.value = false;
     }
 });
 
@@ -69,6 +74,11 @@ function toggleMapView() {
 </script>
 
 <template>
+    <div v-if="loading" class="text-center mt-12 w-full">
+        <PulseLoader/>
+    </div>
+
+    <div v-else>
     <!--TODO? na urovni tlacitka udelat listu jako z navrhu?-->
     <div class="flex justify-end">
         <button @click="toggleMapView" type="button" class="bg-blue-700 rounded-xl px-4 my-1 mr-3 text-white text-lg">
@@ -112,4 +122,5 @@ function toggleMapView() {
             </div>
         </TripCardsGrid>
     </section>
+    </div>
 </template>

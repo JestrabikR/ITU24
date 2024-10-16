@@ -5,6 +5,7 @@ import TripDetail from '@/pages/TripDetail.vue';
 import NotFound from '@/pages/NotFound.vue';
 import AllTrips from '@/pages/AllTrips.vue';
 import VisitedCountries from '@/pages/VisitedCountries.vue';
+import TripForm from '@/pages/TripForm.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,6 +29,11 @@ const router = createRouter({
             path: '/visited',
             name: 'visited',
             component: VisitedCountries
+        },
+        {
+            path: '/form/trip/:id?', // if id is empty => it is a create form else update
+            name: 'tripForm',
+            component: TripForm
         },
         {
             path: '/:catchAll(.*)',
