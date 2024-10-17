@@ -2,7 +2,8 @@ import { APIURL } from "$lib/helper.js";
 
 /** @type {import('./$types').PageLoad} */
 export async function load({ fetch, params }) {
-	const response = await fetch(`${APIURL}/trip/${params.tripId}`);
-	const trip = await response.json();
+	const response_trip = await fetch(`${APIURL}/trip/${params.tripId}`);
+	const trip = await response_trip.json();
+	
 	return { trip: trip };
 }
