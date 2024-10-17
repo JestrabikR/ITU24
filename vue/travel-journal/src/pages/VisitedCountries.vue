@@ -82,20 +82,23 @@ const onEachFeature = (feature, layer) => {
 
                 //TODO: pokud uz je vybrana a klikne se na ni znovu s tim ze se ma znovu dat jako ta stejna, tak ignorovat
                 
-                // send to api add country
-                const {data} = await axios.post('http://localhost:5000/country/add', newCountry, {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-
-                //TODO: check response
-
+                try {
+                    // send to api add country
+                    const {data} = await axios.post('http://localhost:5000/country/add', newCountry, {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                } catch (e) {
+                    console.error("Error sending country", e);
+                }
             } else {
-                // if already selected, remove
-                const response = await axios.delete('http://localhost:5000/country/del/' + code);
-                
-                //TODO: check response
+                try {
+                    // if already selected, remove
+                    const response = await axios.delete('http://localhost:5000/country/del/' + code);
+                } catch (e) {
+                    console.error("Error sending country", e);
+                }
 
                 selectedCountries.value.splice(index, 1);
                 geoJson.value.resetStyle(layer);

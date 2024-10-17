@@ -58,7 +58,7 @@ onMounted(async () => {
     </div>
 
     <!-- Unclassified photos -->
-    <h2 class="text-2xl pt-3">Nezařazené fotografie</h2>
+    <h2 v-if="trip.photos.length > 0" class="text-2xl pt-3">Nezařazené fotografie</h2>
     <div class="flex gap-4 overflow-x-auto flex-nowrap">
         <div v-for="photo in trip.photos" class="shrink-0">
             <TripPhoto :imageSrc="photo"/>
@@ -74,7 +74,7 @@ onMounted(async () => {
     <div class="pt-4 sm:pt-5 mb-16 grid grid-cols-1 to-xs:grid-cols-2 sm:grid-cols-2">
         <div class="advantages">
             <div class="flex">
-                <PlusIcon/>
+                <PlusIcon color="text-green-600"/>
                 <p class=" pl-1 pt-0.5 text-xl font-bold">Co se mi líbilo</p>
             </div>
             <ul class="list-inside pl-3.5" style="list-style-type: circle">

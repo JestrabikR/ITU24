@@ -8,6 +8,9 @@ class Trip:
     @type name: string
     @param name: Name of the trip
 
+    @type country: string
+    @param country: Name of the country
+
     @type from_date: datetime.date
     @param datetime.date from_date: Start date of the trip
 
@@ -36,9 +39,10 @@ class Trip:
     @param id: UUID4-type identifer [id=None]
     """
 
-    def __init__(self, name, from_date, until_date, budget, description, subtrips=[], photos=[], advantages=[], disadvantages=[], id=None):
+    def __init__(self, name, country, from_date, until_date, budget, description, subtrips=[], photos=[], advantages=[], disadvantages=[], id=None):
         self.id = uuid.uuid4() if id is None else id
         self.name = name
+        self.country = country
         self.from_date = from_date
         self.until_date = until_date
         self.budget = budget
