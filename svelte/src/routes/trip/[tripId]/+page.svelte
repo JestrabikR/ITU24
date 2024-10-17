@@ -8,7 +8,7 @@ const tripId = $page.params.tripId;
 /** @type {import('./$types').PageData} */
 export let data;
 
-function completedCheckbox(){
+function completedCheckboxToggle(){
 	document.getElementById("completed").innerHTML = document.getElementById("completed").innerHTML == "check" ? "close" : "check";
 }
 
@@ -45,7 +45,7 @@ function completedCheckbox(){
 		<h6>
 			<b>$</b>{data.trip.budget}
 			<EditButton/>
-			<button class="circle small primary" on:click={() => completedCheckbox()}>
+			<button class="circle small primary" on:click={() => completedCheckboxToggle()}>
 				<i class="small" id="completed">check</i>
 			</button>
 			Completed
