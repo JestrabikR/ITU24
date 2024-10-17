@@ -93,7 +93,7 @@ function toggleMapView() {
                 </a>
             </div>
         </button>
-        <RouterLink to="/add/trip">
+        <RouterLink to="/form/trip">
             <PlusCircleIcon/>
         </RouterLink>
     </div>
