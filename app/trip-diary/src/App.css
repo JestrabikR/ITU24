@@ -44,7 +44,7 @@ body {
 }
 
 .trip-card {
-  width: calc(25% - 32px);
+  width: calc(25% - 32px); /* Zajišťuje, že karty jsou přizpůsobené šířce */
   min-width: 250px;
   margin: 16px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -59,10 +59,11 @@ body {
 
 .trip-image {
   position: relative;
-  height: 200px;
   background-size: cover;
   background-position: center;
   border-radius: 16px;
+  /* Poměr stran zajišťuje, že výška bude stejná jako šířka */
+  aspect-ratio: 1 / 1;
 }
 
 .trip-content {
@@ -81,7 +82,12 @@ body {
   font-size: 18px;
 }
 
-h2{
+.trip-content p {
+  margin: 0px 0;
+  font-size: 14px;
+}
+
+h2 {
   color: white;
   text-align: left;
   margin-left: 5%;
