@@ -1,27 +1,28 @@
 <script>
-import Navbar from "@components/Navbar.svelte";
-import EditButton from "@components/EditButton.svelte";
-import { page } from "$app/stores";
-import { onMount } from "svelte";
+	import Navbar from "@components/Navbar.svelte";
+	import EditButton from "@components/EditButton.svelte";
+	import { page } from "$app/stores";
+	import { onMount } from "svelte";
 
-const tripId = $page.params.tripId;
+	const tripId = $page.params.tripId;
 
-/** @type {import("./$types").PageData} */
-export let data;
+	export let data;
 
-function completedCheckboxToggle(){
-	document.getElementById("completed").innerHTML = document.getElementById("completed").innerHTML == "check" ? "close" : "check";
-}
+	function completedCheckboxToggle(){
+		document.getElementById("completed").innerHTML = document.getElementById("completed").innerHTML == "check" ? "close" : "check";
+	}
 
-let map;
-onMount(() => {
-	map = L.map("map").setView([50.0755, 14.4378], 4);
-	L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-		maxZoom: 19,
-		attribution: `&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>`,
-    }).addTo(map);
-});
-
+	/********************
+	 * LEAFLET SETTINGS *
+	 ********************/
+	let map;
+	onMount(() => {
+		map = L.map("map").setView([50.0755, 14.4378], 4);
+		L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+			maxZoom: 19,
+			attribution: `&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>`,
+		}).addTo(map);
+	});
 </script>
 
 <main class="responsive">
