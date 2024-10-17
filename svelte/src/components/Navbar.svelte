@@ -6,6 +6,7 @@
 
 	export let view = false;
 	export let edit = false;
+	export let error = false;
 	let current = $page.url.pathname;
 </script>
 
@@ -15,7 +16,7 @@
 	<a href="/"><h3><b><span class:underline={current === '/' ? true : false}>Trips</span></b></h3></a>
 	<a href="/visited"><h3><b><span class:underline={current === '/visited' ? true : false}>Visited</span></b></h3></a>
     <div class="max"></div>
-	{#if !view && !edit}
+	{#if !view && !edit && !error}
 	<button class="extend square round">
 		<i>add</i>
 		<span>Add trip</span>
@@ -34,6 +35,12 @@
 		<button class="border square round extra">
 			<i class="extra">close</i>
 		</button>
+	{:else if error}
+		<a href="mailto:xhrubo01@fit.vutbr.cz?subject=Trip app - bug report" taget="_blank">
+			<button class="border square round extra error">
+				<i class="extra">bug_report</i>
+			</button>
+		</a>
 	{/if}
 
 </nav>
