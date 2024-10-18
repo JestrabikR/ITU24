@@ -9,6 +9,7 @@ import PlusIcon from '@/assets/icons/PlusIcon.vue';
 import MinusIcon from '@/assets/icons/MinusIcon.vue';
 import TripPhoto from '@/components/TripPhoto.vue';
 import TripMap from '@/components/TripMap.vue';
+import Gallery from '@/components/Gallery.vue';
 
 const route = useRoute();
 const tripId = route.params.id;
@@ -60,9 +61,7 @@ onMounted(async () => {
     <!-- Unclassified photos -->
     <h2 v-if="trip.photos.length > 0" class="text-2xl pt-3">Nezařazené fotografie</h2>
     <div class="flex gap-4 overflow-x-auto flex-nowrap">
-        <div v-for="photo in trip.photos" class="shrink-0">
-            <TripPhoto :imageSrc="photo"/>
-        </div>
+        <Gallery :images="trip.photos"/>
     </div>
 
     <!-- Description -->
@@ -71,7 +70,7 @@ onMounted(async () => {
     
     
     <!-- Advantages Disadvantages-->
-    <div class="pt-4 sm:pt-5 mb-16 grid grid-cols-1 to-xs:grid-cols-2 sm:grid-cols-2">
+    <div v-if="trip.advantages.length > 0" class="pt-4 sm:pt-5 mb-16 grid grid-cols-1 to-xs:grid-cols-2 sm:grid-cols-2">
         <div class="advantages">
             <div class="flex">
                 <PlusIcon color="text-green-600"/>
@@ -84,7 +83,7 @@ onMounted(async () => {
             </ul>
         </div>
 
-        <div class="disadvantages">
+        <div v-if="trip.disadvantages.length > 0" class="disadvantages">
             <div class="flex">
                 <MinusIcon/>
                 <p class="pl-1 pt-0.5 text-xl font-bold">Co se mi líbilo</p>
