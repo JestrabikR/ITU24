@@ -52,7 +52,7 @@ onMounted(async () => {
     <TripMap :subtripsGps="subtripsGps"/>
 
     <!-- Visited places -->
-    <h2 class="pt-4 sm:pt-5 text-2xl font-extrabold">Navštívená místa</h2>
+    <h2 v-if="trip.subtrips.length > 0" class="pt-4 sm:pt-5 text-2xl font-extrabold">Navštívená místa</h2>
     <div v-for="subtrip in trip.subtrips">
         <Subtrip :subtrip="subtrip"/>
     </div>
