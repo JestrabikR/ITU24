@@ -8,8 +8,6 @@ const props = defineProps({
         default: "2em"
     }
 });
-
-console.log(props.color);
 </script>
 
 <template>

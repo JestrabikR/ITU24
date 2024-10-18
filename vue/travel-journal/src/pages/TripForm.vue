@@ -6,13 +6,14 @@ import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 import FormLabel from '@/components/FormLabel.vue';
 import PlusIcon from '@/assets/icons/PlusIcon.vue';
 import TrashIcon from '@/assets/icons/TrashIcon.vue';
-import TripPhoto from '@/components/TripPhoto.vue';
+import { useTripFormStore } from '@/stores/TripFormStore';
+
+const tripStore = useTripFormStore();
 
 const route = useRoute();
 const router = useRouter();
 const tripId = route.params.id;
 
-//TODO: dalsi fieldy - obrazky, subtripy, atd
 const form = reactive({
     name: "",
     country: "",
@@ -32,14 +33,27 @@ let loading = ref(true);
 onMounted(async () => {
     try {
         if (tripId === "") {
+            tripStore.trip = {};
             return;
         }
         const response = await axios.get('http://localhost:5000/trip/' + tripId);
         trip.value = response.data;
 
-        //TODO: do form se nastavi uvodni hodnoty
-        // takto: form.name = trip.value.name;
+        // only load if wrong trip is loaded in store
+        if (tripStore.trip.id !== tripId) {
+            tripStore.trip = trip.value;
+        }
+
+        form.name = trip.value.name;
+        form.country = trip.value.country;
+        form.description = trip.value.description;
+        form.budget = trip.value.budget;
+        form.from_date = trip.value.from_date;
+        form.until_date = trip.value.until_date;
+        form.subtrips = trip.value.subtrips;
         form.photos = trip.value.photos;
+        form.advantages = trip.value.advantages;
+        form.disadvantages = trip.value.disadvantages;
 
     } catch (error) {
         console.error('Error fetching trips', error);
@@ -156,7 +170,7 @@ const removePhoto = (index) => {
 
         <!-- Advantages -->
         <h3 class="text-lg mt-2">Výhody</h3>
-        <div v-for="(advantage, index) in form.advantages" :key="index" class="relative z-0 w-full mb-3 group">
+        <div v-for="(advantage, index) in form.advantages" :key="index" class="relative z-0 w-full mb-1 group">
             <input v-model="form.advantages[index]" type="text" class="block py-2.5 px-2 w-full text-sm text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="Výhoda" required/>
             <button type="button" @click="removeAdvantage(index)" class="text-red-500">Odstranit</button>
         </div>
@@ -168,8 +182,8 @@ const removePhoto = (index) => {
         </button>
 
         <!-- Disadvantages -->
-        <h3 class="text-lg mt-2">Nevýhody</h3>
-        <div v-for="(disadvantage, index) in form.disadvantages" :key="index" class="relative z-0 w-full mb-3 group">
+        <h3 class="text-lg mt-3">Nevýhody</h3>
+        <div v-for="(disadvantage, index) in form.disadvantages" :key="index" class="relative z-0 w-full mb-1 group">
             <input v-model="form.disadvantages[index]" type="text" class="block py-2.5 px-2 w-full text-sm text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="Nevýhoda" required/>
             <button type="button" @click="removeDisadvantage(index)" class="text-red-500">Odstranit</button>
         </div>
@@ -180,15 +194,9 @@ const removePhoto = (index) => {
             </div>
         </button>
 
-        <!-- Uploading photos -->
-        <div class="mt-3">
-            <label for="photos" class="block mb-2 text-sm font-medium text-gray-700">Přidat fotky</label>
-            <!-- <input type="file" id="photos" multiple accept="image/*" @change="handleFileUpload" class="block w-full text-sm text-gray-500 border border-gray-300 rounded-md cursor-pointer"/> -->
-        </div>
-
-        <!-- photos preview -->
+        <!-- Photos -->
         <div class="mt-5">
-            <h3 class="text-lg font-semibold">Nahrané fotky:</h3>
+            <h3 class="text-lg">Nahrané fotky</h3>
             
             <div class="grid grid-cols-2 to-xs:grid-cols-3 sm:grid-cols-3 gap-4 mt-3">
                 <div v-for="(photo, index) in form.photos" :key="index" class="relative">

@@ -3,5 +3,5 @@
 </script>
 
 <template>
-    
+    <p>Subtrip</p>
 </template>
