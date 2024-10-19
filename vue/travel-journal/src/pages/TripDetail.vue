@@ -7,9 +7,9 @@ import { formatDate } from '@/helpers';
 import Subtrip from '@/components/Subtrip.vue';
 import PlusIcon from '@/assets/icons/PlusIcon.vue';
 import MinusIcon from '@/assets/icons/MinusIcon.vue';
-import TripPhoto from '@/components/TripPhoto.vue';
 import TripMap from '@/components/TripMap.vue';
 import Gallery from '@/components/Gallery.vue';
+import PencilIcon from '@/assets/icons/PencilIcon.vue';
 
 const route = useRoute();
 const tripId = route.params.id;
@@ -45,10 +45,16 @@ onMounted(async () => {
     <div v-if="loading" class="text-center mt-12 w-full">
         <PulseLoader/>
     </div>
+
     <div v-else>
-    <h1 class="pt-3 to-xs:pt-5 sm:pt-5 text-4xl font-extrabold">{{ trip.name }}</h1>
-    <p class="font-light">{{ formattedFromDate }} - {{ formattedUntilDate }}</p>
-    <p class="">Náklady: {{ trip.budget }} Kč</p>
+    <div class="flex justify-between mt-3 to-xs:mt-5 sm:mt-5">
+        <div>
+            <h1 class="text-4xl font-extrabold">{{ trip.name }}</h1>
+            <p class="font-light">{{ formattedFromDate }} - {{ formattedUntilDate }}</p>
+            <p class="">Náklady: {{ trip.budget }} Kč</p>
+        </div>
+        <RouterLink :to="`/form/trip/${trip.id}`"><button><PencilIcon/></button></RouterLink>
+    </div>
 
     <TripMap :subtripsGps="subtripsGps"/>
 

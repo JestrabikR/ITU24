@@ -7,6 +7,7 @@ import FormLabel from '@/components/FormLabel.vue';
 import PlusIcon from '@/assets/icons/PlusIcon.vue';
 import TrashIcon from '@/assets/icons/TrashIcon.vue';
 import { useTripFormStore } from '@/stores/TripFormStore';
+import SubtripForm from '@/components/SubtripForm.vue';
 
 const tripStore = useTripFormStore();
 
@@ -33,16 +34,35 @@ let loading = ref(true);
 onMounted(async () => {
     try {
         if (tripId === "") {
-            tripStore.trip = {};
+            tripStore.trip = {
+                name: "",
+                country: "",
+                description: "",
+                budget: "",
+                from_date: "",
+                until_date: "",
+                subtrips: [],
+                photos: [],
+                advantages: [],
+                disadvantages: []
+            };
+
+            console.log(tripStore.trip);
             return;
         }
         const response = await axios.get('http://localhost:5000/trip/' + tripId);
         trip.value = response.data;
 
-        // only load if wrong trip is loaded in store
-        if (tripStore.trip.id !== tripId) {
-            tripStore.trip = trip.value;
-        }
+        // TODO: ma to tady byt?
+        // // only load if wrong trip is loaded in store
+        // if (tripStore.trip.id !== tripId) {
+        //     tripStore.trip = trip.value;
+        // }
+
+        tripStore.trip = trip.value;
+
+        console.log("TRIP:");
+        console.log(tripStore.trip);
 
         form.name = trip.value.name;
         form.country = trip.value.country;
@@ -63,7 +83,9 @@ onMounted(async () => {
 });
 
 const submitHandler = async () => {
-    //TODO: from_date nesmi byt vetsi nez until date - nejak validovat a zobrazit 
+    //TODO: validace: (nejak zobrazovat chyby)
+        //TODO: from_date nesmi byt vetsi nez until date
+        //TODO: budget >= 0
     
     //TODO: pokud existuje id, poslat update !
 
@@ -120,6 +142,12 @@ const removePhoto = (index) => {
   form.photos.splice(index, 1);
 };
 
+const showSubtripModal = ref(false);
+
+const openSubtripModal = () => {
+  showSubtripModal.value = true;
+};
+
 </script>
 
 <template>
@@ -130,40 +158,40 @@ const removePhoto = (index) => {
     <div v-else>
     <h1 v-if="tripId === ''" class="pt-3 to-xs:pt-5 sm:pt-5 text-3xl font-extrabold">Přidání cesty</h1>
     <h1 v-else class="pt-3 to-xs:pt-5 sm:pt-5 text-3xl font-extrabold">Úprava cesty</h1>
-    <form @submit.prevent="submitHandler" class="max-w-lg mx-auto mt-5 to-xs:p-8 sm:p-10 to-xs:shadow-card-shadow sm:shadow-card-shadow rounded-xl">
+    <form @submit.prevent="submitHandler" class="max-w-xl mx-auto mt-5 to-xs:p-8 sm:p-10 to-xs:shadow-card-shadow sm:shadow-card-shadow rounded-xl">
         <!-- Trip name -->
         <div class="relative z-0 w-full mb-5 group">
-            <input v-model="form.name" type="text" name="name" id="name" class="block py-2.5 px-2 w-full text-sm text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+            <input v-model="tripStore.trip.name" type="text" name="name" id="name" class="block py-2 px-2 w-full text-md text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
             <FormLabel for-input="name" value="Název cesty"/>
         </div>
 
         <!-- Country -->
         <div class="relative z-0 w-full mb-5 group">
-            <input v-model="form.country" type="text" name="country" id="country" class="block py-2.5 px-2 w-full text-sm text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+            <input v-model="tripStore.trip.country" type="text" name="country" id="country" class="block py-2 px-2 w-full text-md text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
             <FormLabel for-input="country" value="Země"/>
         </div>
 
         <!-- Trip description -->
         <div class="relative z-0 w-full mb-5 group">
-            <textarea v-model="form.description" name="description" id="description" class="block py-2.5 px-2 w-full text-sm text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required></textarea>
+            <textarea v-model="tripStore.trip.description" name="description" id="description" class="block py-2 px-2 w-full text-md text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required></textarea>
             <FormLabel for-input="description" value="Popis cesty"/>
         </div>
 
         <!-- Budget -->
         <div class="relative z-0 w-full mb-5 group">
-            <input v-model="form.budget" type="number" name="budget" id="budget" class="block py-2.5 px-2 w-full text-sm text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+            <input v-model="tripStore.trip.budget" type="number" name="budget" id="budget" class="block py-2 px-2 w-full text-md text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
             <FormLabel for-input="budget" value="Celková cena"/>
         </div>
 
         <!-- From date, until date -->
         <div class="grid md:grid-cols-2 md:gap-6">
             <div class="relative z-0 w-full mb-5 group">
-                <input v-model="form.from_date" type="date" name="from_date" id="from_date" class="block py-2.5 px-2 w-full text-sm text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                <input v-model="tripStore.trip.from_date" type="date" name="from_date" id="from_date" class="block py-2 px-2 w-full text-md text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                 <FormLabel for-input="From date" value="Datum začátku"/>
             </div>
 
             <div class="relative z-0 w-full mb-5 group">
-                <input v-model="form.until_date" type="date" name="until_date" id="until_date" class="block py-2.5 px-2 w-full text-sm text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                <input v-model="tripStore.trip.until_date" type="date" name="until_date" id="until_date" class="block py-2 px-2 w-full text-md text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                 <FormLabel for-input="until_date" value="Datum konce"/>
             </div>
         </div>
@@ -171,7 +199,7 @@ const removePhoto = (index) => {
         <!-- Advantages -->
         <h3 class="text-lg mt-2">Výhody</h3>
         <div v-for="(advantage, index) in form.advantages" :key="index" class="relative z-0 w-full mb-1 group">
-            <input v-model="form.advantages[index]" type="text" class="block py-2.5 px-2 w-full text-sm text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="Výhoda" required/>
+            <input v-model="tripStore.trip.advantages[index]" type="text" class="block py-2 px-2 w-full text-md text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="Výhoda" required/>
             <button type="button" @click="removeAdvantage(index)" class="text-red-500">Odstranit</button>
         </div>
         <button type="button" @click="addAdvantage" class="px-4 text-gray-600 rounded-lg">
@@ -184,7 +212,7 @@ const removePhoto = (index) => {
         <!-- Disadvantages -->
         <h3 class="text-lg mt-3">Nevýhody</h3>
         <div v-for="(disadvantage, index) in form.disadvantages" :key="index" class="relative z-0 w-full mb-1 group">
-            <input v-model="form.disadvantages[index]" type="text" class="block py-2.5 px-2 w-full text-sm text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="Nevýhoda" required/>
+            <input v-model="tripStore.trip.disadvantages[index]" type="text" class="block py-2 px-2 w-full text-md text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="Nevýhoda" required/>
             <button type="button" @click="removeDisadvantage(index)" class="text-red-500">Odstranit</button>
         </div>
         <button type="button" @click="addDisadvantage" class="px-4 text-gray-600 rounded-lg">
@@ -196,20 +224,20 @@ const removePhoto = (index) => {
 
         <!-- Photos -->
         <div class="mt-5">
-            <h3 class="text-lg">Nahrané fotky</h3>
+            <h3 class="text-lg">Nezařazené fotky</h3>
             
             <div class="grid grid-cols-2 to-xs:grid-cols-3 sm:grid-cols-3 gap-4 mt-3">
                 <div v-for="(photo, index) in form.photos" :key="index" class="relative">
-                    <img :src="photo" alt="Nahraná fotka" class="aspect-square w-32 h-32 object-cover rounded-lg"/>
+                    <img :src="photo" alt="Nahraná fotka" class="aspect-square object-cover rounded-lg"/>
 
                     <!-- Remove photo button -->
-                    <button @click="removePhoto(index)" class="absolute top-2 left-2 bg-black bg-opacity-25 hover:bg-opacity-50 text-white rounded-full p-2">
+                    <button @click="removePhoto(index)" class="absolute top-2 left-2 bg-black bg-opacity-30 hover:bg-opacity-50 text-white rounded-full p-2">
                         <TrashIcon/>
                     </button>
                 </div>
                 <div>
                 <label for="photos" class="
-                w-32 h-32 rounded-md 
+                aspect-square rounded-md 
                 text-sm font-semibold 
                 bg-transparent hover:bg-gray-200 
                 border-gray-300 border-solid border-2
@@ -220,10 +248,41 @@ const removePhoto = (index) => {
                 </div>
             </div>
         </div>
+        
+
+        <!-- Subtrips -->
+        <h3 class="text-lg mt-4">Výlety</h3>
+
+        <div v-if="form.subtrips.length" class="mt-5">
+            <div v-for="(subtrip, index) in tripStore.trip.subtrips" :key="index" class="mb-2.5">
+                <div class="border p-3 rounded-md">
+                    <h4 class="font-semibold">{{ subtrip.name }}</h4>
+                    <p class="line-clamp-1">{{ subtrip.description }}</p>
+                </div>
+                <div class="pl-2">
+                    <!--TODO: potvrzeni pred smazanim-->
+                    <button class="mr-3 text-blue-700" @click="openSubtripModal" @update:showModal="showSubtripModal = $event">Upravit</button>
+                    <button class="text-red-500">Odstranit</button>
+                </div>
+            </div>
+        </div>
+
+        <button type="button" @click="openSubtripModal" class="px-2 py-1 text-gray-600 rounded-lg border-gray-600 border-2 hover:bg-gray-50">
+            <div class="flex gap-1">
+                <PlusIcon color="text-gray-600 mt-0.5" size="1.2em"/>
+                Přidat výlet
+            </div>
+        </button>
+
+        <SubtripForm :showModal="showSubtripModal" @update:showModal="showSubtripModal = $event" />
 
         <br>
         <!-- Submit button -->
-        <button type="submit" class="px-4 py-2 mt-4 bg-blue-700 text-white hover:bg-blue-800 rounded-lg">Odeslat</button>
+        <button type="submit" class="px-4 text-lg py-2 mt-5 bg-blue-700 text-white hover:bg-blue-800 rounded-lg">Uložit</button>
+
+        <!--TODO: REMOVE-->
+        <br>
+        <button @click="console.log(tripStore.trip)" class="bg-red-500 p-3 mt-1">Print</button>
     </form>
     </div>
 

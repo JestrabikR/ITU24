@@ -81,7 +81,7 @@ function toggleMapView() {
     <div v-else>
     <!--TODO? na urovni tlacitka udelat listu jako z navrhu?-->
     <div class="flex justify-end">
-        <button @click="toggleMapView" type="button" class="bg-blue-700 rounded-xl px-4 my-1 mr-3 text-white text-lg">
+        <button @click="toggleMapView" type="button" class="bg-blue-700 hover:bg-blue-800 rounded-xl px-4 my-1 mr-3 text-white text-lg">
             <div class="flex">
                 <a v-if="map_view" class="flex flex-row items-center">
                     <GridIcon/>
