@@ -68,12 +68,13 @@ const submitHandler = async () => {
     //TODO: pokud existuje id, poslat update !
 
     try {
-        // send to api add country
-        const {data} = await axios.post('http://localhost:5000/trip/add', form, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+        console.log("SENDING TO API");
+        // TODO:send to api add country
+        // const {data} = await axios.post('http://localhost:5000/trip/add', tripStore.trip, {
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     }
+        // });
         //TODO: toast
     } catch (e) {
         //TODO: toast
@@ -264,7 +265,6 @@ const deleteSubtrip = (index) => {
 
         <!--TODO: REMOVE-->
         <br>
-        <button @click="console.log(tripStore.trip)" class="bg-red-500 p-3 mt-1">Print</button>
     </form>
     </div>
 

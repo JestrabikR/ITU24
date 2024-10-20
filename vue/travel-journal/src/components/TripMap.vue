@@ -13,7 +13,7 @@ const props = defineProps({
 const map = ref(null);
 const mapContainer = ref(null);
 
-// Watchs for changes and rerenders - needed because of map
+// Watches for changes and rerenders - needed because of map
 watchEffect(() => {
     if (props.subtripsGps.length > 0 && mapContainer.value) {
         if (!map.value) {
