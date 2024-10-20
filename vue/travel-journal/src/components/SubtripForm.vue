@@ -28,11 +28,11 @@ const subtrip = reactive({
   favourite: false
 });
 
-// depending on subtripIndex either load subtrip or create empty one
-watch(() => props.subtripIndex, (newIndex) => {
-  if (newIndex !== -1) {
+const initializeSubtrip = (index) => {
+    if (index !== -1) {
     // load subtrip by subtripIndex
-    const existingSubtrip = tripStore.trip.subtrips[newIndex];
+    const existingSubtrip = tripStore.trip.subtrips[index];
+
     if (existingSubtrip) {
       subtrip.name = existingSubtrip.name;
       subtrip.description = existingSubtrip.description;
@@ -47,6 +47,11 @@ watch(() => props.subtripIndex, (newIndex) => {
     subtrip.gps = '';
     subtrip.favourite = false;
   }
+}
+
+// depending on subtripIndex either load subtrip or create empty one
+watch(() => props.subtripIndex, (newIndex) => {
+  initializeSubtrip(newIndex);
 }, { immediate: true });
 
 const addSubtrip = () => {
@@ -59,6 +64,7 @@ const addSubtrip = () => {
       tripStore.trip.subtrips[props.subtripIndex] = subtrip; // TODO? = { ...newSubtrip }
     }
     
+    // close modal
     emit('update:showModal', false);
   } else {
     alert("Vyplňte všechny údaje!");
@@ -66,9 +72,9 @@ const addSubtrip = () => {
 };
 
 const closeModal = () => {
-  emit('update:showModal', false);
-  subtrip.name = '';
-  subtrip.description = '';
+    emit('update:showModal', false);
+    // reset unsaved changes
+    initializeSubtrip(props.subtripIndex);
 };
 
 const handleSubtripFileUpload = async (event) => {

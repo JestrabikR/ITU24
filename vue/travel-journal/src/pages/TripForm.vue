@@ -60,6 +60,7 @@ onMounted(async () => {
     }
 });
 
+// TODO: Z NEJAKEHO DUVODU SE TO POSILA I KDYZ NEKLIKNU NA ULOZIT
 const submitHandler = async () => {
     //TODO: validace: (nejak zobrazovat chyby)
         //TODO: from_date nesmi byt vetsi nez until date
