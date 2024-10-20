@@ -8,6 +8,7 @@ import PlusIcon from '@/assets/icons/PlusIcon.vue';
 import TrashIcon from '@/assets/icons/TrashIcon.vue';
 import { useTripFormStore } from '@/stores/TripFormStore';
 import SubtripForm from '@/components/SubtripForm.vue';
+import { toBase64 } from '@/helpers';
 
 const tripStore = useTripFormStore();
 
@@ -15,18 +16,7 @@ const route = useRoute();
 const router = useRouter();
 const tripId = route.params.id;
 
-const form = reactive({
-    name: "",
-    country: "",
-    description: "",
-    budget: "",
-    from_date: "",
-    until_date: "",
-    subtrips: [],
-    photos: [],
-    advantages: [],
-    disadvantages: []
-});
+const subtripIndex = ref(-1); // -1 means that new subtrip will be created in modal
 
 let trip = ref({});
 let loading = ref(true);
@@ -59,22 +49,10 @@ onMounted(async () => {
         //     tripStore.trip = trip.value;
         // }
 
+        // set trip value to trip store
         tripStore.trip = trip.value;
 
-        console.log("TRIP:");
         console.log(tripStore.trip);
-
-        form.name = trip.value.name;
-        form.country = trip.value.country;
-        form.description = trip.value.description;
-        form.budget = trip.value.budget;
-        form.from_date = trip.value.from_date;
-        form.until_date = trip.value.until_date;
-        form.subtrips = trip.value.subtrips;
-        form.photos = trip.value.photos;
-        form.advantages = trip.value.advantages;
-        form.disadvantages = trip.value.disadvantages;
-
     } catch (error) {
         console.error('Error fetching trips', error);
     } finally {
@@ -104,19 +82,19 @@ const submitHandler = async () => {
 }
 
 const addAdvantage = () => {
-    form.advantages.push("");
+    tripStore.trip.advantages.push("");
 };
 
 const removeAdvantage = (index) => {
-    form.advantages.splice(index, 1);
+    tripStore.trip.advantages.splice(index, 1);
 };
 
 const addDisadvantage = () => {
-    form.disadvantages.push("");
+    tripStore.trip.disadvantages.push("");
 };
 
 const removeDisadvantage = (index) => {
-    form.disadvantages.splice(index, 1);
+    tripStore.trip.disadvantages.splice(index, 1);
 };
 
 const handleFileUpload = async (event) => {
@@ -125,28 +103,29 @@ const handleFileUpload = async (event) => {
 
   for (let file of files) {
     const base64 = await toBase64(file);
-    form.photos.push(base64);
+    tripStore.trip.photos.push(base64);
   }
 };
 
-const toBase64 = (file) => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = (error) => reject(error);
-  });
-};
-
 const removePhoto = (index) => {
-  form.photos.splice(index, 1);
+  tripStore.trip.photos.splice(index, 1);
 };
 
 const showSubtripModal = ref(false);
 
-const openSubtripModal = () => {
-  showSubtripModal.value = true;
+const openSubtripModal = (index) => {
+    subtripIndex.value = index;
+    showSubtripModal.value = true;
 };
+
+const deleteSubtrip = (index) => {
+    if (index < 0 || index > tripStore.trip.subtrips.length - 1) {
+        console.error("Wrong subtrip, cannot be deleted");
+        return;
+    } 
+    console.log("deleting");
+    tripStore.trip.subtrips.splice(index, 1);
+}
 
 </script>
 
@@ -198,7 +177,7 @@ const openSubtripModal = () => {
 
         <!-- Advantages -->
         <h3 class="text-lg mt-2">Výhody</h3>
-        <div v-for="(advantage, index) in form.advantages" :key="index" class="relative z-0 w-full mb-1 group">
+        <div v-for="(advantage, index) in tripStore.trip.advantages" :key="index" class="relative z-0 w-full mb-1 group">
             <input v-model="tripStore.trip.advantages[index]" type="text" class="block py-2 px-2 w-full text-md text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="Výhoda" required/>
             <button type="button" @click="removeAdvantage(index)" class="text-red-500">Odstranit</button>
         </div>
@@ -211,7 +190,7 @@ const openSubtripModal = () => {
 
         <!-- Disadvantages -->
         <h3 class="text-lg mt-3">Nevýhody</h3>
-        <div v-for="(disadvantage, index) in form.disadvantages" :key="index" class="relative z-0 w-full mb-1 group">
+        <div v-for="(disadvantage, index) in tripStore.trip.disadvantages" :key="index" class="relative z-0 w-full mb-1 group">
             <input v-model="tripStore.trip.disadvantages[index]" type="text" class="block py-2 px-2 w-full text-md text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="Nevýhoda" required/>
             <button type="button" @click="removeDisadvantage(index)" class="text-red-500">Odstranit</button>
         </div>
@@ -227,7 +206,7 @@ const openSubtripModal = () => {
             <h3 class="text-lg">Nezařazené fotky</h3>
             
             <div class="grid grid-cols-2 to-xs:grid-cols-3 sm:grid-cols-3 gap-4 mt-3">
-                <div v-for="(photo, index) in form.photos" :key="index" class="relative">
+                <div v-for="(photo, index) in tripStore.trip.photos" :key="index" class="relative">
                     <img :src="photo" alt="Nahraná fotka" class="aspect-square object-cover rounded-lg"/>
 
                     <!-- Remove photo button -->
@@ -253,7 +232,7 @@ const openSubtripModal = () => {
         <!-- Subtrips -->
         <h3 class="text-lg mt-4">Výlety</h3>
 
-        <div v-if="form.subtrips.length" class="mt-5">
+        <div class="mb-3">
             <div v-for="(subtrip, index) in tripStore.trip.subtrips" :key="index" class="mb-2.5">
                 <div class="border p-3 rounded-md">
                     <h4 class="font-semibold">{{ subtrip.name }}</h4>
@@ -261,20 +240,23 @@ const openSubtripModal = () => {
                 </div>
                 <div class="pl-2">
                     <!--TODO: potvrzeni pred smazanim-->
-                    <button class="mr-3 text-blue-700" @click="openSubtripModal" @update:showModal="showSubtripModal = $event">Upravit</button>
-                    <button class="text-red-500">Odstranit</button>
+                    <button @click="openSubtripModal(index)" class="mr-3 text-blue-700">Upravit</button>
+                    <button @click="deleteSubtrip(index)" class="text-red-500">Odstranit</button>
                 </div>
             </div>
         </div>
 
-        <button type="button" @click="openSubtripModal" class="px-2 py-1 text-gray-600 rounded-lg border-gray-600 border-2 hover:bg-gray-50">
+        <button type="button" @click="openSubtripModal(-1)" class="px-2 py-1 mb-2 text-gray-600 rounded-lg border-gray-600 border-2 hover:bg-gray-50">
             <div class="flex gap-1">
                 <PlusIcon color="text-gray-600 mt-0.5" size="1.2em"/>
                 Přidat výlet
             </div>
         </button>
 
-        <SubtripForm :showModal="showSubtripModal" @update:showModal="showSubtripModal = $event" />
+        <SubtripForm 
+        :showModal="showSubtripModal" 
+        :subtripIndex="subtripIndex" 
+        @update:showModal="showSubtripModal = $event" />
 
         <br>
         <!-- Submit button -->
