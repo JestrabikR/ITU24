@@ -1,16 +1,55 @@
 <script>
 	import Navbar from "@components/Navbar.svelte";
-	import EditButton from "@components/EditButton.svelte";
 	import { page } from "$app/stores";
 	import { onMount } from "svelte";
+	import { APIURL } from "$lib/helper.js";
 
 	const tripId = $page.params.tripId;
 
-	export let data;
+	export var data;
 
-	function completedCheckboxToggle(){
-		document.getElementById("completed").innerHTML = document.getElementById("completed").innerHTML == "check" ? "close" : "check";
+	async function budgetUpdate(){
+		console.log("HERE");
+
+		var defaultPUT = {
+			name: "",
+			country: "",
+			description: "",
+			budget: "",
+			from_date: "",
+			until_date: "",
+			subtrips: [],
+			photos: [],
+			advantages: [],
+			disadvantages: [] 
+		}
+
+		/*const response = await fetch(`${APIURL}/trip/update/${tripId}`, {
+			method: 'PUT',
+			body: JSON.stringify({ defaultPUT }),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+		});*/
 	}
+
+	var currentlyEditing = false;
+	function toggleEdit() {
+		currentlyEditing = !currentlyEditing;
+	}
+
+	async function updateTrip(){
+		const updatedTrip = data.trip;
+
+		const response = await fetch(`${APIURL}/trip/update/${tripId}`, {
+			method: 'PUT',
+			body: JSON.stringify(updatedTrip),
+				headers: {
+					'Content-Type': 'application/json'
+				}
+		});
+	}
+
 
 	/********************
 	 * LEAFLET SETTINGS *
@@ -25,15 +64,28 @@
 	});
 </script>
 
+<style>
+.custom-input {
+	height: 30px;
+	padding: 10px;
+	border: 2px solid #3498db;
+	border-radius: 10px;
+	outline: none;
+	font-size: 16px;
+	box-sizing: border-box;
+	transition: border-color 0.3s ease;
+}
+</style>
+
 <main class="responsive">
 	<Navbar view=true/>
 
-	<row class="center-align">
+	<div class="row center-align">
 		<h2><b>{data.trip.name}</b></h2>
-	</row>
+	</div>
 
-	<row class="center-align">
-		<h6>{
+	<div class="row center-align">
+		<h6 id="date">{
 			new Date(data.trip.from_date).toLocaleDateString("en-US", {
 				year: "numeric",
 				month: "long",
@@ -48,14 +100,22 @@
 				day: "numeric"
 			})
 			}
-			<EditButton/>
 		</h6>
-	</row>
+	</div>
 
-	<row class="center-align">
+	<div class="row center-align">
 		<h6>
-			<b>$</b>{data.trip.budget}
-			<EditButton/>
+			{#if currentlyEditing }
+				<input type="number" class="custom-input" bind:value={data.trip.budget}>
+				<button class="circle small secondary" on:click={() => { toggleEdit(); updateTrip();} }>
+					<i class="small">save</i>
+				</button>
+			{:else}
+				€{data.trip.budget}
+				<button class="circle small secondary" on:click={toggleEdit}>
+					<i class="small">edit</i>
+				</button>
+			{/if}
 			<button class="circle small primary">
 				{#if new Date(data.trip.until_date) < new Date().getDate()}
 				<i class="small" id="completed">check</i>
@@ -65,7 +125,7 @@
 			</button>
 			Completed
 		</h6>
-	</row>
+	</div>
 	<div class="space"></div>
 	<row class="center-align">
 		<div id="map" style="height: 500px;"></div>
