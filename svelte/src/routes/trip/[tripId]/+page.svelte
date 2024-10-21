@@ -56,8 +56,12 @@
 		<h6>
 			<b>$</b>{data.trip.budget}
 			<EditButton/>
-			<button class="circle small primary" on:click={() => completedCheckboxToggle()}>
+			<button class="circle small primary">
+				{#if new Date(data.trip.until_date) < new Date().getDate()}
 				<i class="small" id="completed">check</i>
+				{:else}
+				<i class="small" id="completed">close</i>
+				{/if}
 			</button>
 			Completed
 		</h6>
