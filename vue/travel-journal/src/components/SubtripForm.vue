@@ -55,7 +55,10 @@ watch(() => props.subtripIndex, (newIndex) => {
 }, { immediate: true });
 
 const addSubtrip = () => {
-  if (subtrip.name && subtrip.description && subtrip.gps.length) {
+  console.log(subtrip.name);
+  console.log(subtrip.description);
+  console.log(subtrip.gps);
+  if (subtrip.name && subtrip.description && subtrip.gps) {
     if (props.subtripIndex === -1) {
       // if subtripIndex is -1 add new subtrip
       tripStore.trip.subtrips.push({ ...subtrip });

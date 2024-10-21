@@ -41,6 +41,12 @@ onMounted(async () => {
             return;
         }
         const response = await axios.get('http://localhost:5000/trip/' + tripId);
+        
+        // if this id is not found navigate to create new form
+        if (response.status === 204) {
+            router.replace("/form/trip");
+        }
+
         trip.value = response.data;
 
         // TODO: ma to tady byt?
@@ -70,18 +76,42 @@ const submitHandler = async () => {
 
     try {
         console.log("SENDING TO API");
-        // TODO:send to api add country
-        // const {data} = await axios.post('http://localhost:5000/trip/add', tripStore.trip, {
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     }
-        // });
+        if (tripId === -1) {
+            // create
+            const {data} = await axios.post('http://localhost:5000/trip/add', tripStore.trip, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        } else {
+            // update
+            const {data} = await axios.put('http://localhost:5000/trip/update/' + tripId, tripStore.trip, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        }
+
         //TODO: toast
+        //TODO: navigovat zpet na seznam cest
     } catch (e) {
         //TODO: toast
         console.error("Error sending country", e);
     }
 }
+
+const deleteTrip = async () => {
+    //TODO: modal zeptat se jesltli opravdu chcou
+    try {
+        const {data} = await axios.delete('http://localhost:5000/trip/del/' + tripId, tripStore.trip);
+        //TODO: toast
+    
+    } catch (e) {
+        //TODO: toast
+        console.error("Error sending country", e);
+    }
+}
+
 
 const addAdvantage = () => {
     tripStore.trip.advantages.push("");
@@ -264,7 +294,9 @@ const deleteSubtrip = (index) => {
         <!-- Submit button -->
         <button type="submit" class="px-4 text-lg py-2 mt-5 bg-blue-700 text-white hover:bg-blue-800 rounded-lg">Uložit</button>
 
-        <!--TODO: REMOVE-->
+        <br>
+        <!-- Delete button -->
+        <button @click.prevent="deleteTrip" class="px-4 text-md py-2 mt-5 bg-transparent border-red-500 border-solid border-2 text-black hover:bg-red-50 rounded-lg">Smazat cestu</button>
         <br>
     </form>
     </div>
