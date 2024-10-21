@@ -24,7 +24,7 @@ const subtrip = reactive({
   name: '',
   description: '',
   photos: [],
-  gps: '',
+  gps: [50.0755, 14.4378], // default view and marker
   favourite: false
 });
 
@@ -44,7 +44,7 @@ const initializeSubtrip = (index) => {
     subtrip.name = '';
     subtrip.description = '';
     subtrip.photos = [];
-    subtrip.gps = '';
+    subtrip.gps = [50.0755, 14.4378]; // default view and marker
     subtrip.favourite = false;
   }
 }
@@ -55,7 +55,7 @@ watch(() => props.subtripIndex, (newIndex) => {
 }, { immediate: true });
 
 const addSubtrip = () => {
-  if (subtrip.name && subtrip.description) {
+  if (subtrip.name && subtrip.description && subtrip.gps.length) {
     if (props.subtripIndex === -1) {
       // if subtripIndex is -1 add new subtrip
       tripStore.trip.subtrips.push({ ...subtrip });
@@ -78,8 +78,6 @@ const closeModal = () => {
 };
 
 const handleSubtripFileUpload = async (event) => {
-    console.log("SUBTRIP PHOTO");
-    console.log(subtrip);
   const files = event.target.files;
   if (!files) return;
 
@@ -100,7 +98,7 @@ const removePhoto = (index) => {
 // Map
 const map = ref(null);
 const mapContainer = ref(null);
-const marker = ref(null);
+const marker = ref([50.0755, 14.4378]); // default view and marker
 
 // Watches for changes and rerenders map
 watchEffect(() => {
@@ -112,12 +110,10 @@ watchEffect(() => {
         }
         
         // initialize map
-        map.value = L.map(mapContainer.value).setView(props.subtripIndex === -1 ? [50.0755, 14.4378] : subtrip.gps, 13);
+        map.value = L.map(mapContainer.value).setView(subtrip.gps, 13);
 
         // create marker
-        if (props.subtripIndex !== -1) {
-            marker.value = L.marker(subtrip.gps).addTo(map.value);
-        }
+        marker.value = L.marker(subtrip.gps).addTo(map.value);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
@@ -131,8 +127,12 @@ watchEffect(() => {
                 map.value.removeLayer(marker.value);
                 subtrip.gps = e.latlng;
             }
-
+            console.log("BEF");
+            console.log(marker.value);
             marker.value = L.marker(e.latlng).addTo(map.value);
+            
+            console.log("AFT");
+            console.log(marker.value);
         });
     }
 });
@@ -146,21 +146,23 @@ watchEffect(() => {
     
     <h2 class="text-2xl mb-3">{{ subtripIndex === -1 ? 'Přidat výlet' : 'Upravit výlet' }}</h2>
 
-        
-    <!--TODO: inputy required?-->
-    <p class="mb-1 text-sm text-gray-600">Kliknutím na mapu přidejte místo</p>
-    <div ref="mapContainer" class="mb-5 w-full h-64 to-xs:h-72 sm:h-96 rounded-2xl shadow-card-shadow"></div>
+    <!-- Map -->        
+    <p class="mb-1 text-sm text-gray-600">Kliknutím na mapu vyberte místo</p>
+    <div ref="mapContainer" class="mb-5 w-full h-64 to-xs:h-72 sm:h-80 rounded-2xl shadow-card-shadow"></div>
 
-    <div class="relative z-0 w-full mb-5 mt-5 group">
-        <input v-model="subtrip.name" type="text" name="name" id="name" class="block py-2.5 px-2 w-full text-sm text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+    <!-- Name -->
+    <div class="relative z-0 w-full mb-5 mt-8 group">
+        <input v-model="subtrip.name" type="text" name="name" id="name" class="block py-2.5 px-2 w-full text-sm text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
         <FormLabel for-input="name" value="Název"/>
     </div>
 
+    <!-- Description -->
     <div class="relative z-0 w-full mb-5 group">
-        <textarea v-model="subtrip.description" name="description" id="description" class="block py-2 px-2 w-full text-md text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required></textarea>
+        <textarea v-model="subtrip.description" name="description" id="description" class="block py-2 px-2 w-full text-md text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "></textarea>
         <FormLabel for-input="description" value="Popis výletu"/>
     </div>
 
+    <!-- Photos -->
     <div class="mt-5">
         <h3 class="text-lg">Fotky</h3>
         
@@ -169,7 +171,7 @@ watchEffect(() => {
                 <img :src="photo" alt="Nahraná fotka" class="aspect-square object-cover rounded-lg"/>
 
                 <!-- Remove photo button -->
-                <button @click="removePhoto(index)" class="absolute top-2 left-2 bg-black bg-opacity-30 hover:bg-opacity-50 text-white rounded-full p-2">
+                <button @click.prevent="removePhoto(index)" class="absolute top-2 left-2 bg-black bg-opacity-30 hover:bg-opacity-50 text-white rounded-full p-2">
                     <TrashIcon/>
                 </button>
             </div>
@@ -187,9 +189,10 @@ watchEffect(() => {
         </div>
     </div>
 
+    <!-- Buttons -->
     <div class="flex justify-between mt-4">
-        <button @click="closeModal" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg">Zavřít</button>
-        <button @click="addSubtrip" class="px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg">Uložit</button>
+        <button @click.prevent="closeModal" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg">Zavřít</button>
+        <button @click.prevent="addSubtrip" class="px-4 py-2 bg-blue-700 hover:bg-blue-800 text-white rounded-lg">Uložit</button>
     </div>
 </div>
 </div>

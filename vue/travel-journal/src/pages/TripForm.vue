@@ -161,7 +161,7 @@ const deleteSubtrip = (index) => {
         <!-- Budget -->
         <div class="relative z-0 w-full mb-5 group">
             <input v-model="tripStore.trip.budget" type="number" name="budget" id="budget" class="block py-2 px-2 w-full text-md text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-            <FormLabel for-input="budget" value="Celková cena"/>
+            <FormLabel for-input="budget" value="Celková cena (Kč)"/>
         </div>
 
         <!-- From date, until date -->
@@ -181,9 +181,9 @@ const deleteSubtrip = (index) => {
         <h3 class="text-lg mt-2">Výhody</h3>
         <div v-for="(advantage, index) in tripStore.trip.advantages" :key="index" class="relative z-0 w-full mb-1 group">
             <input v-model="tripStore.trip.advantages[index]" type="text" class="block py-2 px-2 w-full text-md text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="Výhoda" required/>
-            <button type="button" @click="removeAdvantage(index)" class="text-red-500">Odstranit</button>
+            <button type="button" @click.prevent="removeAdvantage(index)" class="text-red-500">Odstranit</button>
         </div>
-        <button type="button" @click="addAdvantage" class="px-4 text-gray-600 rounded-lg">
+        <button type="button" @click.prevent="addAdvantage" class="px-4 text-gray-600 rounded-lg">
             <div class="flex gap-1">
                 <PlusIcon color="text-gray-600 mt-0.5" size="1.2em"/>
                 Přidat výhodu
@@ -194,9 +194,9 @@ const deleteSubtrip = (index) => {
         <h3 class="text-lg mt-3">Nevýhody</h3>
         <div v-for="(disadvantage, index) in tripStore.trip.disadvantages" :key="index" class="relative z-0 w-full mb-1 group">
             <input v-model="tripStore.trip.disadvantages[index]" type="text" class="block py-2 px-2 w-full text-md text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder="Nevýhoda" required/>
-            <button type="button" @click="removeDisadvantage(index)" class="text-red-500">Odstranit</button>
+            <button type="button" @click.prevent="removeDisadvantage(index)" class="text-red-500">Odstranit</button>
         </div>
-        <button type="button" @click="addDisadvantage" class="px-4 text-gray-600 rounded-lg">
+        <button type="button" @click.prevent="addDisadvantage" class="px-4 text-gray-600 rounded-lg">
             <div class="flex gap-1">
                 <PlusIcon color="text-gray-600 mt-0.5" size="1.2em"/>
                 Přidat nevýhodu
@@ -212,7 +212,7 @@ const deleteSubtrip = (index) => {
                     <img :src="photo" alt="Nahraná fotka" class="aspect-square object-cover rounded-lg"/>
 
                     <!-- Remove photo button -->
-                    <button @click="removePhoto(index)" class="absolute top-2 left-2 bg-black bg-opacity-30 hover:bg-opacity-50 text-white rounded-full p-2">
+                    <button @click.prevent="removePhoto(index)" class="absolute top-2 left-2 bg-black bg-opacity-30 hover:bg-opacity-50 text-white rounded-full p-2">
                         <TrashIcon/>
                     </button>
                 </div>
@@ -242,13 +242,13 @@ const deleteSubtrip = (index) => {
                 </div>
                 <div class="pl-2">
                     <!--TODO: potvrzeni pred smazanim-->
-                    <button @click="openSubtripModal(index)" class="mr-3 text-blue-700">Upravit</button>
-                    <button @click="deleteSubtrip(index)" class="text-red-500">Odstranit</button>
+                    <button @click.prevent="openSubtripModal(index)" class="mr-3 text-blue-700">Upravit</button>
+                    <button @click.prevent="deleteSubtrip(index)" class="text-red-500">Odstranit</button>
                 </div>
             </div>
         </div>
 
-        <button type="button" @click="openSubtripModal(-1)" class="px-2 py-1 mb-2 text-gray-600 rounded-lg border-gray-600 border-2 hover:bg-gray-50">
+        <button type="button" @click.prevent="openSubtripModal(-1)" class="px-2 py-1 mb-2 text-gray-600 rounded-lg border-gray-600 border-2 hover:bg-gray-50">
             <div class="flex gap-1">
                 <PlusIcon color="text-gray-600 mt-0.5" size="1.2em"/>
                 Přidat výlet
