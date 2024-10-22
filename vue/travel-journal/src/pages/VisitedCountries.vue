@@ -3,6 +3,8 @@ import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import statesData from '../../../../countries.geo.json';
 import { useToast } from 'vue-toastification';
+import SearchIcon from '@/assets/icons/SearchIcon.vue';
+import TrashIcon from '@/assets/icons/TrashIcon.vue';
 
 let selectedCountries = ref([]);
 let geoJson = ref([]);
@@ -52,6 +54,24 @@ const visitedHighlightStyle = {
     fillColor: visitedColor,
     fillOpacity: 0.5,
 };
+
+const moveViewToCountry = (country) => {
+    statesData["features"].forEach((c) => {
+        if (c["id"] === country.code) {
+            let first_coordinates = c["geometry"]["coordinates"][0][0];
+
+            // in some cases the gps is one level more nested
+            if (first_coordinates.length > 2) {
+                // coordinates need to be inversed for setView()
+                map.value.setView([first_coordinates[0][1], first_coordinates[0][0]], 4);
+            } else {
+                // coordinates need to be inversed for setView()
+                map.value.setView([first_coordinates[1], first_coordinates[0]], 4);
+            }
+            return;
+        }
+    })
+}
 
 
 const onEachFeature = (feature, layer) => {
@@ -116,6 +136,8 @@ onMounted(async () => {
     try {
         const response = await axios.get('http://localhost:5000/countries');
         selectedCountries.value = response.data;
+
+        console.log("selected countries", selectedCountries.value);
 
         // initialize map only once
         map.value = L.map(mapContainer.value).setView([50.0755, 14.4378], 4);
@@ -196,15 +218,20 @@ onMounted(async () => {
                 <span class="text-sm font-medium text-gray-900 dark:text-gray-500">Navštíveno</span>
             </label>
 
-            <!--TODO: křížek na odstranění dané země vedle názvu-->
             <p class="text-xl pt-4 md:pt-5 font-bold">Navštívil jsem</p>
             <div v-for="country in selectedCountries">
-                <p v-if="country.visited" class="pt-0.5">{{ country.name }}</p>
+                <div v-if="country.visited" class="flex flex-row items-center">
+                    <a class="cursor-pointer mr-1 hover:text-gray-500" @click="moveViewToCountry(country)"><SearchIcon/></a>
+                    <p class="pt-0.5">{{ country.name }}</p>
+                </div>
             </div>
 
             <p class="text-xl pt-3 md:pt-4 font-bold">Chci navštívit</p>
             <div v-for="country in selectedCountries">
-                <p v-if="country.wanted" class="pt-0.5">{{ country.name }}</p>
+                <div v-if="country.wanted" class="flex flex-row items-center">
+                    <a class="cursor-pointer mr-1 hover:text-gray-500" @click="moveViewToCountry(country)"><SearchIcon/></a>
+                    <p class="pt-0.5">{{ country.name }}</p>
+                </div>
             </div>
         </div>
     </div>

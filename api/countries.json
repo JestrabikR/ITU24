@@ -82,5 +82,11 @@
         "name": "Poland",
         "visited": false,
         "wanted": true
+    },
+    {
+        "code": "VNM",
+        "name": "Vietnam",
+        "visited": true,
+        "wanted": false
     }
 ]
