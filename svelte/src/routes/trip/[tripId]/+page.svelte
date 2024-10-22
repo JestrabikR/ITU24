@@ -159,8 +159,8 @@
 		<div class="max">
 		{#if currentlyEditing }
 		<div class="field border label textarea round medium-height">
-			<textarea bind:value={data.trip.description}></textarea>
-			<label>Description</label>
+			<textarea id="description" bind:value={data.trip.description}></textarea>
+			<label for="description">Description</label>
 		</div>
 		{:else}
 		<div class="border left-padding right-padding round">
