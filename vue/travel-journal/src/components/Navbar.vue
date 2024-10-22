@@ -16,6 +16,9 @@ const isActive = (routePath) => {
             <RouterLink to="/visited">
                 <p :class="[isActive('/visited') ? 'border-b-4 border-black' : '', 'transition-color duration-200', 'text-2xl', 'to-xs:text-3xl', 'sm:text-3xl', 'font-extrabold']">Navštívené země</p>
             </RouterLink>
+            <RouterLink to="/gallery">
+                <p :class="[isActive('/gallery') ? 'border-b-4 border-black' : '', 'transition-color duration-200', 'text-2xl', 'to-xs:text-3xl', 'sm:text-3xl', 'font-extrabold']">Galerie</p>
+            </RouterLink>
         </div>
     </div>
 </template>
