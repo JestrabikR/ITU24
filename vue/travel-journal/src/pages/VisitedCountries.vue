@@ -137,8 +137,6 @@ onMounted(async () => {
         const response = await axios.get('http://localhost:5000/countries');
         selectedCountries.value = response.data;
 
-        console.log("selected countries", selectedCountries.value);
-
         // initialize map only once
         map.value = L.map(mapContainer.value).setView([50.0755, 14.4378], 4);
 

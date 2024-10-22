@@ -7,6 +7,9 @@ import PlusIcon from '@/assets/icons/PlusIcon.vue';
 
 import { toBase64 } from '@/helpers';
 import L from 'leaflet';
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
 
 const tripStore = useTripFormStore();
 const props = defineProps({
@@ -55,23 +58,25 @@ watch(() => props.subtripIndex, (newIndex) => {
 }, { immediate: true });
 
 const addSubtrip = () => {
-  console.log(subtrip.name);
-  console.log(subtrip.description);
-  console.log(subtrip.gps);
-  if (subtrip.name && subtrip.description && subtrip.gps) {
-    if (props.subtripIndex === -1) {
-      // if subtripIndex is -1 add new subtrip
-      tripStore.trip.subtrips.push({ ...subtrip });
-    } else {
-      // if subtripIndex is not -1 edit this subtrip
-      tripStore.trip.subtrips[props.subtripIndex] = subtrip; // TODO? = { ...newSubtrip }
-    }
-    
-    // close modal
-    emit('update:showModal', false);
-  } else {
-    alert("Vyplňte všechny údaje!");
+  // validation
+  if (subtrip.name === '') {
+    toast.error("Název je povinný", { timeout: 3000 });
+    return;
+  } else if (subtrip.description === '') {
+    toast.error("Popis je povinný", { timeout: 3000 });
+    return;
   }
+
+  if (props.subtripIndex === -1) {
+    // if subtripIndex is -1 add new subtrip
+    tripStore.trip.subtrips.push({ ...subtrip });
+  } else {
+    // if subtripIndex is not -1 edit this subtrip
+    tripStore.trip.subtrips[props.subtripIndex] = subtrip;
+  }
+  
+  // close modal
+  emit('update:showModal', false);
 };
 
 const closeModal = () => {
@@ -85,12 +90,10 @@ const handleSubtripFileUpload = async (event) => {
   if (!files) return;
 
   for (let file of files) {
-    console.log("Nth SUBTRIP PHOTO");
     const base64 = await toBase64(file);
     subtrip.photos.push(base64);
   }
 
-  console.log(subtrip);
 };
 
 const removePhoto = (index) => {
@@ -130,12 +133,7 @@ watchEffect(() => {
                 map.value.removeLayer(marker.value);
                 subtrip.gps = e.latlng;
             }
-            console.log("BEF");
-            console.log(marker.value);
             marker.value = L.marker(e.latlng).addTo(map.value);
-            
-            console.log("AFT");
-            console.log(marker.value);
         });
     }
 });

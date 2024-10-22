@@ -41,7 +41,6 @@ onMounted(async () => {
                 disadvantages: []
             };
 
-            console.log(tripStore.trip);
             return;
         }
         const response = await axios.get('http://localhost:5000/trip/' + tripId);
@@ -53,12 +52,6 @@ onMounted(async () => {
 
         trip.value = response.data;
 
-        // TODO: ma to tady byt?
-        // // only load if wrong trip is loaded in store
-        // if (tripStore.trip.id !== tripId) {
-        //     tripStore.trip = trip.value;
-        // }
-
         // set trip value to trip store
         tripStore.trip = trip.value;
     } catch (error) {
@@ -69,16 +62,17 @@ onMounted(async () => {
     }
 });
 
-// TODO: Z NEJAKEHO DUVODU SE TO POSILA I KDYZ NEKLIKNU NA ULOZIT
 const submitHandler = async () => {
-    //TODO: validace: (nejak zobrazovat chyby)
-        //TODO: from_date nesmi byt vetsi nez until date
-        //TODO: budget >= 0
-    
-    //TODO: pokud existuje id, poslat update !
+    // validation
+    if (tripStore.trip.budget < 0) {
+        toast.error("Celková cena nesmí být menší než 0", { timeout: 3000 });
+        return;
+    } else if (tripStore.trip.from_date > tripStore.trip.until_date) {
+        toast.error("Datum začátku cesty nesmí být později než datum konce", { timeout: 3000 });
+        return;
+    }
 
     try {
-        console.log("SENDING TO API");
         if (tripId === '') {
             // create
             const {data} = await axios.post('http://localhost:5000/trip/add', tripStore.trip, {
@@ -104,7 +98,6 @@ const submitHandler = async () => {
 }
 
 const deleteTrip = async () => {
-    //TODO: modal zeptat se jesltli opravdu chcou
     try {
         const {data} = await axios.delete('http://localhost:5000/trip/del/' + tripId, tripStore.trip);
         
@@ -156,10 +149,9 @@ const openSubtripModal = (index) => {
 
 const deleteSubtrip = (index) => {
     if (index < 0 || index > tripStore.trip.subtrips.length - 1) {
-        console.error("Wrong subtrip, cannot be deleted");
+        toast.error("Výlet neexistuje");
         return;
     } 
-    console.log("deleting");
     tripStore.trip.subtrips.splice(index, 1);
 }
 
@@ -282,7 +274,6 @@ const openDialog = () => {
                     <p class="line-clamp-1">{{ subtrip.description }}</p>
                 </div>
                 <div class="pl-2">
-                    <!--TODO: potvrzeni pred smazanim-->
                     <button @click.prevent="openSubtripModal(index)" class="mr-3 text-blue-700">Upravit</button>
                     <button @click.prevent="deleteSubtrip(index)" class="text-red-500">Odstranit</button>
                 </div>
