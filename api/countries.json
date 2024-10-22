@@ -54,18 +54,6 @@
         "wanted": true
     },
     {
-        "code": "SVK",
-        "name": "Slovakia",
-        "visited": false,
-        "wanted": true
-    },
-    {
-        "code": "EGY",
-        "name": "Egypt",
-        "visited": false,
-        "wanted": true
-    },
-    {
         "code": "TUR",
         "name": "Turkey",
         "visited": false,
@@ -88,5 +76,89 @@
         "name": "Vietnam",
         "visited": true,
         "wanted": false
+    },
+    {
+        "code": "GRC",
+        "name": "Greece",
+        "visited": true,
+        "wanted": false
+    },
+    {
+        "code": "HRV",
+        "name": "Croatia",
+        "visited": true,
+        "wanted": false
+    },
+    {
+        "code": "ALB",
+        "name": "Albania",
+        "visited": true,
+        "wanted": false
+    },
+    {
+        "code": "TUN",
+        "name": "Tunisia",
+        "visited": true,
+        "wanted": false
+    },
+    {
+        "code": "SVK",
+        "name": "Slovakia",
+        "visited": true,
+        "wanted": false
+    },
+    {
+        "code": "HUN",
+        "name": "Hungary",
+        "visited": true,
+        "wanted": false
+    },
+    {
+        "code": "CHE",
+        "name": "Switzerland",
+        "visited": false,
+        "wanted": true
+    },
+    {
+        "code": "NLD",
+        "name": "Netherlands",
+        "visited": false,
+        "wanted": true
+    },
+    {
+        "code": "DNK",
+        "name": "Denmark",
+        "visited": true,
+        "wanted": false
+    },
+    {
+        "code": "PHL",
+        "name": "Philippines",
+        "visited": false,
+        "wanted": true
+    },
+    {
+        "code": "JPN",
+        "name": "Japan",
+        "visited": false,
+        "wanted": true
+    },
+    {
+        "code": "MDG",
+        "name": "Madagascar",
+        "visited": false,
+        "wanted": true
+    },
+    {
+        "code": "USA",
+        "name": "United States of America",
+        "visited": false,
+        "wanted": true
+    },
+    {
+        "code": "EGY",
+        "name": "Egypt",
+        "visited": false,
+        "wanted": true
     }
 ]
