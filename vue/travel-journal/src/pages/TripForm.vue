@@ -10,6 +10,7 @@ import { useTripFormStore } from '@/stores/TripFormStore';
 import SubtripForm from '@/components/SubtripForm.vue';
 import { toBase64 } from '@/helpers';
 import Dialog from '@/components/Dialog.vue';
+import { useToast } from 'vue-toastification';
 
 const tripStore = useTripFormStore();
 
@@ -21,6 +22,8 @@ const subtripIndex = ref(-1); // -1 means that new subtrip will be created in mo
 
 let trip = ref({});
 let loading = ref(true);
+
+const toast = useToast();
 
 onMounted(async () => {
     try {
@@ -58,8 +61,6 @@ onMounted(async () => {
 
         // set trip value to trip store
         tripStore.trip = trip.value;
-
-        console.log(tripStore.trip);
     } catch (error) {
         console.error('Error fetching trips', error);
     } finally {
@@ -93,10 +94,10 @@ const submitHandler = async () => {
             });
         }
 
-        //TODO: toast
         router.replace("/");
+        toast.success("Cesta úspěšně uložena");
     } catch (e) {
-        //TODO: toast
+        toast.error('Cestu se nepodařilo uložit');
         console.error("Error sending trip", e);
     }
 }
@@ -106,10 +107,10 @@ const deleteTrip = async () => {
     try {
         const {data} = await axios.delete('http://localhost:5000/trip/del/' + tripId, tripStore.trip);
         
-        //TODO: toast
+        toast.success("Cesta úspěšně odstraněna");
         router.replace("/");
     } catch (e) {
-        //TODO: toast
+        toast.error("Cestu se nepodařilo odstranit");
         console.error("Error sending country", e);
     }
 }
