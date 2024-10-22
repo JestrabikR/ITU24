@@ -9,6 +9,7 @@ import TrashIcon from '@/assets/icons/TrashIcon.vue';
 import { useTripFormStore } from '@/stores/TripFormStore';
 import SubtripForm from '@/components/SubtripForm.vue';
 import { toBase64 } from '@/helpers';
+import Dialog from '@/components/Dialog.vue';
 
 const tripStore = useTripFormStore();
 
@@ -76,7 +77,7 @@ const submitHandler = async () => {
 
     try {
         console.log("SENDING TO API");
-        if (tripId === -1) {
+        if (tripId === '') {
             // create
             const {data} = await axios.post('http://localhost:5000/trip/add', tripStore.trip, {
                 headers: {
@@ -93,10 +94,10 @@ const submitHandler = async () => {
         }
 
         //TODO: toast
-        //TODO: navigovat zpet na seznam cest
+        router.replace("/");
     } catch (e) {
         //TODO: toast
-        console.error("Error sending country", e);
+        console.error("Error sending trip", e);
     }
 }
 
@@ -104,8 +105,9 @@ const deleteTrip = async () => {
     //TODO: modal zeptat se jesltli opravdu chcou
     try {
         const {data} = await axios.delete('http://localhost:5000/trip/del/' + tripId, tripStore.trip);
+        
         //TODO: toast
-    
+        router.replace("/");
     } catch (e) {
         //TODO: toast
         console.error("Error sending country", e);
@@ -157,6 +159,13 @@ const deleteSubtrip = (index) => {
     } 
     console.log("deleting");
     tripStore.trip.subtrips.splice(index, 1);
+}
+
+// delete dialog
+const showDialog = ref(false);
+
+const openDialog = () => {
+    showDialog.value = true;
 }
 
 </script>
@@ -296,8 +305,14 @@ const deleteSubtrip = (index) => {
 
         <br>
         <!-- Delete button -->
-        <button @click.prevent="deleteTrip" class="px-4 text-md py-2 mt-5 bg-transparent border-red-500 border-solid border-2 text-black hover:bg-red-50 rounded-lg">Smazat cestu</button>
+        <button v-if="tripId !== ''" @click.prevent="openDialog" class="px-4 text-md py-2 mt-5 bg-transparent border-red-500 border-solid border-2 text-red-500 hover:bg-red-50 rounded-lg">Smazat cestu</button>
         <br>
+
+        <Dialog :text="`Opravdu chcete smazat výlet?`"
+            :showModal="showDialog"
+            @update:showModal="showDialog = $event"
+            @confirm="deleteTrip"
+            @cancel="" />
     </form>
     </div>
 

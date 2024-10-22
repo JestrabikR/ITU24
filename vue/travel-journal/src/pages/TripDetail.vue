@@ -10,6 +10,8 @@ import MinusIcon from '@/assets/icons/MinusIcon.vue';
 import TripMap from '@/components/TripMap.vue';
 import Gallery from '@/components/Gallery.vue';
 import PencilIcon from '@/assets/icons/PencilIcon.vue';
+import CalendarIcon from '@/assets/icons/CalendarIcon.vue';
+import WalletIcon from '@/assets/icons/WalletIcon.vue';
 
 const route = useRoute();
 const tripId = route.params.id;
@@ -50,13 +52,13 @@ onMounted(async () => {
     <div class="flex justify-between mt-3 to-xs:mt-5 sm:mt-5">
         <div>
             <h1 class="text-4xl font-extrabold">{{ trip.name }}</h1>
-            <p class="font-light">{{ formattedFromDate }} - {{ formattedUntilDate }}</p>
-            <p class="">Náklady: {{ trip.budget }} Kč</p>
+            <div class="flex flex-row"><div class="pt-1 pr-2"><CalendarIcon/></div> <p class="font-light">{{ formattedFromDate }} - {{ formattedUntilDate }}</p></div>
+            <div class="flex flex-row"><div class="pt-1 pr-2"><WalletIcon/></div> <p class="">Náklady: {{ trip.budget }} Kč</p></div>
         </div>
         <RouterLink :to="`/form/trip/${trip.id}`"><button><PencilIcon/></button></RouterLink>
     </div>
 
-    <TripMap :subtripsGps="subtripsGps"/>
+    <TripMap :subtripsGps="subtripsGps" />
 
     <!-- Visited places -->
     <h2 v-if="trip.subtrips.length > 0" class="pt-4 sm:pt-5 text-2xl font-extrabold">Navštívená místa</h2>
