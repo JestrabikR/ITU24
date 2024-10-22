@@ -9,10 +9,6 @@
 	export var data;
 	var defaultTrip = { ...data.trip }; // create copy
 
-	var defaultFromDate = new Date(data.trip.from_date).getTime();
-	var fromDate = new Date();
-	var defaultUntilDate = new Date(data.trip.until_date).getTime();
-	var untilDate = new Date();
 	var todayDate = new Date().getTime();
 
 	var currentlyEditing = false;
@@ -61,9 +57,9 @@
 	<div class="row center-align">
 		<h2><b>{data.trip.name}</b></h2>
 		<button class="circle small primary" disabled>
-			{#if defaultUntilDate < todayDate}
+			{#if new Date(defaultTrip.from_date).getTime() < todayDate && new Date(defaultTrip.until_date).getTime() < todayDate }
 			<i class="small">check</i>
-			{:else if defaultFromDate < todayDate && defaultUntilDate > todayDate}
+			{:else if new Date(defaultTrip.from_date).getTime() < todayDate && new Date(defaultTrip.until_date).getTime() > todayDate}
 			<i class="small">arrow_right_alt</i>
 			{:else}
 			<i class="small">event_upcoming</i>
@@ -74,16 +70,16 @@
 	<div class="row center-align">
 		{#if currentlyEditing }
 		<div class="field label border round">
-			<input id="fromDate" type="date" bind:value={fromDate}>
+			<input id="fromDate" type="date" bind:value={data.trip.from_date}>
 			<label for="fromDate">From date</label>
 		</div>
 		<div class="field label border round">
-			<input id="untilDate" type="date">
+			<input id="untilDate" type="date" bind:value={data.trip.until_date}>
 			<label for="untilDate">Until date</label>
 		</div>
 		{:else}
 		<h6 class="border round right-padding left-padding">{
-			new Date(data.trip.from_date).toLocaleDateString("en-US", {
+			new Date(defaultTrip.from_date).toLocaleDateString("en-US", {
 				year: "numeric",
 				month: "long",
 				day: "numeric"
@@ -91,7 +87,7 @@
 			}
 			-
 			{
-			new Date(data.trip.until_date).toLocaleDateString("en-US", {
+			new Date(defaultTrip.until_date).toLocaleDateString("en-US", {
 				year: "numeric",
 				month: "long",
 				day: "numeric"
@@ -105,7 +101,7 @@
 			{#if currentlyEditing }
 			<div class="field label border round">
 				<input id="budget" type="number" bind:value={data.trip.budget} >
-				<label for="budget">Number</label>
+				<label for="budget">Budget</label>
 			</div>
 			{:else}
 			<h6 class="border round right-padding left-padding">
