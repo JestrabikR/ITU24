@@ -36,7 +36,7 @@
 	</div>
 	<div class="row">
 		{#if futureTrips.length < 1}
-			<p class="italic">You have no ongoing trips</p>
+			<p class="italic">You have no future trips</p>
 		{:else}
 		<div class="grid medium-space">
 			{#each futureTrips as card}
@@ -54,7 +54,7 @@
 	</div>
 	<div class="row">
 		{#if pastTrips.length < 1}
-			<p class="italic">You have no ongoing trips</p>
+			<p class="italic">You have no past trips</p>
 		{:else}
 		<div class="grid medium-space">
 			{#each pastTrips as card}
