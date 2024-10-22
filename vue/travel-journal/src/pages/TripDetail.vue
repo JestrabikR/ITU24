@@ -12,6 +12,7 @@ import Gallery from '@/components/Gallery.vue';
 import PencilIcon from '@/assets/icons/PencilIcon.vue';
 import CalendarIcon from '@/assets/icons/CalendarIcon.vue';
 import WalletIcon from '@/assets/icons/WalletIcon.vue';
+import { useToast } from 'vue-toastification';
 
 const route = useRoute();
 const tripId = route.params.id;
@@ -21,6 +22,8 @@ let formattedFromDate = ref({});
 let formattedUntilDate = ref({});
 let subtripsGps = ref([]);
 let loading = ref(true);
+
+const toast = useToast();
 
 onMounted(async () => {
     try {
@@ -35,6 +38,7 @@ onMounted(async () => {
         });
 
     } catch (error) {
+        toast.error("Nepodařilo se načíst cestu");
         console.error('Error fetching trips', error);
     } finally {
         loading.value = false;

@@ -2,6 +2,7 @@
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import statesData from '../../../../countries.geo.json';
+import { useToast } from 'vue-toastification';
 
 let selectedCountries = ref([]);
 let geoJson = ref([]);
@@ -9,6 +10,8 @@ const map = ref(null);
 const mapContainer = ref(null);
 
 let isVisitedToggle = ref(true); // state of switch button 
+
+const toast = useToast();
 
 // border highlight
 function highlightFeature(e) {
@@ -90,6 +93,7 @@ const onEachFeature = (feature, layer) => {
                         }
                     })
                 } catch (e) {
+                    toast.error("Nepodařilo se uložit zemi");
                     console.error("Error sending country", e);
                 }
             } else {
@@ -97,7 +101,8 @@ const onEachFeature = (feature, layer) => {
                     // if already selected, remove
                     const response = await axios.delete('http://localhost:5000/country/del/' + code);
                 } catch (e) {
-                    console.error("Error sending country", e);
+                    toast.error("Nepodařilo se odstranit zemi");
+                    console.error("Error deleting country", e);
                 }
 
                 selectedCountries.value.splice(index, 1);
@@ -169,6 +174,7 @@ onMounted(async () => {
         legend.addTo(map.value);
 
     } catch (error) {
+        toast.error("Nepodařilo se načíst země");
         console.error('Error fetching visited countries', error);
     }
 });

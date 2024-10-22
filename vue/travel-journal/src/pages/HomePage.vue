@@ -10,6 +10,7 @@ import PlusCircleIcon from '@/assets/icons/PlusCircleIcon.vue';
 import AllTripsMap from '@/components/AllTripsMap.vue';
 import MapIcon from '@/assets/icons/MapIcon.vue';
 import GridIcon from '@/assets/icons/GridIcon.vue';
+import { useToast } from 'vue-toastification';
 
 let trips = ref([]);
 let future_trips = ref([]);
@@ -22,6 +23,8 @@ let map_view = ref(false);
 let loading = ref(true);
 
 const limit = 3; // how many trips are showing in each section
+
+const toast = useToast();
 
 onMounted(async () => {
     try {
@@ -62,6 +65,7 @@ onMounted(async () => {
         });
 
     } catch (error) {
+        toast.error("Nepodařilo se načíst cesty");
         console.error('Error fetching trips', error);
     } finally {
         loading.value = false;

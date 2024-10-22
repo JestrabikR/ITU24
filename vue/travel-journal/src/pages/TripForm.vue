@@ -62,7 +62,8 @@ onMounted(async () => {
         // set trip value to trip store
         tripStore.trip = trip.value;
     } catch (error) {
-        console.error('Error fetching trips', error);
+        toast.error("Nepodařilo se načíst cestu");
+        console.error('Error fetching trip', error);
     } finally {
         loading.value = false;
     }
