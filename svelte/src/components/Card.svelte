@@ -12,7 +12,7 @@
 </script>
 
 <article class="no-padding round">
-	<img class="top-round responsive small" src={imageUrl} alt={title}>
+	<img class="responsive small top-round" src={imageUrl} alt={title}>
 	<div class="padding">
 		<a href="/trip/{id}">
 			<h5><b>{title}</b></h5>

@@ -17,52 +17,45 @@
 	<div class="row">
 		<h3><b>Ongoing trips</b></h3>
 	</div>
-	<div class="row">
-		{#if ongoingTrips.length < 1}
-			<p class="italic">You have no ongoing trips</p>
-		{:else}
-		<div class="grid medium-space">
-			{#each ongoingTrips as card}
-				<div class="s12 m6 l4">
-					<Card title={card.name} description={card.description} imageUrl={card.photos[0]} id={card.id} />
-				</div>
-			{/each}
-		</div>
-		{/if}
+	{#if ongoingTrips.length < 1}
+		<p class="italic">You have no ongoing trips</p>
+	{:else}
+	<div class="grid medium-space">
+		{#each ongoingTrips as card}
+			<div class="s12 m6 l3">
+				<Card title={card.name} description={card.description} imageUrl={card.photos[0]} id={card.id} />
+			</div>
+		{/each}
 	</div>
+	{/if}
 
 	<div class="row">
 		<h3><b>Future trips</b></h3>
 	</div>
-	<div class="row">
-		{#if futureTrips.length < 1}
-			<p class="italic">You have no future trips</p>
-		{:else}
-		<div class="grid medium-space">
-			{#each futureTrips as card}
-				<div class="s12 m6 l4">
-					<Card title={card.name} description={card.description} imageUrl={card.photos[0]} id={card.id} />
-				</div>
-			{/each}
-		</div>
-		{/if}
+	{#if futureTrips.length < 1}
+		<p class="italic">You have no future trips</p>
+	{:else}
+	<div class="grid medium-space">
+		{#each futureTrips as card}
+			<div class="s12 m6 l3">
+				<Card title={card.name} description={card.description} imageUrl={card.photos[0]} id={card.id} />
+			</div>
+		{/each}
 	</div>
-
+	{/if}
 
 	<div class="row">
 		<h3><b>Past trips</b></h3>
 	</div>
-	<div class="row">
-		{#if pastTrips.length < 1}
-			<p class="italic">You have no past trips</p>
-		{:else}
-		<div class="grid medium-space">
-			{#each pastTrips as card}
-				<div class="s12 m6 l4">
-					<Card title={card.name} description={card.description} imageUrl={card.photos[0]} id={card.id} />
-				</div>
-			{/each}
-		</div>
-		{/if}
+	{#if pastTrips.length < 1}
+		<p class="italic">You have no past trips</p>
+	{:else}
+	<div class="grid medium-space">
+		{#each pastTrips as card}
+			<div class="s12 m6 l3">
+				<Card title={card.name} description={card.description} imageUrl={card.photos[0]} id={card.id} />
+			</div>
+		{/each}
 	</div>
+	{/if}
 </main>
