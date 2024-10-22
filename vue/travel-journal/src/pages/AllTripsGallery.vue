@@ -1,5 +1,6 @@
 <script setup>
 import Gallery from '@/components/Gallery.vue';
+import { formatDate } from '@/helpers';
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
 
@@ -27,7 +28,10 @@ onMounted(async () => {
 
 <template>
     <div v-for="(trip, index) in trips" :key="trip.id">
-        <h2 v-if="allTripPhotos[index].length > 0" class="mt-3 text-3xl font-bold line-clamp-2 drop-shadow-lg">{{ trip["name"] }}</h2>
+        <div v-if="allTripPhotos[index].length > 0" class="flex flex-row items-end mt-3">
+            <h2 class="text-3xl font-bold line-clamp-2 drop-shadow-lg">{{ trip["name"] }}</h2>
+            <p class="ml-2 mb-0.5">{{ formatDate(trip.from_date) }} - {{ formatDate(trip.until_date) }}</p>
+        </div>
         <Gallery :images="allTripPhotos[index]" :oneLineDisplay="false"/>
     </div>
 </template>
