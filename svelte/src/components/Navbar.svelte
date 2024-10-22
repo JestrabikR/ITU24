@@ -20,7 +20,7 @@
 	<a href="/"><h3><b><span class:underline={current === '/' ? true : false}>Trips</span></b></h3></a>
 	<a href="/visited"><h3><b><span class:underline={current === '/visited' ? true : false}>Visited</span></b></h3></a>
     <div class="max"></div>
-	{#if !view && !edit && !error}
+	{#if !view && !error}
 	<button class="extend square round">
 		<i>add</i>
 		<span>Add trip</span>

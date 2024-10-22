@@ -9,11 +9,11 @@
 	export var data;
 	var defaultTrip = { ...data.trip }; // create copy
 
-	const defaultFromDate = new Date(data.trip.from_date).getTime();
+	var defaultFromDate = new Date(data.trip.from_date).getTime();
 	var fromDate = new Date();
-	const defaultUntilDate = new Date(data.trip.until_date).getTime();
+	var defaultUntilDate = new Date(data.trip.until_date).getTime();
 	var untilDate = new Date();
-	const todayDate = new Date().getTime();
+	var todayDate = new Date().getTime();
 
 	var currentlyEditing = false;
 	function toggleEdit() {
@@ -55,21 +55,6 @@
 	});
 </script>
 
-<style>
-.custom-input {
-	max-width: 120px;
-	height: 30px;
-	padding: 10px;
-	text-align: right;
-	border: 1px solid #e8e9ea;
-    border-radius: 4px;
-	border-radius: 10px;
-	outline: none;
-	font-size: 20px;
-	transition: border-color 0.3s ease;
-}
-</style>
-
 <main class="responsive">
 	<Navbar view=true editFunction={() => {toggleEdit();}} saveFunction={() => {updateTrip(); toggleEdit();}} bind:currentlyEditing={currentlyEditing} />
 
@@ -88,10 +73,16 @@
 
 	<div class="row center-align">
 		{#if currentlyEditing }
-		<input type="date" class="custom-input" bind:value={fromDate} />
-		<input type="date" class="custom-input" bind:value={untilDate} />
+		<div class="field label border round">
+			<input id="fromDate" type="date" bind:value={fromDate}>
+			<label for="fromDate">From date</label>
+		</div>
+		<div class="field label border round">
+			<input id="untilDate" type="date">
+			<label for="untilDate">Until date</label>
+		</div>
 		{:else}
-		<h6 id="date">{
+		<h6 class="border round right-padding left-padding">{
 			new Date(data.trip.from_date).toLocaleDateString("en-US", {
 				year: "numeric",
 				month: "long",
@@ -112,11 +103,14 @@
 
 	<div class="row center-align">
 			{#if currentlyEditing }
-				<input type="number" class="custom-input" bind:value={data.trip.budget} />
+			<div class="field label border round">
+				<input id="budget" type="number" bind:value={data.trip.budget} >
+				<label for="budget">Number</label>
+			</div>
 			{:else}
-				<h6>
-					€{defaultTrip.budget}
-				</h6>
+			<h6 class="border round right-padding left-padding">
+				€{defaultTrip.budget}
+			</h6>
 			{/if}
 	</div>
 	<div class="space"></div>
