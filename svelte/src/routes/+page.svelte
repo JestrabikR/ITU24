@@ -6,9 +6,9 @@
 	export let data = [];
 
 	const today = new Date();
-	var pastTrips = data.trips.filter(trip => new Date(trip.until_date) < today);
-	var ongoingTrips = data.trips.filter(trip => new Date(trip.from_date) <= today && new Date(trip.until_date) >= today);
-	var futureTrips = data.trips.filter(trip => new Date(trip.from_date) > today);
+	const pastTrips = data.trips.filter(trip => new Date(trip.until_date) < today);
+	const ongoingTrips = data.trips.filter(trip => new Date(trip.from_date) <= today && new Date(trip.until_date) >= today);
+	const futureTrips = data.trips.filter(trip => new Date(trip.from_date) > today);
 </script>
 
 <main class="responsive">
