@@ -3,6 +3,7 @@
 	import { page } from "$app/stores";
 	import { onMount } from "svelte";
 	import { APIURL } from "$lib/helper.js";
+	import { sanitize } from "$lib/helper.js";
 
 	const tripId = $page.params.tripId;
 	
@@ -18,6 +19,7 @@
 
 	async function updateTrip(){
 		const updatedTrip = data.trip;
+		updatedTrip.description = sanitize(updatedTrip.description);
 
 		try{
 			const response = await fetch(`${APIURL}/trip/update/${tripId}`, {
@@ -118,7 +120,7 @@
 	</div>
 	<div class="space"></div>
 	<div class="row center-align">
-		<div class="max round">
+		<div class="max">
 			<div id="map" style="height: 500px;"></div>
 		</div>
 	</div>
@@ -131,17 +133,56 @@
 	</div>
 	<div class="row">
 		<div class="max">
+			<div class="border left-padding right-padding round">
+				{#if defaultTrip.advantages.length < 1}
+					<p class="italic">Advantages</p>
+				{:else}
+					{#each defaultTrip.advantages as advantage }
+					<span><i style="color: lightgreen">add</i>{advantage}<br/></span>
+					{/each}
+				{/if}
+			</div>
+		</div>
+		<div class="max">
+			<div class="border left-padding right-padding round">
+				{#if defaultTrip.disadvantages.length < 1}
+					<p class="italic">Disadvantages</p>
+				{:else}
+					{#each defaultTrip.disadvantages as disadvantage }
+					<span><i style="color: red">remove</i>{disadvantage}<br/></span>
+					{/each}
+				{/if}
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="max">
 		{#if currentlyEditing }
 		<div class="field border label textarea round medium-height">
 			<textarea bind:value={data.trip.description}></textarea>
 			<label>Description</label>
 		</div>
 		{:else}
-		<div class="border padding round">
+		<div class="border left-padding right-padding round">
+			{#if defaultTrip.description.length < 1}
+			<p class="italic">Description</p>
+			{:else}
 			<p>{defaultTrip.description}</p>
+			{/if}
 		</div>
 		{/if}
 		</div>
 	</div>
+
+	{#if currentlyEditing }
+	<nav class="no-space right-align">
+		<button class="border left-round extra" on:click={() => {updateTrip(); toggleEdit();}}>
+			<i class="extra secondary-text">save</i>
+		</button>
+		<button class="border right-round extra" on:click={toggleEdit}>
+			<i class="extra secondary-text">cancel</i>
+		</button>
+	</nav>
+	{/if}
 
 </main>
