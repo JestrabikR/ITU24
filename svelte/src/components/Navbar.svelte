@@ -5,7 +5,11 @@
 	import Logo from "$lib/assets/logo.svg";
 
 	export let view = false;
-	export let edit = false;
+
+	export let currentlyEditing = false;
+	export let editFunction = () => {};
+	export let saveFunction = () => {};
+
 	export let error = false;
 	let current = $page.url.pathname;
 </script>
@@ -28,13 +32,20 @@
 		<button class="border square round extra" on:click={() => goto("/")}>
 			<i class="extra">close</i>
 		</button>
-	{:else if edit}
-		<button class="border square round extra">
-			<i class="extra">delete</i>
+		{#if currentlyEditing }
+		<nav class="no-space">
+			<button class="border left-round extra" on:click={saveFunction}>
+				<i class="extra secondary-text">save</i>
+			</button>
+			<button class="border right-round extra" on:click={editFunction}>
+				<i class="extra secondary-text">cancel</i>
+			</button>
+		</nav>
+		{:else}
+		<button class="border square round extra" on:click={editFunction}>
+			<i class="extra secondary-text">edit</i>
 		</button>
-		<button class="border square round extra">
-			<i class="extra">close</i>
-		</button>
+		{/if}
 	{:else if error}
 		<a href="mailto:xhrubo01@fit.vutbr.cz?subject=Trip app - bug report" taget="_blank">
 			<button class="border square round extra error">

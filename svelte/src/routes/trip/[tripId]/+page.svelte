@@ -5,33 +5,15 @@
 	import { APIURL } from "$lib/helper.js";
 
 	const tripId = $page.params.tripId;
-
+	
 	export var data;
+	var defaultTrip = { ...data.trip }; // create copy
 
-	async function budgetUpdate(){
-		console.log("HERE");
-
-		var defaultPUT = {
-			name: "",
-			country: "",
-			description: "",
-			budget: "",
-			from_date: "",
-			until_date: "",
-			subtrips: [],
-			photos: [],
-			advantages: [],
-			disadvantages: [] 
-		}
-
-		/*const response = await fetch(`${APIURL}/trip/update/${tripId}`, {
-			method: 'PUT',
-			body: JSON.stringify({ defaultPUT }),
-				headers: {
-					'Content-Type': 'application/json'
-				}
-		});*/
-	}
+	const defaultFromDate = new Date(data.trip.from_date).getTime();
+	var fromDate = new Date();
+	const defaultUntilDate = new Date(data.trip.until_date).getTime();
+	var untilDate = new Date();
+	const todayDate = new Date().getTime();
 
 	var currentlyEditing = false;
 	function toggleEdit() {
@@ -41,15 +23,24 @@
 	async function updateTrip(){
 		const updatedTrip = data.trip;
 
-		const response = await fetch(`${APIURL}/trip/update/${tripId}`, {
-			method: 'PUT',
-			body: JSON.stringify(updatedTrip),
-				headers: {
-					'Content-Type': 'application/json'
-				}
-		});
-	}
+		try{
+			const response = await fetch(`${APIURL}/trip/update/${tripId}`, {
+				method: 'PUT',
+				body: JSON.stringify(updatedTrip),
+					headers: {
+						'Content-Type': 'application/json'
+					}
+			});
 
+			if(response.ok){
+				defaultTrip = { ...data.trip };
+			}else{
+				console.error("Failed to update trip (PUT)");
+			}
+		}catch(e){
+			console.error("Error during updateTrip(): ", e);
+		}
+	}
 
 	/********************
 	 * LEAFLET SETTINGS *
@@ -66,25 +57,40 @@
 
 <style>
 .custom-input {
+	max-width: 120px;
 	height: 30px;
 	padding: 10px;
-	border: 2px solid #3498db;
+	text-align: right;
+	border: 1px solid #e8e9ea;
+    border-radius: 4px;
 	border-radius: 10px;
 	outline: none;
-	font-size: 16px;
-	box-sizing: border-box;
+	font-size: 20px;
 	transition: border-color 0.3s ease;
 }
 </style>
 
 <main class="responsive">
-	<Navbar view=true/>
+	<Navbar view=true editFunction={() => {toggleEdit();}} saveFunction={() => {updateTrip(); toggleEdit();}} bind:currentlyEditing={currentlyEditing} />
 
 	<div class="row center-align">
 		<h2><b>{data.trip.name}</b></h2>
+		<button class="circle small primary" disabled>
+			{#if defaultUntilDate < todayDate}
+			<i class="small">check</i>
+			{:else if defaultFromDate < todayDate && defaultUntilDate > todayDate}
+			<i class="small">arrow_right_alt</i>
+			{:else}
+			<i class="small">event_upcoming</i>
+			{/if}
+		</button>
 	</div>
 
 	<div class="row center-align">
+		{#if currentlyEditing }
+		<input type="date" class="custom-input" bind:value={fromDate} />
+		<input type="date" class="custom-input" bind:value={untilDate} />
+		{:else}
 		<h6 id="date">{
 			new Date(data.trip.from_date).toLocaleDateString("en-US", {
 				year: "numeric",
@@ -101,30 +107,17 @@
 			})
 			}
 		</h6>
+		{/if}
 	</div>
 
 	<div class="row center-align">
-		<h6>
 			{#if currentlyEditing }
-				<input type="number" class="custom-input" bind:value={data.trip.budget}>
-				<button class="circle small secondary" on:click={() => { toggleEdit(); updateTrip();} }>
-					<i class="small">save</i>
-				</button>
+				<input type="number" class="custom-input" bind:value={data.trip.budget} />
 			{:else}
-				€{data.trip.budget}
-				<button class="circle small secondary" on:click={toggleEdit}>
-					<i class="small">edit</i>
-				</button>
+				<h6>
+					€{defaultTrip.budget}
+				</h6>
 			{/if}
-			<button class="circle small primary">
-				{#if new Date(data.trip.until_date) < new Date().getDate()}
-				<i class="small" id="completed">check</i>
-				{:else}
-				<i class="small" id="completed">close</i>
-				{/if}
-			</button>
-			Completed
-		</h6>
 	</div>
 	<div class="space"></div>
 	<row class="center-align">
