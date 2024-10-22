@@ -55,6 +55,12 @@
 	<Navbar view=true editFunction={() => {toggleEdit();}} saveFunction={() => {updateTrip(); toggleEdit();}} bind:currentlyEditing={currentlyEditing} />
 
 	<div class="row center-align">
+		{#if currentlyEditing}
+		<div class="field label border round">
+			<input id="name" type="text" bind:value={data.trip.name} >
+			<label for="name">Name</label>
+		</div>
+		{:else}
 		<h2><b>{data.trip.name}</b></h2>
 		<button class="circle small primary" disabled>
 			{#if new Date(defaultTrip.from_date).getTime() < todayDate && new Date(defaultTrip.until_date).getTime() < todayDate }
@@ -65,6 +71,7 @@
 			<i class="small">event_upcoming</i>
 			{/if}
 		</button>
+		{/if}
 	</div>
 
 	<div class="row center-align">
@@ -110,8 +117,31 @@
 			{/if}
 	</div>
 	<div class="space"></div>
-	<row class="center-align">
-		<div id="map" style="height: 500px;"></div>
-	</row>
+	<div class="row center-align">
+		<div class="max round">
+			<div id="map" style="height: 500px;"></div>
+		</div>
+	</div>
+	<div class="space"></div>
+
+	<div class="row">
+		<div class="max">
+			<h6 class="left-padding"><b>Notes</b></h6>
+		</div>
+	</div>
+	<div class="row">
+		<div class="max">
+		{#if currentlyEditing }
+		<div class="field border label textarea round medium-height">
+			<textarea bind:value={data.trip.description}></textarea>
+			<label>Description</label>
+		</div>
+		{:else}
+		<div class="border padding round">
+			<p>{defaultTrip.description}</p>
+		</div>
+		{/if}
+		</div>
+	</div>
 
 </main>
