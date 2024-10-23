@@ -5,7 +5,6 @@ import lgThumbnail from 'lightgallery/plugins/thumbnail'; // pokud chceš plugin
 import { ref, onMounted } from 'vue';
 import TripPhoto from './TripPhoto.vue';
 
-// Definuj props přímo
 const props = defineProps({
   images: {
     type: Array,

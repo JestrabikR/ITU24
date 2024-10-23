@@ -105,8 +105,6 @@ const onEachFeature = (feature, layer) => {
 
                 selectedCountries.value.push(newCountry);
                 layer.setStyle(isVisitedToggle.value ? visitedHighlightStyle : wantToVisitHighlightStyle);
-
-                //TODO: pokud uz je vybrana a klikne se na ni znovu s tim ze se ma znovu dat jako ta stejna, tak ignorovat
                 
                 try {
                     // send to api add country
@@ -185,7 +183,6 @@ onMounted(async () => {
             const labels = ['Navštíveno', 'Chci navštívit'];
             const colors = [visitedColor, wantToVisitColor];
 
-            // Přidání popisů k legendě
             for (let i = 0; i < grades.length; i++) {
                 div.innerHTML += 
                     `<p style="color: ${colors[i]}">${labels[i]}</p>`;

@@ -141,7 +141,6 @@ watchEffect(() => {
 </script>
 
 <template>
-<!-- Přidání modálního okna pro Subtrip -->
 <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
     <div id="modal" class="bg-white p-5 overflow-y-scroll max-h-[95vh] rounded-lg shadow-lg w-96 to-xs:w-[28rem] sm:w-[34rem] md:w-[36rem] mx-1">
     

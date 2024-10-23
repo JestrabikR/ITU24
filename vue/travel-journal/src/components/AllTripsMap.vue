@@ -2,7 +2,6 @@
 import { onMounted, ref, watchEffect, toRaw } from 'vue';
 import L from 'leaflet';
 
-// Definujeme props
 const props = defineProps({
     trips: {
         type: Array, // Array<Array<Gps>>

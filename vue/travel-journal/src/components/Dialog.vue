@@ -2,7 +2,6 @@
 import { watch } from 'vue';
 import { defineProps, defineEmits } from 'vue';
 
-// Definuj props a emit
 const props = defineProps({
   showModal: Boolean,
   text: String
@@ -30,7 +29,6 @@ const confirmAction = () => {
 </script>
 
 <template>
-    <!-- Modál je zobrazen jen tehdy, když je showModal true -->
     <div v-if="showModal" class="fixed top-0 left-0 right-0 z-50 flex justify-center items-center w-full h-full bg-gray-800 bg-opacity-50">
         <div class="bg-white p-6 rounded-lg shadow-lg">
             <h3 class="text-lg font-normal text-gray-500 mb-4">{{ text }}</h3>
