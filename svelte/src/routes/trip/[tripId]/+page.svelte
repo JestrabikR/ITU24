@@ -40,6 +40,12 @@
 		}
 	}
 
+	async function deletePhoto(index){
+		data.trip.photos.splice(index, 1);
+
+		updateTrip();
+	}
+
 	/********************
 	 * LEAFLET SETTINGS *
 	 ********************/
@@ -140,12 +146,27 @@
 		<div class="max">
 			<h6 class="left-padding"><b>Photos</b></h6>
 		</div>
+		<div class="min">
+			<button class="extend square round">
+				<i>add</i>
+				<span>Add photo</span>
+			</button>
+		</div>
 	</div>
 	<div class="row scroll">
 		{#each defaultTrip.photos as photo, index}
+			{#if currentlyEditing }
+			<span>
+				<button class="close circle red" on:click={() => {deletePhoto(index);}}>
+					<i class="round small-padding white-text">delete</i>
+				</button>
+				<img src={photo} class="responsive medium-width small-height round" />
+			</span>
+			{:else}
 			<a href="{photo}" data-fancybox="gallery" data-caption={index+1}>
 				<img src={photo} class="responsive medium-width small-height round" />
 			</a>
+			{/if}
 		{/each}
 	</div>
 
