@@ -16,7 +16,6 @@ let trips = ref([]);
 let future_trips = ref([]);
 let past_trips = ref([]);
 let current_trips = ref([]);
-let trips_gps = ref([]);
 
 let map_view = ref(false);
 
@@ -49,19 +48,6 @@ onMounted(async () => {
           const tripStartDate = new Date(trip.from_date).setHours(0, 0, 0, 0);
           const tripEndDate = new Date(trip.until_date).setHours(0, 0, 0, 0);
           return tripStartDate <= today && tripEndDate >= today;
-        });
-
-        // create array for map view
-        trips.value.forEach((trip) => {
-            var subtrips_gps = [];
-
-            trip.subtrips.forEach((subtrip) => {
-                subtrips_gps.push(subtrip.gps);
-            });
-
-            if (subtrips_gps.length > 0) {
-                trips_gps.value.push(subtrips_gps);
-            }
         });
 
     } catch (error) {
@@ -101,7 +87,7 @@ function toggleMapView() {
         </RouterLink>
     </div>
 
-    <div v-if="map_view"> <AllTripsMap :tripsGps="trips_gps"/> </div>
+    <div v-if="map_view"> <AllTripsMap :trips="trips"/> </div>
 
     <section v-else>
         <h2 v-if="current_trips.length > 0" class="pt-5 pb-2 sm:pt-6 sm:pb-3 text-2xl font-extrabold">
