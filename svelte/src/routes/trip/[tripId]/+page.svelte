@@ -4,6 +4,7 @@
 	import { onMount } from "svelte";
 	import { APIURL } from "$lib/helper.js";
 	import { sanitize } from "$lib/helper.js";
+	import { imageToBase64 } from "$lib/helper.js";
 
 	const tripId = $page.params.tripId;
 	
@@ -27,7 +28,7 @@
 				body: JSON.stringify(updatedTrip),
 					headers: {
 						'Content-Type': 'application/json'
-					}
+			}
 			});
 
 			if(response.ok){
@@ -42,7 +43,13 @@
 
 	async function deletePhoto(index){
 		data.trip.photos.splice(index, 1);
+		updateTrip();
+	}
 
+	async function addPhoto(e){
+		const img = await imageToBase64(e);
+		console.log(img);
+		data.trip.photos.push(img);
 		updateTrip();
 	}
 
@@ -147,6 +154,7 @@
 			<h6 class="left-padding"><b>Photos</b></h6>
 		</div>
 		<div class="min">
+			<input type="file" on:input={addPhoto} />
 			<button class="extend square round">
 				<i>add</i>
 				<span>Add photo</span>
