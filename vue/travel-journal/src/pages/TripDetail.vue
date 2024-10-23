@@ -20,7 +20,6 @@ const tripId = route.params.id;
 let trip = ref({});
 let formattedFromDate = ref({});
 let formattedUntilDate = ref({});
-let subtripsGps = ref([]);
 let loading = ref(true);
 
 const toast = useToast();
@@ -32,10 +31,6 @@ onMounted(async () => {
 
         formattedFromDate.value = formatDate(trip.value.from_date)
         formattedUntilDate.value = formatDate(trip.value.until_date);
-
-        trip.value.subtrips.forEach((subtrip) => {
-            subtripsGps.value.push(subtrip.gps);
-        });
 
     } catch (error) {
         toast.error("Nepodařilo se načíst cestu");
@@ -62,7 +57,7 @@ onMounted(async () => {
         <RouterLink :to="`/form/trip/${trip.id}`"><button><PencilIcon/></button></RouterLink>
     </div>
 
-    <TripMap :subtripsGps="subtripsGps" />
+    <TripMap :subtrips="trip.subtrips" />
 
     <!-- Visited places -->
     <h2 v-if="trip.subtrips.length > 0" class="pt-4 sm:pt-5 text-2xl font-extrabold">Navštívená místa</h2>
