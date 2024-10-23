@@ -51,6 +51,16 @@
 			attribution: `&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>`,
 		}).addTo(map);
 	});
+
+	Fancybox.bind(`[data-fancybox="gallery"]`, {
+		contentClick: "iterateZoom",
+		Images: {
+			initialSize: "cover",
+			Panzoom: {
+				maxScale: 2,
+			},
+		},
+	});
 </script>
 
 <main class="responsive">
@@ -125,6 +135,19 @@
 		</div>
 	</div>
 	<div class="space"></div>
+	
+	<div class="row">
+		<div class="max">
+			<h6 class="left-padding"><b>Photos</b></h6>
+		</div>
+	</div>
+	<div class="row scroll">
+		{#each defaultTrip.photos as photo, index}
+			<a href="{photo}" data-fancybox="gallery" data-caption={index+1}>
+				<img src={photo} class="responsive medium-width small-height round" />
+			</a>
+		{/each}
+	</div>
 
 	<div class="row">
 		<div class="max">
