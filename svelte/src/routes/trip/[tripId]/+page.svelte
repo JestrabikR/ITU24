@@ -11,8 +11,16 @@
 	
 	export var data;
 	var defaultTrip = { ...data.trip }; // create copy
+	if(defaultTrip.advantages.constructor === String){
+		defaultTrip.advantages = defaultTrip.advantages.split("\n");
+		defaultTrip.disadvantages = defaultTrip.disadvantages.split("\n");
+	}
 
 	var todayDate = new Date().getTime();
+
+	var deleteConfirmDialog;
+	var photoToDelete;
+	var photoToDeleteIndex;
 
 	var currentlyEditing = false;
 	function toggleEdit() {
@@ -22,8 +30,11 @@
 	}
 
 	async function updateTrip(){
-		data.trip.advantages = (data.trip.advantages + "").split("\n");
-		data.trip.disadvantages = (data.trip.disadvantages + "").split("\n");
+		if(data.trip.advantages.constructor === Array){
+			data.trip.advantages = data.trip.advantages.toString().replaceAll(",", "\n");
+			data.trip.disadvantages = data.trip.disadvantages.toString().replaceAll(",", "\n");
+		}
+
 		data.trip.description = sanitize(data.trip.description);
 		const updatedTrip = data.trip;
 
@@ -38,9 +49,13 @@
 
 			if(response.ok){
 				defaultTrip = { ...updatedTrip };
-				defaultTrip.advantages = defaultTrip.advantages.split("\n");
-				defaultTrip.disadvantages = defaultTrip.disadvantages.split("\n");
-				console.log(defaultTrip.advantages);
+				if(defaultTrip.advantages.constructor === String){
+					defaultTrip.advantages = defaultTrip.advantages.split("\n");
+					defaultTrip.disadvantages = defaultTrip.disadvantages.split("\n");
+				}else if(defaultTrip.advantages.constructor === Array){
+					defaultTrip.advantages = defaultTrip.advantages.toString().replaceAll(",", "\n");
+					defaultTrip.disadvantages = defaultTrip.disadvantages.toString().replaceAll(",", "\n");
+				}
 			}else{
 				console.error("Failed to update trip (PUT)");
 			}
@@ -56,7 +71,6 @@
 
 	async function addPhoto(e){
 		const img = await imageToBase64(e);
-		console.log(img);
 		data.trip.photos.push(img);
 		updateTrip();
 	}
@@ -86,6 +100,7 @@
 		});
 	}
 </script>
+<svelte:options accessors={true}/>
 
 <style>
 @import "@fancyapps/ui/dist/fancybox/fancybox.css";
@@ -180,14 +195,14 @@
 		{#each defaultTrip.photos as photo, index}
 			{#if currentlyEditing }
 			<span>
-				<button class="close circle red" on:click={() => {deletePhoto(index);}}>
+				<button class="close circle red" data-ui="#delete-confirm" on:click={() => {photoToDelete = photo; photoToDeleteIndex = index;}}>
 					<i class="round small-padding white-text">delete</i>
 				</button>
-				<img src={photo} class="responsive medium-width small-height round" />
+				<img src={photo} alt={index+1} class="responsive medium-width small-height round" />
 			</span>
 			{:else}
 			<a href="{photo}" data-fancybox="gallery" data-caption={index+1}>
-				<img src={photo} class="responsive medium-width small-height round" />
+				<img src={photo} alt={index+1} class="responsive medium-width small-height round" />
 			</a>
 			{/if}
 		{/each}
@@ -265,5 +280,19 @@
 		</button>
 	</nav>
 	{/if}
+
+	<!-- Invisible elements (dialogs, pop-ups, modals, ...) -->
+
+	<div class="overlay blur" style="z-index: 1000000;"></div>
+	<dialog id="delete-confirm" style="z-index: 1000001;" bind:this={deleteConfirmDialog}>
+		<h3>Delete photo from gallery?</h3>
+		<p class="bold">Are you sure you want to delete this picture? This action cannot be taken back!</p>
+		<div class="space"></div>
+		<img class="responsive round" src={photoToDelete} alt="Photo to delete"/>
+		<nav class="right-align no-space">
+			<button class="transparent link" data-ui="#delete-confirm">Cancel</button>
+			<button class="round error" data-ui="#delete-confirm" on:click={() => {deletePhoto(photoToDeleteIndex);}}>Delete permanently</button>
+		</nav>
+	</dialog>
 
 </main>
