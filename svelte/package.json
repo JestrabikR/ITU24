@@ -24,6 +24,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@fancyapps/ui": "^5.0.36",
 		"beercss": "^3.7.10",
 		"material-dynamic-colors": "^1.1.2"
 	}

@@ -1,5 +1,6 @@
 <script>
 	import Navbar from "@components/Navbar.svelte";
+	import * as pkg from "@fancyapps/ui";
 	import { page } from "$app/stores";
 	import { onMount } from "svelte";
 	import { APIURL } from "$lib/helper.js";
@@ -65,16 +66,23 @@
 		}).addTo(map);
 	});
 
-	Fancybox.bind(`[data-fancybox="gallery"]`, {
-		contentClick: "iterateZoom",
-		Images: {
-			initialSize: "cover",
-			Panzoom: {
-				maxScale: 2,
+	const { Fancybox } = pkg;
+	if(Fancybox){ // for some reason Fancybox is loading slowly, so this sometimes fails
+		Fancybox.bind(`[data-fancybox="gallery"]`, {
+			contentClick: "iterateZoom",
+			Images: {
+				initialSize: "cover",
+				Panzoom: {
+					maxScale: 2,
+				},
 			},
-		},
-	});
+		});
+	}
 </script>
+
+<style>
+@import "@fancyapps/ui/dist/fancybox/fancybox.css";
+</style>
 
 <main class="responsive">
 	<Navbar view=true editFunction={() => {toggleEdit();}} saveFunction={() => {updateTrip(); toggleEdit();}} bind:currentlyEditing={currentlyEditing} />
