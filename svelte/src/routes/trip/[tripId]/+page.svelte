@@ -17,11 +17,15 @@
 	var currentlyEditing = false;
 	function toggleEdit() {
 		currentlyEditing = !currentlyEditing;
+		data.trip.advantages = data.trip.advantages.toString().replaceAll(",", "\n");
+		data.trip.disadvantages = data.trip.disadvantages.toString().replaceAll(",", "\n");
 	}
 
 	async function updateTrip(){
+		data.trip.advantages = (data.trip.advantages + "").split("\n");
+		data.trip.disadvantages = (data.trip.disadvantages + "").split("\n");
+		data.trip.description = sanitize(data.trip.description);
 		const updatedTrip = data.trip;
-		updatedTrip.description = sanitize(updatedTrip.description);
 
 		try{
 			const response = await fetch(`${APIURL}/trip/update/${tripId}`, {
@@ -33,7 +37,10 @@
 			});
 
 			if(response.ok){
-				defaultTrip = { ...data.trip };
+				defaultTrip = { ...updatedTrip };
+				defaultTrip.advantages = defaultTrip.advantages.split("\n");
+				defaultTrip.disadvantages = defaultTrip.disadvantages.split("\n");
+				console.log(defaultTrip.advantages);
 			}else{
 				console.error("Failed to update trip (PUT)");
 			}
@@ -192,8 +199,14 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="max">
-			<div class="border left-padding right-padding round">
+		<div class="max" style="align-self: stretch">
+			{#if currentlyEditing }
+			<div class="field border label textarea round small-height">
+				<textarea id="advantages" bind:value={data.trip.advantages}></textarea>
+				<label for="advantages">Advantages</label>
+			</div>
+			{:else}
+			<div class="border left-padding right-padding round"  style="height: 100%">
 				{#if defaultTrip.advantages.length < 1}
 					<p class="italic">Advantages</p>
 				{:else}
@@ -202,9 +215,16 @@
 					{/each}
 				{/if}
 			</div>
+			{/if}
 		</div>
-		<div class="max">
-			<div class="border left-padding right-padding round">
+		<div class="max" style="align-self: stretch">
+			{#if currentlyEditing }
+			<div class="field border label textarea round small-height">
+				<textarea id="disadvantages" bind:value={data.trip.disadvantages}></textarea>
+				<label for="disadvantages">Disadvantages</label>
+			</div>
+			{:else}
+			<div class="border left-padding right-padding round" style="height: 100%">
 				{#if defaultTrip.disadvantages.length < 1}
 					<p class="italic">Disadvantages</p>
 				{:else}
@@ -213,6 +233,7 @@
 					{/each}
 				{/if}
 			</div>
+			{/if}
 		</div>
 	</div>
 	<div class="row">
