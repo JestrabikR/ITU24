@@ -10,11 +10,15 @@ function Header() {
   const navigate = useNavigate();
 
   const goToNewTrip = () => {
-    navigate("./Sites/AddTrip"); 
+    navigate("/AddTrip"); 
   };
 
   const goToTrips = () => {
-    navigate("./");
+    navigate("/");
+  }
+
+  const goToVisited = () => {
+    navigate("/Visited");
   }
 
   const handleTabChange = (tab) => {
@@ -25,7 +29,7 @@ function Header() {
     <AppBar position="static" style={{ backgroundColor: '#282c34', boxShadow: 'none' }}>
       <Toolbar>
         {/* Logo vedle tlačítek */}
-        <IconButton edge="start" color="inherit" aria-label="logo">
+        <IconButton onClick={goToTrips} edge="start" color="inherit" aria-label="logo">
           <img src={logo} alt="Logo" className="App-logo" />
         </IconButton>
         
@@ -39,7 +43,7 @@ function Header() {
 
         {/* Tlačítko "Visited" */}
         <Button
-          onClick={() => handleTabChange('Visited')}
+          onClick={goToVisited}
           sx={{ fontSize: '24px', color: 'white', fontFamily: 'Nunito-Bold' }}
         >
           Visited
@@ -48,7 +52,7 @@ function Header() {
         <div style={{ flexGrow: 1 }} />
 
         {/* Tlačítko "+" */}
-        <IconButton color="inherit" aria-label="add" onClick={goToNewTrip}> {/* Remove the additional function call */}
+        <IconButton color="inherit" aria-label="add" onClick={goToNewTrip}>
           <AddIcon style={{ color: '#1976d2', fontSize: 40 }} />
         </IconButton>
       </Toolbar>

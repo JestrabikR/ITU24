@@ -8,9 +8,16 @@
   padding: 10px;
 }
 
-h1{
+h1, h2, h3{
   color: white;
 }
+
+p{
+  color: white;
+  font-size: 18px
+}
+
+
 
 body {
   margin: 0; /* Odstraní okraje */
@@ -103,4 +110,9 @@ h2 {
   src: url('./fonts/Nunito-Bold.ttf') format('truetype');
   font-weight: 600;
   font-style: normal;
+}
+
+.leaflet-container {
+  height: 100vh;
+  width: 100%;
 }
