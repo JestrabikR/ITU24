@@ -1,0 +1,118 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 10vmin; /* Výška loga */
+  pointer-events: none; /* Zamezení interakci s logem */
+  padding: 10px;
+}
+
+h1, h2, h3{
+  color: white;
+}
+
+p{
+  color: white;
+  font-size: 18px
+}
+
+
+
+body {
+  margin: 0; /* Odstraní okraje */
+  padding: 0; /* Odstraní výplně */
+  background-color: #282c34; /* Barva pozadí */
+}
+
+.App-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #282c34; /* Barva pozadí hlavičky */
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.App .Header-button {
+  text-decoration: none; 
+  font-size: 24px;
+  color: white;
+}
+
+.trips-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 16px;
+  padding: 20px;
+}
+
+.trip-card {
+  width: calc(25% - 32px); /* Zajišťuje, že karty jsou přizpůsobené šířce */
+  min-width: 250px;
+  margin: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.trip-card:hover {
+  transform: scale(1.05);
+}
+
+.trip-image {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  border-radius: 16px;
+  /* Poměr stran zajišťuje, že výška bude stejná jako šířka */
+  aspect-ratio: 1 / 1;
+}
+
+.trip-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  text-align: left;
+}
+
+.trip-content h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.trip-content p {
+  margin: 0px 0;
+  font-size: 14px;
+}
+
+h2 {
+  color: white;
+  text-align: left;
+  margin-left: 5%;
+}
+
+.trip-content p {
+  margin: 0px 0;
+  font-size: 14px;
+}
+
+@font-face {
+  font-family: 'Nunito-Bold';
+  src: url('./fonts/Nunito-Bold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+.leaflet-container {
+  height: 100vh;
+  width: 100%;
+}
