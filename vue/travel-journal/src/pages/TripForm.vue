@@ -176,24 +176,24 @@ const openDialog = () => {
         <!-- Trip name -->
         <div class="relative z-0 w-full mb-5 group">
             <input v-model="tripStore.trip.name" type="text" name="name" id="name" class="block py-2 px-2 w-full text-md text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-            <FormLabel for-input="name" value="Název cesty"/>
+            <FormLabel for-input="name" value="Název cesty*"/>
         </div>
 
         <!-- Country -->
         <div class="relative z-0 w-full mb-5 group">
-            <input v-model="tripStore.trip.country" type="text" name="country" id="country" class="block py-2 px-2 w-full text-md text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+            <input v-model="tripStore.trip.country" type="text" name="country" id="country" class="block py-2 px-2 w-full text-md text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
             <FormLabel for-input="country" value="Země"/>
         </div>
 
         <!-- Trip description -->
         <div class="relative z-0 w-full mb-5 group">
-            <textarea v-model="tripStore.trip.description" name="description" id="description" class="block py-2 px-2 w-full text-md text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required></textarea>
+            <textarea v-model="tripStore.trip.description" name="description" id="description" class="block py-2 px-2 w-full text-md text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "></textarea>
             <FormLabel for-input="description" value="Popis cesty"/>
         </div>
 
         <!-- Budget -->
         <div class="relative z-0 w-full mb-5 group">
-            <input v-model="tripStore.trip.budget" type="number" name="budget" id="budget" class="block py-2 px-2 w-full text-md text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+            <input v-model="tripStore.trip.budget" type="number" name="budget" id="budget" class="block py-2 px-2 w-full text-md text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
             <FormLabel for-input="budget" value="Celková cena (Kč)"/>
         </div>
 
@@ -201,12 +201,12 @@ const openDialog = () => {
         <div class="grid md:grid-cols-2 md:gap-6">
             <div class="relative z-0 w-full mb-5 group">
                 <input v-model="tripStore.trip.from_date" type="date" name="from_date" id="from_date" class="block py-2 px-2 w-full text-md text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                <FormLabel for-input="From date" value="Datum začátku"/>
+                <FormLabel for-input="From date" value="Datum začátku*"/>
             </div>
 
             <div class="relative z-0 w-full mb-5 group">
                 <input v-model="tripStore.trip.until_date" type="date" name="until_date" id="until_date" class="block py-2 px-2 w-full text-md text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                <FormLabel for-input="until_date" value="Datum konce"/>
+                <FormLabel for-input="until_date" value="Datum konce*"/>
             </div>
         </div>
 
@@ -271,7 +271,7 @@ const openDialog = () => {
             <div v-for="(subtrip, index) in tripStore.trip.subtrips" :key="index" class="mb-2.5">
                 <div class="border p-3 rounded-md">
                     <h4 class="font-semibold">{{ subtrip.name }}</h4>
-                    <p class="line-clamp-1">{{ subtrip.description }}</p>
+                    <p v-if="subtrip.description" class="line-clamp-1">{{ subtrip.description }}</p>
                 </div>
                 <div class="pl-2">
                     <button @click.prevent="openSubtripModal(index)" class="mr-3 text-blue-700">Upravit</button>

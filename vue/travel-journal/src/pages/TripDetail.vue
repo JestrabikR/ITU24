@@ -52,7 +52,7 @@ onMounted(async () => {
         <div>
             <h1 class="text-4xl font-extrabold">{{ trip.name }}</h1>
             <div class="flex flex-row"><div class="pt-1 pr-2"><CalendarIcon/></div> <p class="font-light">{{ formattedFromDate }} - {{ formattedUntilDate }}</p></div>
-            <div class="flex flex-row"><div class="pt-1 pr-2"><WalletIcon/></div> <p class="">Náklady: {{ trip.budget }} Kč</p></div>
+            <div v-if="trip.budget" class="flex flex-row"><div class="pt-1 pr-2"><WalletIcon/></div> <p class="">Náklady: {{ trip.budget }} Kč</p></div>
         </div>
         <RouterLink :to="`/form/trip/${trip.id}`"><button><PencilIcon/></button></RouterLink>
     </div>
@@ -72,8 +72,8 @@ onMounted(async () => {
     </div>
 
     <!-- Description -->
-    <h2 class="pt-4 sm:pt-5 text-2xl font-extrabold">Popis cesty</h2>
-    <p class="text-lg">{{ trip.description}}</p>
+    <h2 v-if="trip.description.length > 0" class="pt-4 sm:pt-5 text-2xl font-extrabold">Popis cesty</h2>
+    <p class="text-lg">{{ trip.description }}</p>
     
     
     <!-- Advantages Disadvantages-->

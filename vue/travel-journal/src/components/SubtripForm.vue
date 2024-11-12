@@ -32,7 +32,9 @@ const subtrip = reactive({
 });
 
 const initializeSubtrip = (index) => {
-    if (index !== -1) {
+  console.log("start init");
+  if (index !== -1) {
+    console.log("INDEX !== -1: tripStore.trip.subtrips[index]: ", tripStore.trip.subtrips[index])
     // load subtrip by subtripIndex
     const existingSubtrip = tripStore.trip.subtrips[index];
 
@@ -44,6 +46,7 @@ const initializeSubtrip = (index) => {
       subtrip.favourite = existingSubtrip.favourite;
     }
   } else {
+    console.log("INDEX == -1:")
     subtrip.name = '';
     subtrip.description = '';
     subtrip.photos = [];
@@ -61,9 +64,6 @@ const addSubtrip = () => {
   // validation
   if (subtrip.name === '') {
     toast.error("Název je povinný", { timeout: 3000 });
-    return;
-  } else if (subtrip.description === '') {
-    toast.error("Popis je povinný", { timeout: 3000 });
     return;
   }
 
@@ -153,7 +153,7 @@ watchEffect(() => {
     <!-- Name -->
     <div class="relative z-0 w-full mb-5 mt-8 group">
         <input v-model="subtrip.name" type="text" name="name" id="name" class="block py-2.5 px-2 w-full text-sm text-black bg-transparent border-2 border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-        <FormLabel for-input="name" value="Název"/>
+        <FormLabel for-input="name" value="Název*"/>
     </div>
 
     <!-- Description -->

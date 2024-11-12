@@ -75,8 +75,6 @@ def update_trip(id):
 def add_trip():
     post_data = json.loads(request.data.decode('utf8').replace("'", '"'))
 
-    print(post_data)
-
     trips = json_from_file("./trips.json")
 
     trip = None

@@ -160,5 +160,11 @@
         "name": "Egypt",
         "visited": false,
         "wanted": true
+    },
+    {
+        "code": "BLR",
+        "name": "Belarus",
+        "visited": false,
+        "wanted": true
     }
 ]
