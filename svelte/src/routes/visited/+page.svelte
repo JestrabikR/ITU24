@@ -144,9 +144,9 @@
 
         // add legend
         legend.onAdd = function () {
-            const div = L.DomUtil.create("article", "white round tiny-line small-padding"); //TODO styling
+            const div = L.DomUtil.create("article", "white tiny-line small-padding"); //TODO styling
             const grades = [0, 1];
-            const labels = ["Visited", "Want to visit"];
+            const labels = ["<i>check_circle</i>Visited", "<i>cancel</i>Want to visit"];
             const colors = [visitedColor, wantToVisitColor];
 
             for (let i = 0; i < grades.length; i++) {
