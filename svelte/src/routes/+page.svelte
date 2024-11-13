@@ -20,9 +20,9 @@
 	{#if ongoingTrips.length < 1}
 		<p class="italic">You have no ongoing trips</p>
 	{:else}
-	<div class="grid medium-space">
+	<div class="grid medium-space" style="align-self: stretch">
 		{#each ongoingTrips as card}
-			<div class="s12 m6 l3">
+			<div class="s12 m6 l3" style="height: 100%;">
 				<Card title={card.name} description={card.description} imageUrl={card.photos[0]} id={card.id} />
 			</div>
 		{/each}
