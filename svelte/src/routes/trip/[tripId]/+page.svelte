@@ -85,6 +85,19 @@
 			maxZoom: 19,
 			attribution: `&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>`,
 		}).addTo(map);
+
+		const markerCoords = [];
+		for(const subtrip of data.trip.subtrips){
+			var marker = L.marker(subtrip.gps).addTo(map);
+			markerCoords.push(subtrip.gps);
+		}
+
+		if (markerCoords.length > 0) {
+			const bounds = L.latLngBounds(markerCoords);
+			map.fitBounds(bounds, {
+				padding: [20, 20]
+			});
+		}
 	});
 
 	const { Fancybox } = pkg;
