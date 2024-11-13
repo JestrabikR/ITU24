@@ -80,7 +80,9 @@
 	 ********************/
 	let map;
 	onMount(() => {
-		map = L.map("map").setView([26.40, -30.67], 2.5);
+		map = L.map("map", {
+			worldCopyJump: true,
+		});
 		L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 			maxZoom: 19,
 			attribution: `&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>`,

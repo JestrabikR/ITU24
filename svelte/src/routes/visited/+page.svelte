@@ -127,7 +127,7 @@
 	let map;
 	let geoJson;
 	onMount(() => {
-		map = L.map("map").setView([26.40, -30.67], 2.5);
+		map = L.map("map", {worldCopyJump:true,}).setView([26.40, -30.67], 2.5);
 		L.tileLayer("https://tiles.stadiamaps.com/tiles/stamen_toner_lite/{z}/{x}/{y}{r}.{ext}", {
 			minZoom: 0,
 			maxZoom: 20,
