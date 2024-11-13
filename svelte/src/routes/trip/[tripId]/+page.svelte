@@ -87,17 +87,31 @@
 		}).addTo(map);
 
 		const markerCoords = [];
+
+		// add markers
 		for(const subtrip of data.trip.subtrips){
 			var marker = L.marker(subtrip.gps).addTo(map);
 			markerCoords.push(subtrip.gps);
 		}
 
+		// bound to markers
 		if (markerCoords.length > 0) {
 			const bounds = L.latLngBounds(markerCoords);
 			map.fitBounds(bounds, {
 				padding: [20, 20]
 			});
 		}
+
+		// add connecting lines
+		for (var i = 0; i < data.trip.subtrips.length; i++) {
+			if (i < data.trip.subtrips.length - 1) {
+				L.polygon([
+					data.trip.subtrips[i].gps,
+					data.trip.subtrips[i+1].gps,
+				]).addTo(map);
+			}
+		}
+
 	});
 
 	const { Fancybox } = pkg;
