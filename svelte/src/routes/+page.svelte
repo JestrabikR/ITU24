@@ -16,7 +16,9 @@
 	let map;
 	function initializeMap() {
 		if (!map) {
-			map = L.map("map").setView([26.40, -30.67], 2.5);
+			map = L.map("map", {
+				worldCopyJump: true,
+			});	
 			L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 				maxZoom: 19,
 				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -26,6 +28,9 @@
 				var popup = e.target.getPopup();
 				var content = popup.getContent();
             }
+
+
+			const markerCoords = [];
 
 			for(const trip of data.trips){
                 var hue_rotation = Math.floor(Math.random() * 360);
@@ -38,6 +43,8 @@
                     // popup
                     marker.bindPopup("<a href='/trip/" + trip.id + "'><b>" + trip.name + "</a>");
                     marker.on('click', onClick);
+
+					markerCoords.push(subtrip.gps);
 				}
 
 				// add connecting lines
@@ -49,6 +56,14 @@
 						]).addTo(map);
 					}
 				}
+			}
+
+			// bound to markers
+			if (markerCoords.length > 0) {
+				const bounds = L.latLngBounds(markerCoords);
+				map.fitBounds(bounds, {
+					padding: [20, 20]
+				});
 			}
 		}
 	}
