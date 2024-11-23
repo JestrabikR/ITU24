@@ -204,7 +204,7 @@
 	</div>
 	<div class="space"></div>
 	<div class="row">
-		<button class="extra">
+		<button class="extra" data-ui="#add-subtrip">
 			<i>add</i>
 			<span>Add subtrip</span>
 		</button>
@@ -329,6 +329,26 @@
 		<nav class="right-align no-space">
 			<button class="transparent link" data-ui="#delete-confirm">Cancel</button>
 			<button class="round error" data-ui="#delete-confirm" on:click={() => {deletePhoto(photoToDeleteIndex);}}>Delete permanently</button>
+		</nav>
+	</dialog>
+
+
+	<div class="overlay blur" style="z-index: 1000000;"></div>
+	<dialog id="add-subtrip" style="z-index: 1000001;">
+		<h5>Add subtrip</h5>
+
+		<div class="field label border round">
+			<input id="name-subtrip" type="text">
+			<label for="name-subtrip">Name</label>
+		</div>
+		<div class="field border label textarea round">
+			<textarea id="description-subtrip"></textarea>
+			<label for="description-subtrip">Description</label>
+		</div>
+
+		<nav class="right-align no-space">
+			<button class="transparent link">Cancel</button>
+			<button class="round"><i>add</i> Confirm</button>
 		</nav>
 	</dialog>
 
