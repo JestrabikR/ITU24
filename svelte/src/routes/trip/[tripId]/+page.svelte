@@ -201,6 +201,12 @@
 			{/if}
 	</div>
 	<div class="space"></div>
+	<div class="row">
+		<button class="extra">
+			<i>add</i>
+			<span>Add subtrip</span>
+		</button>
+	</div>
 	<div class="row center-align">
 		<div class="max">
 			<div id="map" style="height: 500px;"></div>
@@ -214,9 +220,9 @@
 		</div>
 		<div class="min">
 			<input type="file" on:input={addPhoto} />
-			<button class="extend square round">
-				<i>add</i>
+			<button class="extra">
 				<span>Add photo</span>
+				<i>add</i>
 			</button>
 		</div>
 	</div>
