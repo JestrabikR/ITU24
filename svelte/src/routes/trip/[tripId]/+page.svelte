@@ -22,6 +22,10 @@
 	var photoToDelete;
 	var photoToDeleteIndex;
 
+	var photoToDeleteSub;
+	var photoToDeleteSubIndex;
+	var subtripIndex;
+
 	var currentlyEditing = false;
 	function toggleEdit() {
 		currentlyEditing = !currentlyEditing;
@@ -97,6 +101,11 @@
 			"photos": []
 		};
 		data.trip.subtrips.push(subtrip);
+		updateTrip();
+	}
+
+	async function deleteSubPhoto(photoIndex, subtripIndex){
+		data.trip.subtrips[subtripIndex].photos.splice(photoIndex, 1);
 		updateTrip();
 	}
 
@@ -238,10 +247,53 @@
 		</div>
 	</div>
 	<div class="space"></div>
-	
+
 	<div class="row">
 		<div class="max">
-			<h6 class="left-padding"><b>Photos</b></h6>
+			<h6 class="left-padding"><b>Subtrips</b></h6>
+		</div>
+	</div>
+
+	{#if defaultTrip.subtrips.length < 1}
+		<p>No subtrips</p>
+	{:else}
+		{#each defaultTrip.subtrips as trip, si}
+			<div class="row">
+				<div class="max left-padding">
+					<h5 class="small"><b>{trip.name}</b></h5>
+					<span>{trip.description}</span>
+				{#if currentlyEditing }
+				{:else}
+				<div class="left-padding right-padding">
+
+				</div>
+				{/if}
+				</div>
+			</div>
+			<div class="row scroll">
+					{#if trip.photos.length > 1}
+					{#each trip.photos as photo, index}
+						{#if currentlyEditing }
+						<span>
+							<button class="close circle red" data-ui="#delete-sub-confirm" on:click={() => {photoToDeleteSub = photo; photoToDeleteSubIndex = index; subtripIndex = si;}}>
+								<i class="round small-padding white-text">delete</i>
+							</button>
+							<img src={photo} alt={index+1} class="responsive medium-width small-height round" />
+						</span>
+						{:else}
+						<a href="{photo}" data-fancybox="gallery" data-caption={index+1}>
+							<img src={photo} alt={index+1} class="responsive medium-width small-height round" />
+						</a>
+						{/if}
+					{/each}
+				{/if}
+			</div>
+		{/each}
+	{/if}
+
+	<div class="row">
+		<div class="max">
+			<h6 class="left-padding"><b>Other photos</b></h6>
 		</div>
 		<div class="min">
 			<input type="file" on:input={addPhoto} />
@@ -354,6 +406,20 @@
 			<button class="round error" data-ui="#delete-confirm" on:click={() => {deletePhoto(photoToDeleteIndex);}}>Delete permanently</button>
 		</nav>
 	</dialog>
+
+	<div class="overlay blur" style="z-index: 1000000;"></div>
+	<dialog id="delete-sub-confirm" style="z-index: 1000001;" bind:this={deleteConfirmDialog}>
+		<h3>Delete photo from gallery?</h3>
+		<p class="bold">Are you sure you want to delete this picture? This action cannot be taken back!</p>
+		<div class="space"></div>
+		<img class="responsive round" src={photoToDeleteSub} alt="Photo to delete"/>
+		<nav class="right-align no-space">
+			<button class="transparent link" data-ui="#delete-sub-confirm">Cancel</button>
+			<button class="round error" data-ui="#delete-sub-confirm" on:click={() => {deleteSubPhoto(photoToDeleteSubIndex, subtripIndex);}}>Delete permanently</button>
+		</nav>
+	</dialog>
+
+
 
 
 	<div class="overlay blur" style="z-index: 1000000;"></div>
