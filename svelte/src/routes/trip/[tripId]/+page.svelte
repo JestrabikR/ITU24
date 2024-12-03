@@ -105,7 +105,7 @@
 	}
 
 	async function deleteSubPhoto(photoIndex, subtripIndex){
-		data.trip.subtrips[subtripIndex].photos.splice(photoIndex, 1);
+		data.trip.subtrips[subtripIndex].photos[photoIndex] = null;
 		updateTrip();
 	}
 
@@ -270,9 +270,10 @@
 				{/if}
 				</div>
 			</div>
+			{#if trip.photos.length > 1}
 			<div class="row scroll">
-					{#if trip.photos.length > 1}
-					{#each trip.photos as photo, index}
+				{#each trip.photos as photo, index}
+					{#if photo != null}
 						{#if currentlyEditing }
 						<span>
 							<button class="close circle red" data-ui="#delete-sub-confirm" on:click={() => {photoToDeleteSub = photo; photoToDeleteSubIndex = index; subtripIndex = si;}}>
@@ -285,9 +286,16 @@
 							<img src={photo} alt={index+1} class="responsive medium-width small-height round" />
 						</a>
 						{/if}
-					{/each}
-				{/if}
+					{/if}
+				{/each}
 			</div>
+			{:else}
+				<div class="row">
+					<div class="max left-padding">
+						<em>No photos found for this subtrip</em>
+					</div>
+				</div>
+			{/if}
 		{/each}
 	{/if}
 
