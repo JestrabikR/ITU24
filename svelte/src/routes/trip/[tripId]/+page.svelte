@@ -417,7 +417,7 @@
 
 	<div class="overlay blur" style="z-index: 1000000;"></div>
 	<dialog id="delete-sub-confirm" style="z-index: 1000001;" bind:this={deleteConfirmDialog}>
-		<h3>Delete photo from gallery?</h3>
+		<h3>Delete photo from subtrip?</h3>
 		<p class="bold">Are you sure you want to delete this picture? This action cannot be taken back!</p>
 		<div class="space"></div>
 		<img class="responsive round" src={photoToDeleteSub} alt="Photo to delete"/>
