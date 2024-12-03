@@ -77,6 +77,29 @@
 		updateTrip();
 	}
 
+	async function deleteSubtrip(index){
+
+	}
+
+	async function addSubtrip(){
+		var desc = "";
+		var gps = "";
+		var name = "";
+
+		var subtrip = {
+			"description": "d",
+			"favourite": false,
+			"gps": [
+				10.01,
+				10.01
+			],
+			"name": "n",
+			"photos": []
+		};
+		data.trip.subtrips.push(subtrip);
+		updateTrip();
+	}
+
 	/********************
 	 * LEAFLET SETTINGS *
 	 ********************/
@@ -334,7 +357,7 @@
 
 
 	<div class="overlay blur" style="z-index: 1000000;"></div>
-	<dialog id="add-subtrip" style="z-index: 1000001;">
+	<dialog id="add-subtrip" class="large" style="z-index: 1000001;">
 		<h5>Add subtrip</h5>
 
 		<div class="field label border round">
@@ -347,9 +370,10 @@
 		</div>
 
 		<nav class="right-align no-space">
-			<button class="transparent link">Cancel</button>
-			<button class="round"><i>add</i> Confirm</button>
+			<button class="transparent link" data-ui="#add-subtrip">Cancel</button>
+			<button class="round" on:click={() => {addSubtrip()}}><i>add</i> Save</button>
 		</nav>
+
 	</dialog>
 
 </main>
