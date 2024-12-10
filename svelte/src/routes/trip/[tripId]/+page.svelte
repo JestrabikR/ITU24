@@ -147,8 +147,41 @@
 				]).addTo(map);
 			}
 		}
-
 	});
+
+
+	let modalMap;
+	let selectedCoordinates;
+	let marker = null;
+	function initializeModalMap() {
+        if (!modalMap) {
+            modalMap = L.map("map-subtrip").setView([50.0755, 14.4378], 13);
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                maxZoom: 19,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            }).addTo(modalMap);
+
+            modalMap.on("click", (e) => {
+                selectedCoordinates = e.latlng;
+                console.log("Vybrané souřadnice:", selectedCoordinates);
+
+                if (marker) {
+                    modalMap.removeLayer(marker);
+                }
+
+                marker = L.marker(selectedCoordinates).addTo(modalMap);
+            });
+        } else {
+            modalMap.invalidateSize();
+        }
+    }
+
+    function openModal() {
+		ui("#add-subtrip"); // opens the modal
+        setTimeout(() => {
+            initializeModalMap();
+        }, 0);
+    }
 
 	const { Fancybox } = pkg;
 	if(Fancybox){ // for some reason Fancybox is loading slowly, so this sometimes fails
@@ -236,7 +269,7 @@
 	</div>
 	<div class="space"></div>
 	<div class="row">
-		<button class="extra" data-ui="#add-subtrip">
+		<button class="extra" on:click={openModal}>
 			<i>add</i>
 			<span>Add subtrip</span>
 		</button>
@@ -304,7 +337,7 @@
 			<h6 class="left-padding"><b>Other photos</b></h6>
 		</div>
 		<div class="min">
-			<input type="file" on:input={addPhoto} />
+			<input type="file" accept="image/*" on:input={addPhoto} />
 			<button class="extra">
 				<span>Add photo</span>
 				<i>add</i>
@@ -435,19 +468,33 @@
 		<h5>Add subtrip</h5>
 
 		<div class="field label border round">
-			<input id="name-subtrip" type="text">
+			<input id="name-subtrip" type="text" />
 			<label for="name-subtrip">Name</label>
 		</div>
+
 		<div class="field border label textarea round">
 			<textarea id="description-subtrip"></textarea>
 			<label for="description-subtrip">Description</label>
 		</div>
 
+		<div class="max">
+			<div id="map-subtrip" class="" style="height: 300px"></div>
+		</div>
+
+		<div class="top-padding">
+			<input type="file" accept="image/*" on:input={addPhoto} />
+			<button class="extra">
+				<span>Add photo</span>
+				<i>add</i>
+			</button>
+		</div>
+
 		<nav class="right-align no-space">
 			<button class="transparent link" data-ui="#add-subtrip">Cancel</button>
-			<button class="round" on:click={() => {addSubtrip()}}><i>add</i> Save</button>
+			<button class="round" on:click={addSubtrip}>
+				<i>add</i> Save
+			</button>
 		</nav>
-
 	</dialog>
 
 </main>
