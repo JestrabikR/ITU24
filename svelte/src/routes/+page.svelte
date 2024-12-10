@@ -101,8 +101,8 @@
 		{:else}
 		<div class="grid medium-space" style="align-self: stretch">
 			{#each ongoingTrips as card}
-				<div class="s12 m6 l3" style="height: 100%;">
-					<Card title={card.name} description={card.description} imageUrl={card.photos[0]} id={card.id} />
+				<div class="s12 m12 l6" style="height: 100%;">
+					<Card title={card.name} dateFrom={card.from_date} dateTo={card.until_date} country={card.country} imageUrl={card.photos[0]} id={card.id} />
 				</div>
 			{/each}
 		</div>
@@ -116,8 +116,8 @@
 		{:else}
 		<div class="grid medium-space">
 			{#each futureTrips as card}
-				<div class="s12 m6 l3">
-					<Card title={card.name} description={card.description} imageUrl={card.photos[0]} id={card.id} />
+				<div class="s12 m6 l4">
+					<Card title={card.name} dateFrom={card.from_date} dateTo={card.until_date} country={card.country} imageUrl={card.photos[0]} id={card.id} />
 				</div>
 			{/each}
 		</div>
@@ -131,8 +131,8 @@
 		{:else}
 		<div class="grid medium-space">
 			{#each pastTrips as card}
-				<div class="s12 m6 l3">
-					<Card title={card.name} description={card.description} imageUrl={card.photos[0]} id={card.id} />
+				<div class="s12 m6 l4">
+					<Card title={card.name} dateFrom={card.from_date} dateTo={card.until_date} country={card.country} imageUrl={card.photos[0]} id={card.id} />
 				</div>
 			{/each}
 		</div>
