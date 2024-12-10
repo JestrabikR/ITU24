@@ -33,7 +33,13 @@
 		data.trip.disadvantages = data.trip.disadvantages.toString().replaceAll(",", "\n");
 	}
 
-	async function updateTrip(){
+	var flashMessage = "";
+	async function flash(message, duration = 3000) {
+		flashMessage = message;
+		ui("#info-snackbar", duration)	
+	}
+
+	async function updateTrip(message = "Trip successfully updated!"){
 		if(data.trip.advantages.constructor === Array){
 			data.trip.advantages = data.trip.advantages.toString().replaceAll(",", "\n");
 			data.trip.disadvantages = data.trip.disadvantages.toString().replaceAll(",", "\n");
@@ -68,17 +74,19 @@
 		}catch(e){
 			console.error("Error during updateTrip(): ", e);
 		}
+
+		await flash(message);
 	}
 
 	async function deletePhoto(index){
 		data.trip.photos.splice(index, 1);
-		updateTrip();
+		updateTrip("Photo successfully deleted!");
 	}
 
 	async function addPhoto(e){
 		const img = await imageToBase64(e);
 		data.trip.photos.push(img);
-		updateTrip();
+		updateTrip("Photo successfully added!");
 	}
 
 	async function deleteSubtrip(index){
@@ -101,12 +109,12 @@
 			"photos": []
 		};
 		data.trip.subtrips.push(subtrip);
-		updateTrip();
+		updateTrip("Subtrip successfully added!");
 	}
 
 	async function deleteSubPhoto(photoIndex, subtripIndex){
 		data.trip.subtrips[subtripIndex].photos[photoIndex] = null;
-		updateTrip();
+		updateTrip("Subtrip photo successfully deleted!");
 	}
 
 	/********************
@@ -460,9 +468,6 @@
 		</nav>
 	</dialog>
 
-
-
-
 	<div class="overlay blur" style="z-index: 1000000;"></div>
 	<dialog id="add-subtrip" class="large" style="z-index: 1000001;">
 		<h5>Add subtrip</h5>
@@ -496,5 +501,7 @@
 			</button>
 		</nav>
 	</dialog>
+
+	<div id="info-snackbar" class="snackbar primary">{flashMessage}</div>
 
 </main>
