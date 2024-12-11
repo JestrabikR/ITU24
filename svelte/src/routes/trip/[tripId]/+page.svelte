@@ -425,10 +425,14 @@
 			</div>
 		</div>
 	{:else}
+		<hr class="top-margin bottom-margin"/>
 		{#each defaultTrip.subtrips as trip, si (si)}
 			<div class="row" id="{trip.name}">
 				{#if currentlyEditing }
-				<div class="top-padding">
+				<div class="">
+					<div class="max bottom-padding">
+						<button class="chip small red white-text" on:click={() => { subtripToDeleteIdx = si; ui("#delete-subtrip-confirm")}}><i>delete</i> delete subtrip {trip.name}</button>
+					</div>
 					<div class="max">
 						<div class="field small label border round">
 							<input id="name" type="text" bind:value={trip.name} >
@@ -440,9 +444,6 @@
 							<textarea id="description" bind:value={trip.description}></textarea>
 							<label for="description">Description</label>
 						</div>
-					</div>
-					<div class="max top-padding">
-						<button class="chip small red white-text" on:click={() => { subtripToDeleteIdx = si; ui("#delete-subtrip-confirm")}}><i>delete</i> delete subtrip</button>
 					</div>
 				</div>
 				{:else}
@@ -481,6 +482,7 @@
 					</button>
 				</div>
 			</div>
+			<hr class="top-margin bottom-margin"/>
 		{/each}
 	{/if}
 
