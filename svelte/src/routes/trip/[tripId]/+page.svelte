@@ -137,6 +137,7 @@
 		data.trip.subtrips.push(subtrip);
 		ui("#add-subtrip");
 		updateTrip("Subtrip successfully added!");
+		updateMap();
 	}
 
 	async function deleteSubPhoto(photoIndex, subtripIndex){
@@ -148,6 +149,8 @@
 	 * LEAFLET SETTINGS *
 	 ********************/
 	let map;
+	const markerCoords = [];
+	const markers = [];
 	onMount(() => {
 		map = L.map("map", {
 			worldCopyJump: true,
@@ -157,32 +160,43 @@
 			attribution: `&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>`,
 		}).addTo(map);
 
-		const markerCoords = [];
-
-		// add markers
-		for(const subtrip of data.trip.subtrips){
-			var marker = L.marker(subtrip.gps).addTo(map);
-			markerCoords.push(subtrip.gps);
-		}
-
-		// bound to markers
-		if (markerCoords.length > 0) {
-			const bounds = L.latLngBounds(markerCoords);
-			map.fitBounds(bounds, {
-				padding: [20, 20]
-			});
-		}
-
-		// add connecting lines
-		for (var i = 0; i < data.trip.subtrips.length; i++) {
-			if (i < data.trip.subtrips.length - 1) {
-				L.polygon([
-					data.trip.subtrips[i].gps,
-					data.trip.subtrips[i+1].gps,
-				]).addTo(map);
-			}
-		}
+		updateMap();
 	});
+
+	function updateMap() {
+		markers.forEach(marker => map.removeLayer(marker));
+        markers.length = 0;
+        markerCoords.length = 0;
+
+        map.eachLayer(layer => {
+            if (layer instanceof L.Polyline && !(layer instanceof L.TileLayer)) {
+                map.removeLayer(layer); // Remove polylines
+            }
+        });
+
+        // add new markers and lines
+        for (const subtrip of data.trip.subtrips) {
+            const marker = L.marker(subtrip.gps).addTo(map);
+            markers.push(marker);
+            markerCoords.push(subtrip.gps);
+        }
+
+        // bound to new markers
+        if (markerCoords.length > 0) {
+            const bounds = L.latLngBounds(markerCoords);
+            map.fitBounds(bounds, {
+                padding: [20, 20],
+            });
+        }
+
+        // add connecting lines
+        for (let i = 0; i < data.trip.subtrips.length - 1; i++) {
+            L.polygon([
+                data.trip.subtrips[i].gps,
+                data.trip.subtrips[i + 1].gps,
+            ]).addTo(map);
+        }
+	}
 
 
 	let modalMap;
