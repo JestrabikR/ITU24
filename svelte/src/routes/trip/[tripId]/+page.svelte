@@ -322,12 +322,6 @@
 			{/if}
 	</div>
 	<div class="space"></div>
-	<div class="row">
-		<button class="extra" on:click={openModal}>
-			<i>add</i>
-			<span>Add subtrip</span>
-		</button>
-	</div>
 	<div class="row center-align">
 		<div class="max">
 			<div id="map" style="height: 500px;"></div>
@@ -339,6 +333,10 @@
 		<div class="max">
 			<h6 class="left-padding"><b>Subtrips</b></h6>
 		</div>
+		<button class="extra" on:click={openModal}>
+			<i>add</i>
+			<span>Add subtrip</span>
+		</button>
 	</div>
 
 	{#if defaultTrip.subtrips.length < 1}
