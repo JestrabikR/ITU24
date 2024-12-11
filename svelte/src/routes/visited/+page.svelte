@@ -124,45 +124,81 @@
 		});
 	}
 
-	let map;
+	let mapLarge;
+	let mapSmall;
 	let geoJson;
 	onMount(() => {
-		map = L.map("map", {worldCopyJump:true,}).setView([26.40, -30.67], 2.5);
+		mapLarge = L.map("mapLarge", {worldCopyJump:true,}).setView([26.40, -30.67], 2.5);
 		L.tileLayer("https://tiles.stadiamaps.com/tiles/stamen_toner_lite/{z}/{x}/{y}{r}.{ext}", {
 			minZoom: 0,
 			maxZoom: 20,
 			attribution: `&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>`,
 			ext: "png",
-		}).addTo(map);
+		}).addTo(mapLarge);
+
+		mapSmall = L.map("mapSmall", {worldCopyJump:true,}).setView([26.40, -30.67], 2.5);
+		L.tileLayer("https://tiles.stadiamaps.com/tiles/stamen_toner_lite/{z}/{x}/{y}{r}.{ext}", {
+			minZoom: 0,
+			maxZoom: 20,
+			attribution: `&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>`,
+			ext: "png",
+		}).addTo(mapSmall);
 
         geoJson = L.geoJson(statesData, {
             style: style,
             onEachFeature: onEachFeature,
-        }).addTo(map);
+        }).addTo(mapLarge);
 
-		let legend = L.control({position: "topright"});
+       geoJson = L.geoJson(statesData, {
+            style: style,
+            onEachFeature: onEachFeature,
+        }).addTo(mapSmall);
 
-        // add legend
-        legend.onAdd = function () {
-            const div = L.DomUtil.create("article", "white tiny-line small-padding"); //TODO styling
-            const grades = [0, 1];
-            const labels = ["<i>check_circle</i>Visited", "<i>cancel</i>Want to visit"];
-            const colors = [visitedColor, wantToVisitColor];
+		let legendLarge = L.control({position: "topright"});
+		let legendSmall = L.control({position: "topright"});
 
-            for (let i = 0; i < grades.length; i++) {
-                div.innerHTML += 
-                    `<p style="color: ${colors[i]}">${labels[i]}</p>`;
-            }
+		// add legend
+		legendLarge.onAdd = function () {
+			const div = L.DomUtil.create("article", "white tiny-line small-padding"); //TODO styling
+			const grades = [0, 1];
+			const labels = ["<i>check_circle</i>Visited", "<i>cancel</i>Want to visit"];
+			const colors = [visitedColor, wantToVisitColor];
 
-            return div;
-        };
+			for (let i = 0; i < grades.length; i++) {
+				div.innerHTML += 
+				`<p style="color: ${colors[i]}">${labels[i]}</p>`;
+			}
 
-        legend.addTo(map);
+			return div;
+		};
+
+		legendSmall.onAdd = function () {
+			const div = L.DomUtil.create("article", "white tiny-line small-padding"); //TODO styling
+			const grades = [0, 1];
+			const labels = ["<i>check_circle</i>Visited", "<i>cancel</i>Want to visit"];
+			const colors = [visitedColor, wantToVisitColor];
+
+			for (let i = 0; i < grades.length; i++) {
+				div.innerHTML += 
+				`<p style="color: ${colors[i]}">${labels[i]}</p>`;
+			}
+
+			return div;
+		};
+
+
+		legendSmall.addTo(mapSmall);
+		legendLarge.addTo(mapLarge);
 	});
 </script>
 
-<main class="responsive">
-	<Navbar/>
+<main class="m l responsive">
+	<Navbar />
 </main>
 
-<div id="map" style="height: 80vh;"></div>
+<div class="m l" id="mapLarge" style="height: 80vh;"></div>
+
+<main class="s" style="overflow: hidden; height: 100vh;">
+	<div id="mapSmall" style="height: 100%;"></div>
+	<Navbar />
+</main>

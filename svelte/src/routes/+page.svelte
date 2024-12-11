@@ -141,7 +141,7 @@
 		<div class="space"></div>
 		<div class="row">
 			<div class="max">
-				<div id="map" style="height: 70vh;"></div>
+				<div id="map" style="height: 80vh;"></div>
 			</div>
 		</div>
 	{/if}

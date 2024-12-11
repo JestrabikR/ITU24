@@ -244,7 +244,7 @@
 			<label for="untilDate">Until date</label>
 		</div>
 		{:else}
-		<h6 class="border round right-padding left-padding">{
+		<h6 class="border round right-padding left-padding m l">{
 			new Date(defaultTrip.from_date).toLocaleDateString("en-US", {
 				year: "numeric",
 				month: "long",
@@ -260,6 +260,24 @@
 			})
 			}
 		</h6>
+
+		<!-- small device -->
+		<b class="border round right-padding left-padding s">{
+			new Date(defaultTrip.from_date).toLocaleDateString("en-US", {
+				year: "numeric",
+				month: "long",
+				day: "numeric"
+			})
+			}
+			-
+			{
+			new Date(defaultTrip.until_date).toLocaleDateString("en-US", {
+				year: "numeric",
+				month: "long",
+				day: "numeric"
+			})
+			}
+		</b>
 		{/if}
 	</div>
 
@@ -432,7 +450,7 @@
 	</div>
 
 	{#if currentlyEditing }
-	<nav class="no-space right-align">
+	<nav class="no-space right-align m l">
 		<button class="border left-round extra" on:click={() => {updateTrip(); toggleEdit();}}>
 			<i class="extra secondary-text">save</i>
 		</button>
