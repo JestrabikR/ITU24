@@ -79,6 +79,10 @@
 		await flash(message);
 	}
 
+	async function deleteTrip(){
+		console.log("DELETED");
+	}
+
 	async function deletePhoto(index){
 		data.trip.photos.splice(index, 1);
 		updateTrip("Photo successfully deleted!");
@@ -291,8 +295,8 @@
 </style>
 
 <main class="responsive">
-	<Navbar view=true editFunction={() => {toggleEdit();}} saveFunction={() => {updateTrip(); toggleEdit();}} bind:currentlyEditing={currentlyEditing} />
-	<EditBar editFunction={() => {toggleEdit();}} saveFunction={() => {updateTrip(); toggleEdit();}} bind:currentlyEditing={currentlyEditing}/>
+	<Navbar tripName={data.trip.name} view=true editFunction={() => {toggleEdit();}} saveFunction={() => {updateTrip(); toggleEdit();}} deleteFunction={() => {deleteTrip();}} bind:currentlyEditing={currentlyEditing} />
+	<EditBar tripName={data.trip.name} editFunction={() => {toggleEdit();}} saveFunction={() => {updateTrip(); toggleEdit();}} deleteFunction={() => {deleteTrip();}} bind:currentlyEditing={currentlyEditing}/>
 
 	<div class="row center-align">
 		{#if currentlyEditing}
@@ -403,6 +407,7 @@
 	{:else}
 		{#each defaultTrip.subtrips as trip, si (si)}
 			<div class="row" id="{trip.name}">
+	<p class="italic">Are you sure you want to delete trip <b>{tripName}</b>? This action cannot be taken back! All data belonging to this trip will be permanently deleted!</p>
 				{#if currentlyEditing }
 				<div class="top-padding">
 					<div class="max">
