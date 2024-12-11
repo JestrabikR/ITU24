@@ -122,18 +122,6 @@
 	let subtripLat;
 	let subtripLong;
 	async function addSubtrip(){
-		var desc = "";
-		var gps = "";
-		var name = "";
-
-		var coverImage;
-
-		if(subtripImage){
-			console.log(subtripImageInput);
-			console.log(subtripImage);
-			console.log(subtripImageBase64);
-		}
-
 		var subtrip = {
 			"description": subtripDesc,
 			"favourite": false,
