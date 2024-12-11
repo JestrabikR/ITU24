@@ -148,6 +148,13 @@
 		updateTrip("Subtrip photo successfully deleted!");
 	}
 
+	async function addSubPhoto(e, subtripIndex){
+		console.log(e);
+		const img = await imageToBase64(e);
+		data.trip.subtrips[subtripIndex].photos.push(img);
+		updateTrip("Photo successfully added!");
+	}
+
 	var subtripToDeleteIdx;
 	function deleteSubtrip(index){
 		data.trip.subtrips.splice(index, 1);
@@ -378,7 +385,7 @@
 			<h6 class="left-padding"><b>Subtrips</b></h6>
 		</div>
 		<button class="extra" on:click={openModal}>
-			<i>add</i>
+			<i>location_on</i>
 			<span>Add subtrip</span>
 		</button>
 	</div>
@@ -440,7 +447,8 @@
 						{/if}
 					{/if}
 				{/each}
-				<div>
+				<div class="left-padding right-padding">
+					<input type="file" accept="image/*" on:input={(e) => addSubPhoto(e, si)} />
 					<button class="extend border square round">
 						<i>add</i>
 						<span>Add photo</span>
@@ -457,8 +465,8 @@
 		<div class="min">
 			<input type="file" accept="image/*" on:input={addPhoto} />
 			<button class="extra">
+				<i>image</i>
 				<span>Add photo</span>
-				<i>add</i>
 			</button>
 		</div>
 	</div>
