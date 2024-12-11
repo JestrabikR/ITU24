@@ -93,22 +93,61 @@
 
 	}
 
+	let subtripImageInput;
+	let subtripImage;
+	let subtripImageBase64;
+	let subtripImageContainer;
+	let subtripShowImage = false;
+	let subtripImagePlaceholder;
+	function onSubtripPhotoChange() {
+		const file = subtripImageInput.files[0];
+			
+		if (file) {
+			subtripShowImage = true;
+
+			const reader = new FileReader();
+			reader.addEventListener("load", function () {
+				subtripImageBase64 = reader.result;
+				subtripImage.setAttribute("src", reader.result);
+			});
+			reader.readAsDataURL(file);
+
+			return;
+		} 
+		subtripShowImage = false; 
+	}
+
+	let subtripDesc;
+	let subtripName;
+	let subtripLat;
+	let subtripLong;
 	async function addSubtrip(){
 		var desc = "";
 		var gps = "";
 		var name = "";
 
+		var coverImage;
+
+		if(subtripImage){
+			console.log(subtripImageInput);
+			console.log(subtripImage);
+			console.log(subtripImageBase64);
+		}
+
 		var subtrip = {
-			"description": "d",
+			"description": subtripDesc,
 			"favourite": false,
 			"gps": [
-				10.01,
-				10.01
+				subtripLat,
+				subtripLong
 			],
-			"name": "n",
-			"photos": []
+			"name": subtripName,
+			"photos": [ ]
 		};
+
+		subtrip.photos.push(subtripImageBase64);
 		data.trip.subtrips.push(subtrip);
+		ui("#add-subtrip");
 		updateTrip("Subtrip successfully added!");
 	}
 
@@ -171,7 +210,8 @@
 
             modalMap.on("click", (e) => {
                 selectedCoordinates = e.latlng;
-                console.log("Vybrané souřadnice:", selectedCoordinates);
+				subtripLat = selectedCoordinates.lat;
+				subtripLong = selectedCoordinates.lng;
 
                 if (marker) {
                     modalMap.removeLayer(marker);
@@ -329,7 +369,7 @@
 				{/if}
 				</div>
 			</div>
-			{#if trip.photos.length > 1}
+			{#if trip.photos.length > 0}
 			<div class="row scroll">
 				{#each trip.photos as photo, index}
 					{#if photo != null}
@@ -491,12 +531,12 @@
 		<h5>Add subtrip</h5>
 
 		<div class="field label border round">
-			<input id="name-subtrip" type="text" />
+			<input id="name-subtrip" type="text" bind:value={subtripName} />
 			<label for="name-subtrip">Name</label>
 		</div>
 
 		<div class="field border label textarea round">
-			<textarea id="description-subtrip"></textarea>
+			<textarea id="description-subtrip" bind:value={subtripDesc} ></textarea>
 			<label for="description-subtrip">Description</label>
 		</div>
 
@@ -505,11 +545,21 @@
 		</div>
 
 		<div class="top-padding">
-			<input type="file" accept="image/*" on:input={addPhoto} />
+			<input type="file" accept="image/*" on:change={onSubtripPhotoChange} bind:this={subtripImageInput} />
 			<button class="extra">
-				<span>Add photo</span>
+				<span>Add cover photo</span>
 				<i>add</i>
 			</button>
+
+			<i>info</i> You can add more images later
+		</div>
+
+		<div class="max top-padding" bind:this={subtripImageContainer}>
+			{#if subtripShowImage}
+				<img bind:this={subtripImage} src="" alt="Preview" />
+			{:else}
+				<span bind:this={subtripImagePlaceholder}>Image Preview</span>
+			{/if}
 		</div>
 
 		<nav class="right-align no-space">
