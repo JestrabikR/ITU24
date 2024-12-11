@@ -9,7 +9,7 @@
 	export let id;
 
 	if(!imageUrl){
-		imageUrl = "https://placehold.co/300x145?text=Trip+image";
+		imageUrl = "https://placehold.co/300x145/80a3ff/white?text=Trip+image";
 	}
 </script>
 
