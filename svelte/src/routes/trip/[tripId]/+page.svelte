@@ -7,6 +7,8 @@
 	import { APIURL } from "$lib/helper.js";
 	import { sanitize } from "$lib/helper.js";
 	import { imageToBase64 } from "$lib/helper.js";
+	import { goto } from '$app/navigation'; 
+	import { setFlashMessage } from "../../../stores/flashStore";
 
 	const tripId = $page.params.tripId;
 	
@@ -34,10 +36,10 @@
 		data.trip.disadvantages = data.trip.disadvantages.toString().replaceAll(",", "\n");
 	}
 
-	var flashMessage = "";
+	var messageSnackbar = "";
 	async function flash(message, duration = 3000) {
-		flashMessage = message;
-		ui("#info-snackbar", duration)	
+		messageSnackbar = message;
+		ui("#info-snackbar", duration);
 	}
 
 	async function updateTrip(message = "Trip successfully updated!"){
@@ -80,7 +82,25 @@
 	}
 
 	async function deleteTrip(){
-		console.log("DELETED");
+		try {
+			const response = await fetch(`${APIURL}/trip/del/${tripId}`, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			});
+
+			if (response.ok) {    
+				await goto("/");
+			    setFlashMessage("Trip successfully deleted!", "success");
+			} else {
+				console.error("Failed to delete trip:", response.status, response.statusText);
+				await flash("ERROR: Could not delete trip!");
+			}
+		} catch (error) {
+			console.error("Error while deleting trip:", error);
+			await flash("ERROR: Could not delete trip!");
+		}
 	}
 
 	async function deletePhoto(index){
@@ -407,7 +427,6 @@
 	{:else}
 		{#each defaultTrip.subtrips as trip, si (si)}
 			<div class="row" id="{trip.name}">
-	<p class="italic">Are you sure you want to delete trip <b>{tripName}</b>? This action cannot be taken back! All data belonging to this trip will be permanently deleted!</p>
 				{#if currentlyEditing }
 				<div class="top-padding">
 					<div class="max">
@@ -649,6 +668,6 @@
 		</nav>
 	</dialog>
 
-	<div id="info-snackbar" class="snackbar primary">{flashMessage}</div>
+	<div id="info-snackbar" class="snackbar primary">{messageSnackbar}</div>
 
 </main>

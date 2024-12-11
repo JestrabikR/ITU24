@@ -2,6 +2,8 @@
 	import Navbar from "@components/Navbar.svelte";
 	import Card from "@components/Card.svelte";
 
+	import { flashMessage } from "../stores/flashStore";
+
 	/** @type {import('./$types').PageData} */
 	export let data = [];
 
@@ -9,6 +11,21 @@
 	const pastTrips = data.trips.filter(trip => new Date(trip.until_date) < today);
 	const ongoingTrips = data.trips.filter(trip => new Date(trip.from_date) <= today && new Date(trip.until_date) >= today);
 	const futureTrips = data.trips.filter(trip => new Date(trip.from_date) > today);
+
+    let flash = { message: "", type: "info" };
+	function onFlashMessageChange(newFlash) {
+        if (newFlash.message) {
+			ui("#info-snackbar", 3000);
+        }
+    }
+
+    // subscribe to the flashMessage store
+    $: {
+        flashMessage.subscribe(value => {
+            flash = value || { message: "", type: "info" };
+            onFlashMessageChange(flash);
+        });
+    }
 
 	/********************
 	 * LEAFLET SETTINGS *
@@ -145,4 +162,6 @@
 			</div>
 		</div>
 	{/if}
+
+	<div id="info-snackbar" class="snackbar primary">{flash.message}</div>
 </main>
