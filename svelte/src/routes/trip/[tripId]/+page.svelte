@@ -168,15 +168,25 @@
         markers.length = 0;
         markerCoords.length = 0;
 
+        function onClick(e) {
+			var popup = e.target.getPopup();
+			var content = popup.getContent();
+        }
+
         map.eachLayer(layer => {
             if (layer instanceof L.Polyline && !(layer instanceof L.TileLayer)) {
-                map.removeLayer(layer); // Remove polylines
+                map.removeLayer(layer); // remove polylines
             }
         });
 
         // add new markers and lines
         for (const subtrip of data.trip.subtrips) {
             const marker = L.marker(subtrip.gps).addTo(map);
+
+            // popup
+			marker.bindPopup("<a href='#" + subtrip.name + "'>" + subtrip.name + "</a>");
+			marker.on("click", onClick);
+
             markers.push(marker);
             markerCoords.push(subtrip.gps);
         }
@@ -357,7 +367,7 @@
 		<p>No subtrips</p>
 	{:else}
 		{#each defaultTrip.subtrips as trip, si}
-			<div class="row">
+			<div class="row" id="{trip.name}">
 				<div class="max left-padding">
 					<h5 class="small"><b>{trip.name}</b></h5>
 					<span>{trip.description}</span>
