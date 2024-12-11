@@ -89,9 +89,9 @@
 		updateTrip("Photo successfully added!");
 	}
 
-	async function deleteSubtrip(index){
-
-	}
+	/**
+	 * Subtrip logic
+	 */
 
 	let subtripImageInput;
 	let subtripImage;
@@ -138,11 +138,28 @@
 		ui("#add-subtrip");
 		updateTrip("Subtrip successfully added!");
 		updateMap();
+
+		subtripImageBase64 = null;
+		subtripImage.setAttribute("src", "");
 	}
 
 	async function deleteSubPhoto(photoIndex, subtripIndex){
 		data.trip.subtrips[subtripIndex].photos[photoIndex] = null;
 		updateTrip("Subtrip photo successfully deleted!");
+	}
+
+	var subtripToDeleteIdx;
+	function deleteSubtrip(index){
+		data.trip.subtrips.splice(index, 1);
+        if (data.trip.subtrips.length === 0) { // reinitialize empty array
+            data.trip.subtrips = [];
+        }
+
+		updateTrip("Subtrip successfully deleted!");
+
+        defaultTrip.subtrips = [...data.trip.subtrips]; // Trigger Svelte reactivity by reassigning
+		subtripToDeleteIdx = 0;
+		updateMap();
 	}
 
 	/********************
@@ -154,7 +171,7 @@
 	onMount(() => {
 		map = L.map("map", {
 			worldCopyJump: true,
-		});
+		}).setView([26.40, -30.67], 2.5);;
 		L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 			maxZoom: 19,
 			attribution: `&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>`,
@@ -168,46 +185,49 @@
         markers.length = 0;
         markerCoords.length = 0;
 
-        function onClick(e) {
-			var popup = e.target.getPopup();
-			var content = popup.getContent();
-        }
+		if(data.trip.subtrips.length > 0){
+        	function onClick(e) {
+				var popup = e.target.getPopup();
+				var content = popup.getContent();
+			}
 
-        map.eachLayer(layer => {
-            if (layer instanceof L.Polyline && !(layer instanceof L.TileLayer)) {
-                map.removeLayer(layer); // remove polylines
-            }
-        });
+			map.eachLayer(layer => {
+				if (layer instanceof L.Polyline && !(layer instanceof L.TileLayer)) {
+					map.removeLayer(layer); // remove polylines
+				}
+			});
 
-        // add new markers and lines
-        for (const subtrip of data.trip.subtrips) {
-            const marker = L.marker(subtrip.gps).addTo(map);
+			// add new markers and lines
+			for (const subtrip of data.trip.subtrips) {
+				const marker = L.marker(subtrip.gps).addTo(map);
 
-            // popup
-			marker.bindPopup("<a href='#" + subtrip.name + "'>" + subtrip.name + "</a>");
-			marker.on("click", onClick);
+				// popup
+				marker.bindPopup("<a href='#" + subtrip.name + "'>" + subtrip.name + "</a>");
+				marker.on("click", onClick);
 
-            markers.push(marker);
-            markerCoords.push(subtrip.gps);
-        }
+				markers.push(marker);
+				markerCoords.push(subtrip.gps);
+			}
 
-        // bound to new markers
-        if (markerCoords.length > 0) {
-            const bounds = L.latLngBounds(markerCoords);
-            map.fitBounds(bounds, {
-                padding: [20, 20],
-            });
-        }
+			// bound to new markers
+			if (markerCoords.length > 0) {
+				const bounds = L.latLngBounds(markerCoords);
+				map.fitBounds(bounds, {
+					padding: [20, 20],
+				});
+			}
 
-        // add connecting lines
-        for (let i = 0; i < data.trip.subtrips.length - 1; i++) {
-            L.polygon([
-                data.trip.subtrips[i].gps,
-                data.trip.subtrips[i + 1].gps,
-            ]).addTo(map);
-        }
+			// add connecting lines
+			if(data.trip.subtrips.length > 1){
+				for (let i = 0; i < data.trip.subtrips.length - 1; i++) {
+					L.polygon([
+						data.trip.subtrips[i].gps,
+						data.trip.subtrips[i + 1].gps,
+					]).addTo(map);
+				}
+			}
+		}
 	}
-
 
 	let modalMap;
 	let selectedCoordinates;
@@ -366,45 +386,61 @@
 	{#if defaultTrip.subtrips.length < 1}
 		<p>No subtrips</p>
 	{:else}
-		{#each defaultTrip.subtrips as trip, si}
+		{#each defaultTrip.subtrips as trip, si (si)}
 			<div class="row" id="{trip.name}">
-				<div class="max left-padding">
-					<h5 class="small"><b>{trip.name}</b></h5>
-					<span>{trip.description}</span>
 				{#if currentlyEditing }
+				<div class="top-padding">
+					<div class="max">
+						<div class="field small label border round">
+							<input id="name" type="text" bind:value={trip.name} >
+							<label for="name">Name</label>
+						</div>
+					</div>
+					<div class="max top-padding">
+						<div class="field small border label textarea round">
+							<textarea id="description" bind:value={trip.description}></textarea>
+							<label for="description">Description</label>
+						</div>
+					</div>
+					<div class="max top-padding">
+						<button class="chip small red white-text" on:click={() => { subtripToDeleteIdx = si; ui("#delete-subtrip-confirm")}}><i>delete</i> delete subtrip</button>
+					</div>
+				</div>
 				{:else}
 				<div class="left-padding right-padding">
-
+					<div class="max left-padding">
+						<h5 class="small"><b>{trip.name}</b></h5>
+					</div>
+					<div class="max left-padding">
+						<span>{trip.description}</span>
+					</div>
 				</div>
 				{/if}
-				</div>
 			</div>
-			{#if trip.photos.length > 0}
 			<div class="row scroll">
-				{#each trip.photos as photo, index}
+				{#each trip.photos as photo, pi}
 					{#if photo != null}
 						{#if currentlyEditing }
 						<span>
-							<button class="close circle red" data-ui="#delete-sub-confirm" on:click={() => {photoToDeleteSub = photo; photoToDeleteSubIndex = index; subtripIndex = si;}}>
+							<button class="close circle red" data-ui="#delete-sub-confirm" on:click={() => {photoToDeleteSub = photo; photoToDeleteSubIndex = pi; subtripIndex = si;}}>
 								<i class="round small-padding white-text">delete</i>
 							</button>
-							<img src={photo} alt={index+1} class="responsive medium-width small-height round" />
+							<img src={photo} alt={pi+1} class="responsive medium-width small-height round" />
 						</span>
 						{:else}
-						<a href="{photo}" data-fancybox="gallery" data-caption={index+1}>
-							<img src={photo} alt={index+1} class="responsive medium-width small-height round" />
+						<a href="{photo}" data-fancybox="gallery" data-caption={pi+1}>
+							<img src={photo} alt={pi+1} class="responsive medium-width small-height round" />
 						</a>
 						{/if}
 					{/if}
 				{/each}
-			</div>
-			{:else}
-				<div class="row">
-					<div class="max left-padding">
-						<em>No photos found for this subtrip</em>
-					</div>
+				<div>
+					<button class="extend border square round">
+						<i>add</i>
+						<span>Add photo</span>
+					</button>
 				</div>
-			{/if}
+			</div>
 		{/each}
 	{/if}
 
@@ -421,17 +457,17 @@
 		</div>
 	</div>
 	<div class="row scroll">
-		{#each defaultTrip.photos as photo, index}
+		{#each defaultTrip.photos as photo, pi}
 			{#if currentlyEditing }
 			<span>
-				<button class="close circle red" data-ui="#delete-confirm" on:click={() => {photoToDelete = photo; photoToDeleteIndex = index;}}>
+				<button class="close circle red" data-ui="#delete-confirm" on:click={() => {photoToDelete = photo; photoToDeleteIndex = pi;}}>
 					<i class="round small-padding white-text">delete</i>
 				</button>
-				<img src={photo} alt={index+1} class="responsive medium-width small-height round" />
+				<img src={photo} alt={pi+1} class="responsive medium-width small-height round" />
 			</span>
 			{:else}
-			<a href="{photo}" data-fancybox="gallery" data-caption={index+1}>
-				<img src={photo} alt={index+1} class="responsive medium-width small-height round" />
+			<a href="{photo}" data-fancybox="gallery" data-caption={pi+1}>
+				<img src={photo} alt={pi+1} class="responsive medium-width small-height round" />
 			</a>
 			{/if}
 		{/each}
@@ -501,11 +537,8 @@
 
 	{#if currentlyEditing }
 	<nav class="no-space right-align m l">
-		<button class="border left-round extra" on:click={() => {updateTrip(); toggleEdit();}}>
+		<button class="border square round extra" on:click={() => {updateTrip(); toggleEdit();}}>
 			<i class="extra secondary-text">save</i>
-		</button>
-		<button class="border right-round extra" on:click={toggleEdit}>
-			<i class="extra secondary-text">cancel</i>
 		</button>
 	</nav>
 	{/if}
@@ -521,6 +554,19 @@
 		<nav class="right-align no-space">
 			<button class="transparent link" data-ui="#delete-confirm">Cancel</button>
 			<button class="round error" data-ui="#delete-confirm" on:click={() => {deletePhoto(photoToDeleteIndex);}}>Delete permanently</button>
+		</nav>
+	</dialog>
+
+	<div class="overlay blur" style="z-index: 1000000;"></div>
+	<dialog id="delete-subtrip-confirm" style="z-index: 1000001;" bind:this={deleteConfirmDialog}>
+		{#if subtripToDeleteIdx >= 0 && data.trip.subtrips.length > 0}
+			<h3>Delete subtrip {data.trip.subtrips[subtripToDeleteIdx].name}?</h3>
+		{/if}
+		<p class="bold">Are you sure you want to this subtrip and all photos belonging to it? This action cannot be taken back!</p>
+		<div class="space"></div>
+		<nav class="right-align no-space">
+			<button class="transparent link" data-ui="#delete-sub-confirm">Cancel</button>
+			<button class="round error" data-ui="#delete-subtrip-confirm" on:click={() => {deleteSubtrip(subtripToDeleteIdx);}}>Delete permanently</button>
 		</nav>
 	</dialog>
 

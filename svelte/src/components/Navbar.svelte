@@ -34,11 +34,8 @@
 		</button>
 		{#if currentlyEditing }
 		<nav class="no-space">
-			<button class="border left-round extra" on:click={saveFunction}>
+			<button class="border square round extra" on:click={saveFunction}>
 				<i class="extra secondary-text">save</i>
-			</button>
-			<button class="border right-round extra" on:click={editFunction}>
-				<i class="extra secondary-text">cancel</i>
 			</button>
 		</nav>
 		{:else}
