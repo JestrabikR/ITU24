@@ -561,14 +561,6 @@
 		</div>
 	</div>
 
-	{#if currentlyEditing }
-	<nav class="no-space right-align m l">
-		<button class="border square round extra" on:click={() => {updateTrip(); toggleEdit();}}>
-			<i class="extra secondary-text">save</i>
-		</button>
-	</nav>
-	{/if}
-
 	<!-- Invisible elements (dialogs, pop-ups, modals, ...) -->
 
 	<div class="overlay blur" style="z-index: 1000000;"></div>
