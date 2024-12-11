@@ -384,7 +384,13 @@
 	</div>
 
 	{#if defaultTrip.subtrips.length < 1}
-		<p>No subtrips</p>
+		<div class="row">
+			<div class="max">
+				<div class="left-padding">
+					<p>No subtrips</p>
+				</div>
+			</div>
+		</div>
 	{:else}
 		{#each defaultTrip.subtrips as trip, si (si)}
 			<div class="row" id="{trip.name}">
@@ -456,6 +462,7 @@
 			</button>
 		</div>
 	</div>
+	{#if defaultTrip.photos.length > 0}
 	<div class="row scroll">
 		{#each defaultTrip.photos as photo, pi}
 			{#if currentlyEditing }
@@ -472,6 +479,15 @@
 			{/if}
 		{/each}
 	</div>
+	{:else}
+	<div class="row">
+		<div class="max">
+			<div class="left-padding">
+				<p>No uncategorized photos</p>
+			</div>
+		</div>
+	</div>
+	{/if}
 
 	<div class="row">
 		<div class="max">
