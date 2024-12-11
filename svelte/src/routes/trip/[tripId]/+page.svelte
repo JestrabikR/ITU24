@@ -1,5 +1,6 @@
 <script>
 	import Navbar from "@components/Navbar.svelte";
+	import EditBar from "@components/EditBar.svelte";
 	import * as pkg from "@fancyapps/ui";
 	import { page } from "$app/stores";
 	import { onMount } from "svelte";
@@ -291,6 +292,7 @@
 
 <main class="responsive">
 	<Navbar view=true editFunction={() => {toggleEdit();}} saveFunction={() => {updateTrip(); toggleEdit();}} bind:currentlyEditing={currentlyEditing} />
+	<EditBar editFunction={() => {toggleEdit();}} saveFunction={() => {updateTrip(); toggleEdit();}} bind:currentlyEditing={currentlyEditing}/>
 
 	<div class="row center-align">
 		{#if currentlyEditing}

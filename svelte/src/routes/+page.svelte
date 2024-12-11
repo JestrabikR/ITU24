@@ -88,7 +88,7 @@
 <main class="responsive">
 	<Navbar/>
 
-	<div class="row">
+	<div class="row top-padding bottom-padding">
 		<button class="secondary absolute right" on:click={toggleView}><i>{gridView ? "map" : "apps"}</i></button>
 	</div>
 
