@@ -59,7 +59,7 @@
 				body: JSON.stringify(updatedTrip),
 					headers: {
 						'Content-Type': 'application/json'
-			}
+				}
 			});
 
 			if(response.ok){
