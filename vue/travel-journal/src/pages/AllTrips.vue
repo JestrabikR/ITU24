@@ -5,6 +5,7 @@ import { TripStatus } from '@/helpers';
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { useToast } from 'vue-toastification';
 
 const route = useRoute();
 const tripStatus = route.params.tripStatus;
@@ -12,6 +13,8 @@ const tripStatus = route.params.tripStatus;
 let title = ref("");
 
 let trips = ref([]);
+
+const toast = useToast();
 
 onMounted(async () => {
     try {
@@ -47,6 +50,7 @@ onMounted(async () => {
             });
         }
     } catch (error) {
+        toast.error("Nepodařilo se načíst cesty");
         console.error('Error fetching trips', error);
     }
 })

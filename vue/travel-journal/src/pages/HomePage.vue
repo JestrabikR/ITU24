@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 import TripCard from '@/components/TripCard.vue';
 import TripsSectionHeader from '@/components/TripsSectionHeader.vue';
 import { TripStatus } from '@/helpers';
@@ -9,16 +10,20 @@ import PlusCircleIcon from '@/assets/icons/PlusCircleIcon.vue';
 import AllTripsMap from '@/components/AllTripsMap.vue';
 import MapIcon from '@/assets/icons/MapIcon.vue';
 import GridIcon from '@/assets/icons/GridIcon.vue';
+import { useToast } from 'vue-toastification';
 
 let trips = ref([]);
 let future_trips = ref([]);
 let past_trips = ref([]);
 let current_trips = ref([]);
-let trips_gps = ref([]);
 
 let map_view = ref(false);
 
+let loading = ref(true);
+
 const limit = 3; // how many trips are showing in each section
+
+const toast = useToast();
 
 onMounted(async () => {
     try {
@@ -45,21 +50,11 @@ onMounted(async () => {
           return tripStartDate <= today && tripEndDate >= today;
         });
 
-        // create array for map view
-        trips.value.forEach((trip) => {
-            var subtrips_gps = [];
-
-            trip.subtrips.forEach((subtrip) => {
-                subtrips_gps.push(subtrip.gps);
-            });
-
-            if (subtrips_gps.length > 0) {
-                trips_gps.value.push(subtrips_gps);
-            }
-        });
-
     } catch (error) {
+        toast.error("Nepodařilo se načíst cesty");
         console.error('Error fetching trips', error);
+    } finally {
+        loading.value = false;
     }
 });
 
@@ -69,9 +64,13 @@ function toggleMapView() {
 </script>
 
 <template>
-    <!--TODO? na urovni tlacitka udelat listu jako z navrhu?-->
+    <div v-if="loading" class="text-center mt-12 w-full">
+        <PulseLoader/>
+    </div>
+
+    <div v-else>
     <div class="flex justify-end">
-        <button @click="toggleMapView" type="button" class="bg-blue-700 rounded-xl px-4 my-1 mr-3 text-white text-lg">
+        <button @click="toggleMapView" type="button" class="bg-blue-700 hover:bg-blue-800 rounded-xl px-4 my-1 mr-3 text-white text-lg">
             <div class="flex">
                 <a v-if="map_view" class="flex flex-row items-center">
                     <GridIcon/>
@@ -83,12 +82,12 @@ function toggleMapView() {
                 </a>
             </div>
         </button>
-        <RouterLink to="/add/trip">
+        <RouterLink to="/form/trip">
             <PlusCircleIcon/>
         </RouterLink>
     </div>
 
-    <div v-if="map_view"> <AllTripsMap :tripsGps="trips_gps"/> </div>
+    <div v-if="map_view"> <AllTripsMap :trips="trips"/> </div>
 
     <section v-else>
         <h2 v-if="current_trips.length > 0" class="pt-5 pb-2 sm:pt-6 sm:pb-3 text-2xl font-extrabold">
@@ -112,4 +111,5 @@ function toggleMapView() {
             </div>
         </TripCardsGrid>
     </section>
+    </div>
 </template>

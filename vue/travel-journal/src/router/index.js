@@ -5,6 +5,9 @@ import TripDetail from '@/pages/TripDetail.vue';
 import NotFound from '@/pages/NotFound.vue';
 import AllTrips from '@/pages/AllTrips.vue';
 import VisitedCountries from '@/pages/VisitedCountries.vue';
+import TripForm from '@/pages/TripForm.vue';
+import SubtripForm from '@/components/SubtripForm.vue';
+import AllTripsGallery from '@/pages/AllTripsGallery.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,6 +16,11 @@ const router = createRouter({
             path: '/',
             name: 'home',
             component: HomePage,
+        },
+        {
+            path: '/gallery',
+            name: 'gallery',
+            component: AllTripsGallery,
         },
         {
             path: '/trip/:id',
@@ -28,6 +36,16 @@ const router = createRouter({
             path: '/visited',
             name: 'visited',
             component: VisitedCountries
+        },
+        {
+            path: '/form/trip/:id?', // if id is empty => it is a create form else update
+            name: 'tripForm',
+            component: TripForm
+        },
+        {
+            path: '/form/subtrip/:id', // if id is empty => it is a create form else update
+            name: 'subtripForm',
+            component: SubtripForm
         },
         {
             path: '/:catchAll(.*)',

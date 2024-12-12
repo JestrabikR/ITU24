@@ -25,7 +25,6 @@ onMounted(() => {
 </script>
 
 <template>
-    <!--TODO: na male obrazovce je to jinak vysoke nez karty bez full_width=true-->
     <div v-if="full_width" class="col-span-2">
         <RouterLink :to="`/trip/${props.trip['id']}`">
             <div class="relative to-xs:h-44 sm:h-52 md:h-64 lg:h-52 xl:h-52 2xl:h-64 rounded-lg overflow-hidden shadow-card-shadow transition-shadow duration-300 hover:shadow-card-shadow-hover ">
