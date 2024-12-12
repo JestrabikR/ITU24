@@ -39,7 +39,6 @@
 
 
 		try {
-			// Add the new trip
 			const response = await fetch(`${APIURL}/trip/add`, {
 				method: "POST",
 				headers: {
@@ -52,20 +51,18 @@
 				throw new Error("Failed to create a new trip.");
 			}
 
-			// Fetch all trips to locate the new one
 			const tripsResponse = await fetch(`${APIURL}/trips`);
 			if (!tripsResponse.ok) {
 				throw new Error("Failed to fetch trips.");
 			}
 
 			const trips = await tripsResponse.json();
-			const newTrip = trips.at(-1); // Assuming the new trip is the last in the list
+			const newTrip = trips.at(-1);
 
 			if (!newTrip || !newTrip.id) {
 				throw new Error("New trip ID not found.");
 			}
 
-			// Redirect to the new trip's page
 			goto(`/trip/${newTrip.id}`);
 		} catch (error) {
 			console.error("Error creating new trip:", error);
