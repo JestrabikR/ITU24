@@ -76,6 +76,9 @@ Při vytváření uživatelského rozhraní je užitečné vytvářet komponenty
 - ***SubtripForm.vue*** - tato komponenta slouží k zobrazení modalového okna a formuláře pro upravení výletu v rámci cesty.
 - ***TripMap.vue*** - komponenta, která zobrazuje mapu s jednotlivými výlety v detailu cesty. Každý výlet má značku na mapě a jsou spojeny čarou postupně tak, jak probíhaly za sebou podle data. Spojení na mapě je vytvořeno z důvodu rychlejší orientace a zvýšení uživatelské přívětivosti.
 
+#### **Obrázky a ikony**
+Ve Vue.js je velmi jednoduchá práce s ikonami i s obrázky. Ikony se používají
+
 #### **Stránky**
 Jednotlivé stránky jsou vytvořeny ve složce `src/pages`.
 
