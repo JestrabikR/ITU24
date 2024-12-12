@@ -2,6 +2,7 @@
 	import { onMount } from "svelte";
 	import { APIURL } from "$lib/helper"
 	import Navbar from "@components/Navbar.svelte";
+	import { Chart, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js';
 
 	import statesData from "../../../../countries.geo.json";
 
@@ -134,6 +135,7 @@
 
 	let map;
 	let geoJson;
+	let chart;
 	onMount(() => {
 		map = L.map("map", {worldCopyJump:true,}).setView([26.40, -30.67], 2.5);
 		L.tileLayer("https://tiles.stadiamaps.com/tiles/stamen_toner_lite/{z}/{x}/{y}{r}.{ext}", {
@@ -166,6 +168,46 @@
 		};
 
 		legend.addTo(map);
+
+
+		// chart
+		const ctx = document.getElementById('chart').getContext('2d');
+
+		// Render Doughnut chart
+		chart = new Chart(ctx, {
+			type: 'doughnut',
+			data: {
+				labels: ['Visited', 'Want to Visit', 'Remaining'],
+				datasets: [
+					{
+						data: [
+							visitedCountries,
+							wantToVisitCountries,
+							totalCountries - visitedCountries - wantToVisitCountries,
+						],
+						backgroundColor: ['#8ac43f', '#f51d57', '#d3d3d3'],
+						borderWidth: 1,
+					},
+				],
+			},
+			options: {
+				responsive: true,
+				plugins: {
+					legend: {
+						position: 'top',
+					},
+					tooltip: {
+						callbacks: {
+							label: (context) => {
+								let value = context.raw;
+								let percentage = ((value / totalCountries) * 100).toFixed(2);
+								return `${context.label}: ${value} (${percentage}%)`;
+							},
+						},
+					},
+				},
+			},
+		});
 	});
 
 	/**************
@@ -179,6 +221,19 @@
 	$: wantToVisitCountries = data.countries.filter((c) => c.wanted).length;
 	$: visitedPercentage = ((visitedCountries / totalCountries) * 100).toFixed(2);
 	$: wantToVisitPercentage = ((wantToVisitCountries / totalCountries) * 100).toFixed(2);
+
+	// Register Chart.js components
+	Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
+	$: {
+		if (chart) {
+			chart.data.datasets[0].data = [
+				visitedCountries,
+				wantToVisitCountries,
+				totalCountries - visitedCountries - wantToVisitCountries,
+			];
+			chart.update();
+		}
+	}
 
 </script>
 
@@ -209,17 +264,22 @@
 			</span>
 		</label>
 	</div>
-	<div class="m l s" id="map" style="height: 80vh;"></div>
+	<div id="map" style="height: 80vh;"></div>
 
-	<div class="row">
-		<div class="max">
+	<div class="row center-align">
+		<div class="min right-padding">
 			<h2>Statistics</h2>
 			<p><b>Visited:</b> {visitedCountries} ({visitedPercentage}%)</p>
 			<p><b>Want to Visit:</b> {wantToVisitCountries} ({wantToVisitPercentage}%)</p>
 		</div>
+		<div class="min left-padding top-padding align-right">
+			<div class="chart-container">
+				<canvas id="chart"></canvas>
+			</div>
+		</div>
 	</div>
-	<div class="row">
-		<div class="max">
+	<div class="row center-align">
+		<div class="min">
 			<h5>Visited</h5>
 			<ul>
 				{#each data.countries.filter(c => c.visited) as country}
@@ -228,8 +288,8 @@
 			</ul>
 		</div>
 	</div>
-	<div class="row">
-		<div class="max">
+	<div class="row center-align">
+		<div class="min">
 			<h5>Want to visit</h5>
 			{#if data.countries.filter(c => c.wanted).length < 1}
 				<p class="italic">No countries to display</p>
