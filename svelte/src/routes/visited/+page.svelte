@@ -1,5 +1,6 @@
 <script>
 	import { onMount } from "svelte";
+	import { APIURL } from "$lib/helper"
 	import Navbar from "@components/Navbar.svelte";
 
 	import statesData from "../../../../countries.geo.json";
@@ -103,17 +104,27 @@
 					//TODO: pokud uz je vybrana a klikne se na ni znovu s tim ze se ma znovu dat jako ta stejna, tak ignorovat
 					
 					// send to api add country
-					/*const {data} = await axios.post("http://localhost:5000/country/add", newCountry, {
-						headers: {
-							"Content-Type": "application/json"
-						}
-					})*/
+					try{
+						const response = await fetch(`${APIURL}/country/add`, {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json'
+							},
+							body: JSON.stringify(newCountry)
+						});
+					}catch(e){
+					
+					}
 
 					//TODO: check response
 
 				} else {
-					// if already selected, remove
-					//const response = await axios.delete("http://localhost:5000/country/del/" + code);
+					const response = await fetch(`${APIURL}/country/del/${code}`, {
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					});
 					
 					//TODO: check response
 
