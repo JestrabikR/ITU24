@@ -45,6 +45,7 @@ Nezapomenout na popis spuštění
 
 ### Testování
 
+
 ## Aplikace v React (Dominik Borek)
 
 Nezapomenout na popis spuštění
@@ -52,9 +53,34 @@ Nezapomenout na popis spuštění
 
 ### Testování
 
-## Aplikace ve Vue (Radek Jestřabík)
 
-Nezapomenout na popis spuštění
+## Aplikace ve Vue (Radek Jestřabík)
+Celá aplikace byla implementována Radkem Jestřabíkem.
+
+### Video
+Odkaz na video prezentaci:
+https://youtu.be/96_JvVEUEI0
+
+
+### Spuštění
+Aplikace se spouští pomocí příkazu `npm run dev` ve složce /vue/travel-journal/. Před spuštěním aplikace musí být spuštěno také API. popis spuštění API lze nalézt v souboru *README.md*.
+
 ### Implementace
+Aplikace byla implementována ve frontendovém frameworku Vue.js, což je open-source framework pro Javascript. Také bylo využito Tailwind CSS, což je CSS framework, který usnadňuje práci při vytváření stylů a komponent.
+
+#### **Komponenty**
+Při vytváření uživatelského rozhraní je užitečné vytvářet komponenty, což jsou znovupoužitelné části kódu, které ale neslouží pouze pro znovupoužití, ale také ke zjednodušení čitelnosti kódu na stránkách, kde se využívají.
+
+**Vybrané zajímavé komponenty (složka `src/components/`):**
+- ***Navbar.vue*** - komponenta pro menu, které se zobrazuje na každé obrazovce
+- ***SubtripForm.vue*** - tato komponenta slouží k zobrazení modalového okna a formuláře pro upravení výletu v rámci cesty.
+- ***TripMap.vue*** - komponenta, která zobrazuje mapu s jednotlivými výlety v detailu cesty. Každý výlet má značku na mapě a jsou spojeny čarou postupně tak, jak probíhaly za sebou podle data. Spojení na mapě je vytvořeno z důvodu rychlejší orientace a zvýšení uživatelské přívětivosti.
+
+#### **Stránky**
+Jednotlivé stránky jsou vytvořeny ve složce `src/pages`.
+
+#### **Uchování stavu mezi jednotlivými stránkami**
+Vzhledem k tomu, že jsou stránky `TripForm.vue` a `SubtripForm.vue` oddělené do samostatných souborů, ale data se ukládají v rámci jednoho formuláře, bylo nutné si nějakým způsobem předávat data. Byl zvolena balíček *pinia*, který vytváří dočasné úložiště (anglicky *stores*), pomocí kterého je možné přenášet data mezi stránkami.
 
 ### Testování
+Testování výsledné aplikace proběhlo se studentem střední školy se zaměření na IT, který má 18 let. Test probíhal dobře, uživatel se v aplikaci z většiny orientoval rychle a byl si vědomý, čeho chce dosáhnout. Jediné, kde měl lehce problémy bylo s výběrem navštívených zemí na mapce, protože si nebyl jistý jak vybírat navštívené a plánované země, myslel si, že přepínací tlačítko slouží ke změně režimu zobrazení. Toto by se dalo vylepšit důraznějším a změněným textem nad tlačítkem. Další nejistota byla při vracení se na hlavní stránku, že si nebyl jistý, která stránka je hlavní. Tento problém, by mohl mít řešení takové, že by se přidala ikona aplikace do navigačního menu, protože tu uživatelé mají spojenou s hlavní stránkou.
