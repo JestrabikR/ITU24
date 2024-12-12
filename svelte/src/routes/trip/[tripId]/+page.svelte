@@ -649,7 +649,7 @@
 			<label for="description-subtrip">Description</label>
 		</div>
 
-		<a>Select location</a>
+		<p>Select location</p>
 		<div class="max">
 			<div id="map-subtrip" class="" style="height: 300px"></div>
 		</div>
