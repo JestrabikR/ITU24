@@ -34,7 +34,8 @@
 			disadvantages: [],
 			photos: [],
 			subtrips: [],
-			budget: 0
+			budget: 0,
+			country: ""
 		};
 
 
@@ -63,7 +64,7 @@
 				throw new Error("New trip ID not found.");
 			}
 
-			goto(`/trip/${newTrip.id}`);
+			goto(`/trip/${newTrip.id}?new=true`);
 		} catch (error) {
 			console.error("Error creating new trip:", error);
 			alert("There was an error creating a new trip. Please try again.");

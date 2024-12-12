@@ -210,6 +210,15 @@
 		}).addTo(map);
 
 		updateMap();
+		
+
+		// check if redirected from new trip, if yes toggle editing mode
+		const url = new URL(window.location.href);
+		const triggerFunction = url.searchParams.get("new");
+
+		if (triggerFunction === "true") {
+			toggleEdit();
+		}
 	});
 
 	function updateMap() {
