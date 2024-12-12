@@ -101,8 +101,6 @@
 					data.countries.push(newCountry);
 					layer.setStyle(isVisitedToggle ? visitedHighlightStyle : wantToVisitHighlightStyle);
 
-					//TODO: pokud uz je vybrana a klikne se na ni znovu s tim ze se ma znovu dat jako ta stejna, tak ignorovat
-					
 					// send to api add country
 					try{
 						const response = await fetch(`${APIURL}/country/add`, {
@@ -113,20 +111,19 @@
 							body: JSON.stringify(newCountry)
 						});
 					}catch(e){
-					
+						console.error("Error during country addition: ", e);
 					}
-
-					//TODO: check response
-
 				} else {
-					const response = await fetch(`${APIURL}/country/del/${code}`, {
-						method: 'DELETE',
-						headers: {
-							'Content-Type': 'application/json'
-						}
-					});
-					
-					//TODO: check response
+					try{
+						const response = await fetch(`${APIURL}/country/del/${code}`, {
+							method: 'DELETE',
+							headers: {
+								'Content-Type': 'application/json'
+							}
+						});
+					}catch(e){
+						console.error("Error during country addition: ", e);
+					}
 
 					data.countries.splice(index, 1);
 					geoJson.resetStyle(layer);
@@ -135,41 +132,26 @@
 		});
 	}
 
-	let mapLarge;
-	let mapSmall;
+	let map;
 	let geoJson;
 	onMount(() => {
-		mapLarge = L.map("mapLarge", {worldCopyJump:true,}).setView([26.40, -30.67], 2.5);
+		map = L.map("map", {worldCopyJump:true,}).setView([26.40, -30.67], 2.5);
 		L.tileLayer("https://tiles.stadiamaps.com/tiles/stamen_toner_lite/{z}/{x}/{y}{r}.{ext}", {
 			minZoom: 0,
 			maxZoom: 20,
 			attribution: `&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>`,
 			ext: "png",
-		}).addTo(mapLarge);
-
-		mapSmall = L.map("mapSmall", {worldCopyJump:true,}).setView([26.40, -30.67], 2.5);
-		L.tileLayer("https://tiles.stadiamaps.com/tiles/stamen_toner_lite/{z}/{x}/{y}{r}.{ext}", {
-			minZoom: 0,
-			maxZoom: 20,
-			attribution: `&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>`,
-			ext: "png",
-		}).addTo(mapSmall);
+		}).addTo(map);
 
         geoJson = L.geoJson(statesData, {
             style: style,
             onEachFeature: onEachFeature,
-        }).addTo(mapLarge);
+        }).addTo(map);
 
-       geoJson = L.geoJson(statesData, {
-            style: style,
-            onEachFeature: onEachFeature,
-        }).addTo(mapSmall);
-
-		let legendLarge = L.control({position: "topright"});
-		let legendSmall = L.control({position: "topright"});
+		let legend = L.control({position: "topright"});
 
 		// add legend
-		legendLarge.onAdd = function () {
+		legend.onAdd = function () {
 			const div = L.DomUtil.create("article", "white tiny-line small-padding"); //TODO styling
 			const grades = [0, 1];
 			const labels = ["<i>check_circle</i>Visited", "<i>cancel</i>Want to visit"];
@@ -183,33 +165,80 @@
 			return div;
 		};
 
-		legendSmall.onAdd = function () {
-			const div = L.DomUtil.create("article", "white tiny-line small-padding"); //TODO styling
-			const grades = [0, 1];
-			const labels = ["<i>check_circle</i>Visited", "<i>cancel</i>Want to visit"];
-			const colors = [visitedColor, wantToVisitColor];
-
-			for (let i = 0; i < grades.length; i++) {
-				div.innerHTML += 
-				`<p style="color: ${colors[i]}">${labels[i]}</p>`;
-			}
-
-			return div;
-		};
-
-
-		legendSmall.addTo(mapSmall);
-		legendLarge.addTo(mapLarge);
+		legend.addTo(map);
 	});
+
+	/**************
+	 * STATISTICS *
+	 *************/
+	let showVisited = true;
+
+	// Compute statistics
+	$: totalCountries = statesData.features.length;
+	$: visitedCountries = data.countries.filter((c) => c.visited).length;
+	$: wantToVisitCountries = data.countries.filter((c) => c.wanted).length;
+	$: visitedPercentage = ((visitedCountries / totalCountries) * 100).toFixed(2);
+	$: wantToVisitPercentage = ((wantToVisitCountries / totalCountries) * 100).toFixed(2);
+
 </script>
 
-<main class="m l responsive">
-	<Navbar />
-</main>
+<style>
+	.switch > input:checked + span::before, .switch.icon > input:checked + span > i {
+		color: #E3E2E5 !important;
+	}
 
-<div class="m l" id="mapLarge" style="height: 80vh;"></div>
+	.switch > input:checked + span::after{
+		background-color: #E3E2E5;
+		border: .125rem solid var(--outline);
+	}
+</style>
 
-<main class="s" style="overflow: hidden; height: 100vh;">
-	<div id="mapSmall" style="height: 100%;"></div>
+<main class="responsive">
 	<Navbar />
+	<div class="row right-align right-padding bottom-padding">
+		{#if isVisitedToggle}
+			Visited
+		{:else}
+			Want to visit
+		{/if}
+		<label class="switch icon">
+			<input type="checkbox" bind:checked={isVisitedToggle}>
+			<span>
+				<i style="background-color: {wantToVisitColor}">cancel</i>
+				<i style="background-color: {visitedColor}">check_circle</i>
+			</span>
+		</label>
+	</div>
+	<div class="m l s" id="map" style="height: 80vh;"></div>
+
+	<div class="row">
+		<div class="max">
+			<h2>Statistics</h2>
+			<p><b>Visited:</b> {visitedCountries} ({visitedPercentage}%)</p>
+			<p><b>Want to Visit:</b> {wantToVisitCountries} ({wantToVisitPercentage}%)</p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="max">
+			<h5>Visited</h5>
+			<ul>
+				{#each data.countries.filter(c => c.visited) as country}
+					<li>{country.name}</li>
+				{/each}
+			</ul>
+		</div>
+	</div>
+	<div class="row">
+		<div class="max">
+			<h5>Want to visit</h5>
+			{#if data.countries.filter(c => c.wanted).length < 1}
+				<p class="italic">No countries to display</p>
+			{/if}
+			<ul>
+				{#each data.countries.filter(c => c.wanted) as country}
+					<li>{country.name}</li>
+				{/each}
+			</ul>
+		</div>
+	</div>
 </main>
