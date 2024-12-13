@@ -1,6 +1,8 @@
 <script>
 	import { onMount } from "svelte";
+	import { APIURL } from "$lib/helper"
 	import Navbar from "@components/Navbar.svelte";
+	import { Chart, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js';
 
 	import statesData from "../../../../countries.geo.json";
 
@@ -100,22 +102,29 @@
 					data.countries.push(newCountry);
 					layer.setStyle(isVisitedToggle ? visitedHighlightStyle : wantToVisitHighlightStyle);
 
-					//TODO: pokud uz je vybrana a klikne se na ni znovu s tim ze se ma znovu dat jako ta stejna, tak ignorovat
-					
 					// send to api add country
-					/*const {data} = await axios.post("http://localhost:5000/country/add", newCountry, {
-						headers: {
-							"Content-Type": "application/json"
-						}
-					})*/
-
-					//TODO: check response
-
+					try{
+						const response = await fetch(`${APIURL}/country/add`, {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json'
+							},
+							body: JSON.stringify(newCountry)
+						});
+					}catch(e){
+						console.error("Error during country addition: ", e);
+					}
 				} else {
-					// if already selected, remove
-					//const response = await axios.delete("http://localhost:5000/country/del/" + code);
-					
-					//TODO: check response
+					try{
+						const response = await fetch(`${APIURL}/country/del/${code}`, {
+							method: 'DELETE',
+							headers: {
+								'Content-Type': 'application/json'
+							}
+						});
+					}catch(e){
+						console.error("Error during country addition: ", e);
+					}
 
 					data.countries.splice(index, 1);
 					geoJson.resetStyle(layer);
@@ -126,8 +135,9 @@
 
 	let map;
 	let geoJson;
+	let chart;
 	onMount(() => {
-		map = L.map("map").setView([26.40, -30.67], 2.5);
+		map = L.map("map", {worldCopyJump:true,}).setView([26.40, -30.67], 2.5);
 		L.tileLayer("https://tiles.stadiamaps.com/tiles/stamen_toner_lite/{z}/{x}/{y}{r}.{ext}", {
 			minZoom: 0,
 			maxZoom: 20,
@@ -142,27 +152,153 @@
 
 		let legend = L.control({position: "topright"});
 
-        // add legend
-        legend.onAdd = function () {
-            const div = L.DomUtil.create("article", "white round tiny-line small-padding"); //TODO styling
-            const grades = [0, 1];
-            const labels = ["Visited", "Want to visit"];
-            const colors = [visitedColor, wantToVisitColor];
+		// add legend
+		legend.onAdd = function () {
+			const div = L.DomUtil.create("article", "white tiny-line small-padding"); //TODO styling
+			const grades = [0, 1];
+			const labels = ["<i>check_circle</i>Visited", "<i>cancel</i>Want to visit"];
+			const colors = [visitedColor, wantToVisitColor];
 
-            for (let i = 0; i < grades.length; i++) {
-                div.innerHTML += 
-                    `<p style="color: ${colors[i]}">${labels[i]}</p>`;
-            }
+			for (let i = 0; i < grades.length; i++) {
+				div.innerHTML += 
+				`<p style="color: ${colors[i]}">${labels[i]}</p>`;
+			}
 
-            return div;
-        };
+			return div;
+		};
 
-        legend.addTo(map);
+		legend.addTo(map);
+
+
+		// chart
+		const ctx = document.getElementById('chart').getContext('2d');
+
+		// Render Doughnut chart
+		chart = new Chart(ctx, {
+			type: 'doughnut',
+			data: {
+				labels: ['Visited', 'Want to Visit', 'Remaining'],
+				datasets: [
+					{
+						data: [
+							visitedCountries,
+							wantToVisitCountries,
+							totalCountries - visitedCountries - wantToVisitCountries,
+						],
+						backgroundColor: ['#8ac43f', '#f51d57', '#d3d3d3'],
+						borderWidth: 1,
+					},
+				],
+			},
+			options: {
+				responsive: true,
+				plugins: {
+					legend: {
+						position: 'top',
+					},
+					tooltip: {
+						callbacks: {
+							label: (context) => {
+								let value = context.raw;
+								let percentage = ((value / totalCountries) * 100).toFixed(2);
+								return `${context.label}: ${value} (${percentage}%)`;
+							},
+						},
+					},
+				},
+			},
+		});
 	});
+
+	/**************
+	 * STATISTICS *
+	 *************/
+	let showVisited = true;
+
+	// Compute statistics
+	$: totalCountries = statesData.features.length;
+	$: visitedCountries = data.countries.filter((c) => c.visited).length;
+	$: wantToVisitCountries = data.countries.filter((c) => c.wanted).length;
+	$: visitedPercentage = ((visitedCountries / totalCountries) * 100).toFixed(2);
+	$: wantToVisitPercentage = ((wantToVisitCountries / totalCountries) * 100).toFixed(2);
+
+	// Register Chart.js components
+	Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
+	$: {
+		if (chart) {
+			chart.data.datasets[0].data = [
+				visitedCountries,
+				wantToVisitCountries,
+				totalCountries - visitedCountries - wantToVisitCountries,
+			];
+			chart.update();
+		}
+	}
+
 </script>
 
-<main class="responsive">
-	<Navbar/>
-</main>
+<style>
+	.switch > input:checked + span::before, .switch.icon > input:checked + span > i {
+		color: #E3E2E5 !important;
+	}
 
-<div id="map" style="height: 80vh;"></div>
+	.switch > input:checked + span::after{
+		background-color: #E3E2E5;
+		border: .125rem solid var(--outline);
+	}
+</style>
+
+<main class="responsive">
+	<Navbar />
+	<div class="row right-align right-padding bottom-padding">
+		{#if isVisitedToggle}
+			Visited
+		{:else}
+			Want to visit
+		{/if}
+		<label class="switch icon">
+			<input type="checkbox" bind:checked={isVisitedToggle}>
+			<span>
+				<i style="background-color: {wantToVisitColor}">cancel</i>
+				<i style="background-color: {visitedColor}">check_circle</i>
+			</span>
+		</label>
+	</div>
+	<div id="map" style="height: 80vh;"></div>
+
+	<div class="row center-align">
+		<div class="min right-padding">
+			<h2>Statistics</h2>
+			<p><b>Visited:</b> {visitedCountries} ({visitedPercentage}%)</p>
+			<p><b>Want to Visit:</b> {wantToVisitCountries} ({wantToVisitPercentage}%)</p>
+		</div>
+		<div class="min left-padding top-padding align-right">
+			<div class="chart-container">
+				<canvas id="chart"></canvas>
+			</div>
+		</div>
+	</div>
+	<div class="row center-align">
+		<div class="min">
+			<h5>Visited</h5>
+			<ul>
+				{#each data.countries.filter(c => c.visited) as country}
+					<li>{country.name}</li>
+				{/each}
+			</ul>
+		</div>
+	</div>
+	<div class="row center-align">
+		<div class="min">
+			<h5>Want to visit</h5>
+			{#if data.countries.filter(c => c.wanted).length < 1}
+				<p class="italic">No countries to display</p>
+			{/if}
+			<ul>
+				{#each data.countries.filter(c => c.wanted) as country}
+					<li>{country.name}</li>
+				{/each}
+			</ul>
+		</div>
+	</div>
+</main>
