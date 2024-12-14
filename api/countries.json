@@ -18,12 +18,6 @@
         "wanted": false
     },
     {
-        "code": "SWE",
-        "name": "Sweden",
-        "visited": true,
-        "wanted": false
-    },
-    {
         "code": "GBR",
         "name": "United Kingdom",
         "visited": true,
@@ -42,20 +36,8 @@
         "wanted": false
     },
     {
-        "code": "POL",
-        "name": "Poland",
-        "visited": false,
-        "wanted": true
-    },
-    {
         "code": "FRA",
         "name": "France",
-        "visited": false,
-        "wanted": true
-    },
-    {
-        "code": "TUR",
-        "name": "Turkey",
         "visited": false,
         "wanted": true
     },
@@ -64,12 +46,6 @@
         "name": "Poland",
         "visited": true,
         "wanted": false
-    },
-    {
-        "code": "POL",
-        "name": "Poland",
-        "visited": false,
-        "wanted": true
     },
     {
         "code": "VNM",
@@ -138,12 +114,6 @@
         "wanted": true
     },
     {
-        "code": "JPN",
-        "name": "Japan",
-        "visited": false,
-        "wanted": true
-    },
-    {
         "code": "MDG",
         "name": "Madagascar",
         "visited": false,
@@ -166,5 +136,23 @@
         "name": "Belarus",
         "visited": false,
         "wanted": true
+    },
+    {
+        "code": "ATA",
+        "name": "Antarctica",
+        "visited": false,
+        "wanted": true
+    },
+    {
+        "code": "TUR",
+        "name": "Turkey",
+        "visited": false,
+        "wanted": true
+    },
+    {
+        "code": "SWE",
+        "name": "Sweden",
+        "visited": true,
+        "wanted": false
     }
 ]
