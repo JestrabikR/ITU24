@@ -37,11 +37,41 @@ komunikuje s tímto backendem. Každý z členů si vybral různé technologie (
 
 Při kontrolní prezentaci nebyly vzneseny žádné připomínky k návrhu aplikace.
 
-## Aplikace ve Svelte (Ondřej Hruboš)
+## Aplikace ve SvelteKit (Ondřej Hruboš)
 
-Nezapomenout na popis spuštění
+### Video
+TODO
+
+### Spuštění
+
+Aplikace se spustí příkazem `npm run dev -- --open` **v složce /svelte/** (přepínače `-- --open` slouží k přímému otevření aplikace ve výchozím prohlížeči).
+*Před spuštěním aplikace* je potřeba spustit API v hlavní složce pomocí příkazu `make` nebo pomocí sekvence příkazů ve složce ```api/``` (vytvoření a stažení knihoven stačí udělat jednou, spustit se musí vždy při otevření nové konzole):
+  - Vytvoření virtuálního prostředí: ```python -m venv .venv```
+  - Aktivování virtuálního prostředí: ```.venv\Scripts\activate```
+  - Stažení knihoven: ```pip install -r requirements.txt```
+  - Spuštění backendu: ```python main.py```.
 
 ### Implementace
+Frontend aplikace byl implementován ve frameworku **SvelteKit**. API, implementované ve frameworku **Flask**, zpřístupňuje endpointy frontendové aplikaci, díky 
+nimž aplikace získává data a odesílá data. Vzhled byl vytvářen pomocí knihovny **BeerCSS**. BeerCSS využívá knihovny *Material symbols and icons* od společnosti
+Google, pro zobrazování ikon. Pro vykreslování a práci s mapou byla použita knihovna `leaflet.js`. Graf na stráce *Visited* je vykreslován knihovnou `chart.js`.
+
+Všechny stránky jsou implementovány v složce `src/routes/`. Bylo využito routování frameworku SvelteKit, kdy každý soubor a složka představuje routu. Následující routy zpracovávají stránky:
+
+- `trip/[tripId]/+page.svelte` - dynamická routa, která zpracovává detail cesty
+- `visited/+page.svelte` - stránka se seznamem navštívených zemí
+- `+page.svelte` - hlavní stránka aplikace, která zobrazuje seznam všech výletů
+- `+error.svelte` - stránka, která zpracovává správné zobrazení v případě chyby
+- `+layout.svelte` - výchozí layout, kterými se řídí všechny routy.
+
+Ve složce `src/libs/` jsou dodatečné pomocné soubory, zejména soubor `helper.js`. 
+Komponenty vytvořené pro aplikaci se nachází ve složce `src/components/`. Nejpoužívanější komponenout je `Navbar.svelte`, která zpracovává responzivní menu
+v aplikaci.
+
+Pro komunikaci mezi stránkami bylo využito techniky *store*. V aplikaci se nachází jeden 
+store, `src/stores/flashStore.js`, který zaručuje vypsání zprávy po odstranění výletu.
+
+Jako CSS framework byla vybrána knihovna BeerCSS. Pomocí ní bylo implementováno rozhraní aplikace, včetně zpracování responzivního zobrazení.
 
 ### Testování
 
