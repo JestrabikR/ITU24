@@ -1,3 +1,5 @@
+/* Autor: Radek Jestrabik (xjestr04) */
+
 import { createRouter, createWebHistory } from 'vue-router';
 
 import HomePage from '@/pages/HomePage.vue';

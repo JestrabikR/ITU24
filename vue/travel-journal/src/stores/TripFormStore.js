@@ -1,3 +1,5 @@
+/* Autor: Radek Jestrabik (xjestr04) */
+
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
 

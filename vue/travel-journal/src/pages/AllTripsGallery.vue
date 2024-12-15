@@ -1,3 +1,5 @@
+<!--Autor: Radek Jestrabik (xjestr04) -->
+
 <script setup>
 import Gallery from '@/components/Gallery.vue';
 import { formatDate } from '@/helpers';

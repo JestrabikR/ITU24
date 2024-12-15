@@ -1,3 +1,5 @@
+<!--Autor: Radek Jestrabik (xjestr04) -->
+
 <script setup>
 import TripCard from '@/components/TripCard.vue';
 import TripCardsGrid from '@/components/TripCardsGrid.vue';

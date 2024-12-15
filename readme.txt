@@ -10,6 +10,10 @@ Adresářová struktura
 		- autorství: Dominik Borek 
 	- vue:
 		- /vue/travel-journal/
+		- /vue/travel-journal/src/pages/ - jednotlivé stránky aplikace
+		- /vue/travel-journal/src/assets/ - ikony a obrázky
+		- /vue/travel-journal/src/components/ - komponenty
+		- /vue/travel-journal/src/router/ - definice routování pro jednotlivé stránky
 		- autorství: Radek Jestřabík
 	- api:
 		- /api

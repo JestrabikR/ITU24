@@ -1,3 +1,5 @@
+<!--Autor: Radek Jestrabik (xjestr04) -->
+
 <script setup>
 const props = defineProps({
     color: {

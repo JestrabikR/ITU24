@@ -1,3 +1,5 @@
+<!--Autor: Radek Jestrabik (xjestr04) -->
+
 <template>
     <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" class="text-blue-700" viewBox="0 0 24 24">
         <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">

@@ -1,3 +1,5 @@
+<!--Autor: Radek Jestrabik (xjestr04) -->
+
 <script setup>
 import axios from 'axios';
 import { ref, onMounted } from 'vue';

@@ -1,3 +1,5 @@
+/* Autor: Radek Jestrabik (xjestr04) */
+
 import './assets/main.css';
 import router from './router';
 import { createApp } from 'vue';

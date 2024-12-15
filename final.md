@@ -124,9 +124,7 @@ Nezapomenout na popis spuštění
 Celá aplikace byla implementována Radkem Jestřabíkem.
 
 ### Video
-Odkaz na video prezentaci:
-https://youtu.be/96_JvVEUEI0
-
+Odkaz na video prezentaci nahranou na youtube: https://youtu.be/96_JvVEUEI0
 
 ### Spuštění
 Aplikace se spouští pomocí příkazu `npm run dev` ve složce /vue/travel-journal/. Před spuštěním aplikace musí být spuštěno také API. popis spuštění API lze nalézt v souboru *README.md*.
