@@ -109,6 +109,11 @@ Jako CSS framework byla vybrána knihovna BeerCSS. Pomocí ní bylo implementov�
 
 ## Aplikace v React (Dominik Borek)
 
+### Video
+Odkaz na video prezentaci: https://youtu.be/NdahhZeO5L4
+
+### Spuštění
+
 Nezapomenout na popis spuštění
 ### Implementace
 

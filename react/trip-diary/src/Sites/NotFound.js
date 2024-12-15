@@ -1,6 +1,10 @@
-import React from 'react';
+/*
+  Autor: Dominik Borek (xborek12)
+  Not Found stránka
+*/
+
 import { useNavigate } from 'react-router-dom';
-import '../assets/NotFound.css'; // Stylování komponenty
+import '../assets/NotFound.css';
 
 const NotFound = () => {
   const navigate = useNavigate();
@@ -18,7 +22,6 @@ const NotFound = () => {
         </button>
       </div>
       <div className="not-found-animation">
-        {/* Tady můžete přidat SVG animaci, obrázek nebo cokoliv chcete */}
         <img
           src="https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif"
           alt="Page Not Found"

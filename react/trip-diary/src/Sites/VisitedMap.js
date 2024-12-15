@@ -1,27 +1,31 @@
+/*
+  Autor: Dominik Borek (xborek12)
+  Stránka s mapou navštívených zemí
+*/
+
 import React, { useState, useEffect, useRef } from 'react';
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import axios from 'axios';
-import countriesGeoJson from '../countries.geo.json'; // Upravte cestu k vašemu GeoJSON souboru
+import countriesGeoJson from '../countries.geo.json';
 import { FormControlLabel, Switch, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
-import Header from '../Header'; // Volitelné, pokud používáte vlastní hlavičku
+import Header from '../Header';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import L from 'leaflet'; // Importujte Leaflet pro legendu
+import L from 'leaflet';
 
-const visitedColor = '#8ac43f'; // Zelená pro navštívené
-const wantedColor = '#f51d57'; // Červená pro požadované
+const visitedColor = '#8ac43f';
+const wantedColor = '#f51d57';
 
 function VisitedMap() {
   const [countries, setCountries] = useState([]);
-  const [toggleMode, setToggleMode] = useState('visited'); // 'visited' nebo 'wanted'
+  const [toggleMode, setToggleMode] = useState('visited');
   const [visitedCountries, setVisitedCountries] = useState([]);
   const [wantedCountries, setWantedCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState('');
   const mapRef = useRef(null);
 
   useEffect(() => {
-    // Načítání dat o zemích z API
     const fetchCountries = async () => {
       try {
         const response = await axios.get('http://localhost:5000/countries');
@@ -55,14 +59,14 @@ function VisitedMap() {
         fillOpacity: 0.5,
       };
     }
-    return { fillColor: '#D3D3D3', weight: 1, color: '#777', fillOpacity: 0.5 }; // Default style
+    return { fillColor: '#D3D3D3', weight: 1, color: '#777', fillOpacity: 0.5 };
   };
 
   const onEachCountry = (feature, layer) => {
     const countryCode = feature.id;
     const countryData = countries.find((c) => c.code === countryCode);
 
-    let color = '#ffffff'; // Defaultní bílá
+    let color = '#ffffff';
     if (countryData) {
       if (countryData.visited) {
         color = visitedColor;
@@ -84,7 +88,7 @@ function VisitedMap() {
           ? countryData?.visited
           : countryData?.wanted;
 
-      updateCountryStatus(countryCode, !isCurrentlyMarked); // Pokud není označena, přidáme ji, pokud je, odstraníme
+      updateCountryStatus(countryCode, !isCurrentlyMarked);
     });
   };
 
@@ -144,27 +148,33 @@ function VisitedMap() {
     }
   };
 
-  const totalCountries = 190;
+  const totalCountries =180;
   const visitedPercentage = (visitedCountries.length / totalCountries) * 100;
 
-  // Funkce pro přidání legendy do mapy
   const addLegend = (map) => {
-    const legend = L.control({ position: 'topright' });
-
+    const legend = L.control({ position: 'bottomright' });
+  
     legend.onAdd = function () {
       const div = L.DomUtil.create('div', 'info legend');
-      const grades = [0, 1];
-      const labels = ['Navštíveno', 'Chci navštívit'];
+      div.style.backgroundColor = 'white';
+      div.style.padding = '10px';
+      div.style.borderRadius = '8px';
+      div.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.2)';
+      div.style.fontSize = '14px';
+      div.innerHTML = '<h4>Legenda</h4>';
+  
+      const grades = ['Navštíveno', 'Chci navštívit'];
       const colors = [visitedColor, wantedColor];
-
-      for (let i = 0; i < grades.length; i++) {
-        div.innerHTML +=
-          `<i style="background: ${colors[i]}"></i> ${labels[i]}<br>`;
-      }
-
+  
+      grades.forEach((label, index) => {
+        div.innerHTML += `
+          <i style="background: ${colors[index]}; width: 18px; height: 18px; display: inline-block; margin-right: 8px; border-radius: 4px;"></i>
+          ${label}<br>`;
+      });
+  
       return div;
     };
-
+  
     legend.addTo(map);
   };
 
@@ -203,15 +213,15 @@ function VisitedMap() {
               value={selectedCountry}
               onChange={(e) => setSelectedCountry(e.target.value)}
               style={{
-                color: 'white', // Nastavení barvy textu
-                borderColor: 'white', // Nastavení barvy okrajů
-                backgroundColor: '#333', // Nastavení pozadí
+                color: 'white',
+                borderColor: 'white',
+                backgroundColor: '#333',
               }}
               MenuProps={{
                 PaperProps: {
                   style: {
-                    backgroundColor: '#333', // Nastavení pozadí pro dropdown
-                    color: 'white', // Barva textu v dropdownu
+                    backgroundColor: '#333',
+                    color: 'white',
                   }
                 }
               }}
@@ -230,15 +240,15 @@ function VisitedMap() {
               value={selectedCountry}
               onChange={(e) => setSelectedCountry(e.target.value)}
               style={{
-                color: 'white', // Nastavení barvy textu
-                borderColor: 'white', // Nastavení barvy okrajů
-                backgroundColor: '#333', // Nastavení pozadí
+                color: 'white',
+                borderColor: 'white',
+                backgroundColor: '#333',
               }}
               MenuProps={{
                 PaperProps: {
                   style: {
-                    backgroundColor: '#333', // Nastavení pozadí pro dropdown
-                    color: 'white', // Barva textu v dropdownu
+                    backgroundColor: '#333',
+                    color: 'white',
                   }
                 }
               }}
@@ -260,7 +270,7 @@ function VisitedMap() {
           style={{ height: '80vh', width: '100%' }}
           whenCreated={(mapInstance) => {
             mapRef.current = mapInstance;
-            addLegend(mapRef.current); // Přidání legendy do mapy
+            addLegend(mapRef.current);
           }}
         >
           <TileLayer

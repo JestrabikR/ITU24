@@ -1,3 +1,8 @@
+/*
+  Autor: Dominik Borek (xborek12)
+  Componenta zahrnující header
+*/
+
 import React, { useState, useEffect } from 'react';
 import { AppBar, Toolbar, Button, IconButton, Dialog, DialogActions, DialogContent, DialogTitle, Drawer, List, ListItem, ListItemText } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
@@ -11,9 +16,9 @@ import { useNavigate, useLocation, useParams } from "react-router-dom";
 
 function Header() {
   const [selectedTab, setSelectedTab] = useState('Trips');
-  const [openModal, setOpenModal] = useState(false); // Stav pro modální okno
-  const [tripIdToDelete, setTripIdToDelete] = useState(null); // Ukládáme ID tripu k smazání
-  const [openDrawer, setOpenDrawer] = useState(false); // Stav pro boční panel (Drawer)
+  const [openModal, setOpenModal] = useState(false);
+  const [tripIdToDelete, setTripIdToDelete] = useState(null);
+  const [openDrawer, setOpenDrawer] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { id } = useParams();
@@ -84,7 +89,6 @@ function Header() {
           <img src={logo} alt="Logo" className="App-logo" />
         </IconButton>
 
-        {/* Navigační tlačítka pro velkou obrazovku */}
         <Button onClick={goToTrips} sx={{ fontSize: '24px', color: 'white', fontFamily: 'Nunito-Bold', display: { xs: 'none', md: 'block' } }}>
           Výlety
         </Button>
@@ -95,7 +99,6 @@ function Header() {
           Galerie
         </Button>
 
-        {/* Tlačítko pro hamburger menu na malé obrazovky */}
         <IconButton color="inherit" onClick={() => setOpenDrawer(true)} sx={{ display: { xs: 'block', md: 'none' } }}>
           <MenuIcon />
         </IconButton>
@@ -124,10 +127,9 @@ function Header() {
         )}
       </Toolbar>
 
-      {/* Boční panel (Drawer) pro mobilní zobrazení */}
       <Drawer anchor="left" open={openDrawer} onClose={() => setOpenDrawer(false)} sx={{
           '& .MuiDrawer-paper': {
-            backgroundColor: '#333', // Tmavě šedá barva
+            backgroundColor: '#333',
           },
         }}>
         <List sx={{ width: 250 }}>
@@ -143,7 +145,6 @@ function Header() {
         </List>
       </Drawer>
 
-      {/* Modal pro smazání cesty */}
       <Dialog open={openModal} onClose={closeDeleteModal}>
         <DialogTitle style={{ backgroundColor: '#333', color: 'white' }}>
           Opravdu si přejete odstranit výlet?

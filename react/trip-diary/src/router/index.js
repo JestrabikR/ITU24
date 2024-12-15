@@ -1,18 +1,19 @@
+/*
+  Autor: Dominik Borek (xborek12)
+  Routy
+*/
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
-import Main from '../Sites/Main'; // Vaše hlavní stránka
-import TripDetail from '../Sites/TripDetail'; // Detaily cesty
-import NotFound from '../Sites/NotFound'; // 404 stránka
-import AllTripsMap from '../components/AllTripsMap';
+import Main from '../Sites/Main';
+import TripDetail from '../Sites/TripDetail';
+import NotFound from '../Sites/NotFound';
 import AllPastTrips from '../Sites/AllPastTrips';
 import AllFutureTrips from '../Sites/AllFutureTrips';
 import AddTrip from '../Sites/AddTrip';
 import Gallery from '../Sites/Gallery';
 import Visited from '../Sites/VisitedMap';
-// import AllTrips from '../Sites/AllTrips'; // Stránka se všemi cestami
-// import TripForm from '../Sites/TripForm'; // Formulář cesty
-// import SubtripForm from '../Sites/SubtripForm'; // Formulář pro část cesty
+import AllTripsMap from '../Sites/AllTripsMap';
 
 const AppRouter = () => {
   return (
@@ -39,14 +40,8 @@ const AppRouter = () => {
         {/* Navštívené země */}
         <Route path="/visited" element={<Visited />} />
 
-        {/* Stránka se všemi cestami */}
-        {/* <Route path="/trips" element={<AllTrips />} /> */}
-
-        {/* Formulář cesty (vytvoření/úprava) */}
-        {/* <Route path="/form/trip/:id?" element={<TripForm />} /> */}
-
-        {/* Formulář části cesty */}
-        {/* <Route path="/form/subtrip/:id?" element={<SubtripForm />} /> */}
+        {/* Mapa se všemi cestami */}
+        <Route path="/AllTripsMap" element={<AllTripsMap />} />
 
         {/* 404 stránka */}
         <Route path="*" element={<NotFound />} />

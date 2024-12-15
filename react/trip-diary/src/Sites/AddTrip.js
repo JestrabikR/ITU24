@@ -1,12 +1,17 @@
+/*
+  Autor: Dominik Borek (xborek12)
+  Stránka pro vytvoření/editaci cesty
+*/
+
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Header from '../Header';
-import '../assets/AddTrip.css';
 import '../assets/App.css';
-import { Modal, Box, Typography, TextField, Button } from "@mui/material";
+import { Modal, Box, Typography, TextField, Button, createTheme } from "@mui/material";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -78,12 +83,10 @@ function TripForm() {
 
     try {
       if (id) {
-        // Update existing trip
         await axios.put(`http://localhost:5000/trip/update/${id}`, trip, {
           headers: { 'Content-Type': 'application/json' },
         });
       } else {
-        // Create new trip
         await axios.post('http://localhost:5000/trip/add', trip, {
           headers: { 'Content-Type': 'application/json' },
         });
@@ -144,7 +147,6 @@ function TripForm() {
     });
   };
 
-  // Style pro modal
   const style = {
     position: 'absolute',
     top: '50%',
@@ -154,8 +156,9 @@ function TripForm() {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
-    maxHeight: '80vh', // Nastaví maximální výšku modalu (80% výšky obrazovky)
-    overflowY: 'auto', // Povolení vertikálního scrollování, pokud obsah překročí maximální výšku
+    maxHeight: '80vh',
+    overflowY: 'auto',
+    color: 'black', 
   };
 
   const customIcon = L.icon({
@@ -174,17 +177,15 @@ function TripForm() {
       name: subtripName,
       description: subtripDescription,
       gps: selectedLocation,
-      photos: images.map((image) => URL.createObjectURL(image)), // Pokud chcete base64, upravte
+      photos: images.map((image) => URL.createObjectURL(image)),
       favourite: false,
     };
   
-    // Přidejte podvýlet do `trip.subtrips`
     setTrip((prevTrip) => ({
       ...prevTrip,
       subtrips: [...prevTrip.subtrips, subtripData],
     }));
   
-    // Vymažte hodnoty modálu
     setSubtripName('');
     setSubtripDescription('');
     setSelectedLocation(null);
@@ -242,7 +243,7 @@ function TripForm() {
         favourite: false,
       };
   
-      onSaveSubtrip(newSubtrip); // Zavoláme funkci předanou jako prop
+      onSaveSubtrip(newSubtrip);
       resetModalState();
       handleClose();
     };
@@ -265,12 +266,9 @@ function TripForm() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Přidat podvýlet
-          </Typography>
           <Box sx={{ mt: 2 }}>
             <MapContainer
-              center={[50.0755, 14.4378]} // Výchozí souřadnice (např. Praha)
+              center={[50.0755, 14.4378]}
               zoom={13}
               style={{ height: '300px', width: '100%', marginBottom: '16px' }}
             >
@@ -356,7 +354,6 @@ function TripForm() {
       <div  className="trip-form-container">
       <h1 className="form-title">{id ? 'Edit Trip' : 'Create Trip'}</h1>
       <form className="trip-form" onSubmit={handleSubmit}>
-        {/* Trip Name */}
         <div className="form-group">
           <TextField
             fullWidth
@@ -392,7 +389,6 @@ function TripForm() {
           />
         </div>
 
-        {/* Country */}
         <div className="form-group">
           <TextField
             fullWidth
@@ -427,7 +423,6 @@ function TripForm() {
           />
         </div>
 
-        {/* Description */}
         <div className="form-group">
           <TextField
             fullWidth
@@ -463,7 +458,6 @@ function TripForm() {
           />
         </div>
 
-        {/* Budget */}
         <div className="form-group">
           <TextField
             fullWidth
@@ -498,7 +492,6 @@ function TripForm() {
           />
         </div>
 
-        {/* Date Range */}
         <div className="form-group date-range-container" style={{ display: "flex", gap: "16px" }}>
           <TextField
             fullWidth
@@ -566,7 +559,6 @@ function TripForm() {
           />
         </div>
 
-        {/* Advantages */}
         <h3>Výhody</h3>
         {trip.advantages.map((advantage, index) => (
           <div key={index} className="form-group advantage-item">
@@ -615,7 +607,6 @@ function TripForm() {
           Přidat výhodu
         </button>
 
-        {/* Disadvantages */}
         <h3>Nevýhody</h3>
         {trip.disadvantages.map((disadvantage, index) => (
           <div key={index} className="form-group disadvantage-item">
@@ -691,7 +682,6 @@ function TripForm() {
           Přidat podvýlet
         </button>
 
-        {/* Zde voláte modal */}
         <AddSubtripModal
           isModalOpen={isModalOpen}
           handleClose={handleModalClose}

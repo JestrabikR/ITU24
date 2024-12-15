@@ -1,3 +1,8 @@
+/*
+  Autor: Dominik Borek (xborek12)
+  Stránka detailu cesty
+*/
+
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../Header';
@@ -11,19 +16,11 @@ import {
   Box,
   IconButton,
   Button,
-  Icon,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import InfoIcon from '@mui/icons-material/Info';
+import MapIcon from '@mui/icons-material/Map';
 import 'react-medium-image-zoom/dist/styles.css';
-import Zoom from 'react-medium-image-zoom';
-import AddIcon from '@mui/icons-material/Add';
 
-
-//TODO: edit datum, budget, přídání podvýletu, odstranění podvýletu, přidání/oddělání podvýletu jako favourite,
-//TODO:  přidání/oddělání fotky do galerie, přidání/úprava/odstranění výhod a nevýhod, úprava popisu, změnit ikonu + na x, který vrátí na předchozí stránku
 
 const customIcon = new L.Icon({
   iconUrl: require('leaflet/dist/images/marker-icon.png'),
@@ -34,12 +31,11 @@ const customIcon = new L.Icon({
   shadowSize: [41, 41],
 });
 
-// Komponenta pro automatické přizpůsobení mapy
 const FitBounds = ({ bounds }) => {
   const map = useMap();
   useEffect(() => {
     if (bounds.length) {
-      const paddedBounds = L.latLngBounds(bounds).pad(0.2); // Oříznout mapu o 20% z každé strany
+      const paddedBounds = L.latLngBounds(bounds).pad(0.2);
       map.fitBounds(paddedBounds);
     }
   }, [bounds, map]);
@@ -62,12 +58,12 @@ const TripMap = ({ subtrips }) => (
       center={
         subtrips[0].gps &&
         (Array.isArray(subtrips[0].gps)
-          ? [subtrips[0].gps[0], subtrips[0].gps[1]] // Pokud GPS je pole [lat, lng]
-          : [subtrips[0].gps.lat, subtrips[0].gps.lng]) // Pokud GPS je objekt { lat, lng }
+          ? [subtrips[0].gps[0], subtrips[0].gps[1]]
+          : [subtrips[0].gps.lat, subtrips[0].gps.lng]) 
           ? Array.isArray(subtrips[0].gps)
             ? [subtrips[0].gps[0], subtrips[0].gps[1]]
             : [subtrips[0].gps.lat, subtrips[0].gps.lng]
-          : [0, 0] // Pokud první subtrip nemá GPS, nastavíme výchozí hodnoty
+          : [0, 0]
       }
       zoom={6}
       style={{ height: '400px', width: '100%' }}
@@ -93,7 +89,6 @@ const TripMap = ({ subtrips }) => (
           </Marker>
         ))}
 
-      {/* Filtrujeme a vykreslujeme Polyline pouze pro subtrips s platnými GPS */}
       <Polyline
         positions={subtrips
           .filter(subtrip => subtrip.gps && (Array.isArray(subtrip.gps) ? subtrip.gps[0] && subtrip.gps[1] : subtrip.gps.lat && subtrip.gps.lng))
@@ -101,7 +96,6 @@ const TripMap = ({ subtrips }) => (
         color="blue"
       />
 
-      {/* FitBounds pouze pro subtrips s platnými GPS */}
       <FitBounds
         bounds={subtrips
           .filter(subtrip => subtrip.gps && (Array.isArray(subtrip.gps) ? subtrip.gps[0] && subtrip.gps[1] : subtrip.gps.lat && subtrip.gps.lng))
@@ -113,7 +107,7 @@ const TripMap = ({ subtrips }) => (
 
 
 
-const Gallery = ({ subtrips, openModal, setOpenModal, currentPhotoIndex, setCurrentPhotoIndex }) => {
+const Gallery = ({ subtrips}) => {
   return (
     <div style={{ display: 'flex', justifyContent: 'flex-start', flexWrap: 'wrap', width: '80%' }}>
       {subtrips.map((subtrip, index) =>
@@ -129,55 +123,11 @@ const Gallery = ({ subtrips, openModal, setOpenModal, currentPhotoIndex, setCurr
                 borderRadius: '8px',
                 cursor: 'pointer',
               }}
-              onClick={() => {
-                setCurrentPhotoIndex(photoIndex);
-                setOpenModal(true);
-              }}
             />
           </div>
         ))
       )}
     </div>
-  );
-};
-
-
-
-// Modified Modal with ZoomableImage to handle image enlarging
-const ZoomableImage = ({ src, alt, onPrev, onNext, isDisabledPrev, isDisabledNext }) => {
-  return (
-    <Box sx={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-      <IconButton
-        sx={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)' }}
-        onClick={onPrev}
-        disabled={isDisabledPrev}
-      >
-        <ArrowBackIosIcon />
-      </IconButton>
-
-      <Zoom>
-        <img
-          src={src}
-          alt={alt}
-          style={{
-            width: '100%',
-            height: 'auto',
-            maxWidth: '90%',
-            maxHeight: '80vh',
-            borderRadius: '8px',
-            cursor: 'zoom-in',
-          }}
-        />
-      </Zoom>
-
-      <IconButton
-        sx={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)' }}
-        onClick={onNext}
-        disabled={isDisabledNext}
-      >
-        <ArrowForwardIosIcon />
-      </IconButton>
-    </Box>
   );
 };
 
@@ -187,10 +137,9 @@ const SubtripDetail = ({ subtrip, open, handleClose }) => {
       <Box sx={{ padding: 2, bgcolor: 'black', border: '2px solid #000', boxShadow: 24, borderRadius: '8px', width: '80%', maxWidth: '600px', margin: 'auto', marginTop: '100px' }}>
         <h2>{subtrip.name}</h2>
         
-        {/* Kontrola a destrukturalizace GPS */}
         {subtrip.gps && (
           Array.isArray(subtrip.gps) ? (
-            subtrip.gps[0] && subtrip.gps[1] ? ( // Pokud GPS je pole [lat, lng]
+            subtrip.gps[0] && subtrip.gps[1] ? (
               <MapContainer center={[subtrip.gps[0], subtrip.gps[1]]} zoom={15} style={{ height: '200px', width: '100%' }}>
                 <TileLayer
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -199,10 +148,10 @@ const SubtripDetail = ({ subtrip, open, handleClose }) => {
                 <Marker position={[subtrip.gps[0], subtrip.gps[1]]} icon={customIcon} />
               </MapContainer>
             ) : (
-              <p>No valid GPS data available.</p> // Pokud pole neobsahuje platné souřadnice
+              <p>No valid GPS data available.</p>
             )
           ) : (
-            subtrip.gps.lat && subtrip.gps.lng ? ( // Pokud GPS je objekt {lat, lng}
+            subtrip.gps.lat && subtrip.gps.lng ? (
               <MapContainer center={[subtrip.gps.lat, subtrip.gps.lng]} zoom={15} style={{ height: '200px', width: '100%' }}>
                 <TileLayer
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -211,12 +160,11 @@ const SubtripDetail = ({ subtrip, open, handleClose }) => {
                 <Marker position={[subtrip.gps.lat, subtrip.gps.lng]} icon={customIcon} />
               </MapContainer>
             ) : (
-              <p>No valid GPS data available.</p> // Pokud objekt nemá platné souřadnice
+              <p>No valid GPS data available.</p> 
             )
           )
         )}
 
-        {/* Zavření modálního okna */}
         <IconButton onClick={handleClose} sx={{ position: 'absolute', top: 10, right: 10 }}>
           <CloseIcon />
         </IconButton>
@@ -254,8 +202,6 @@ function TripDetail() {
   const { id } = useParams();
   const [trip, setTrip] = useState(null);
   const [error, setError] = useState(null);
-  const [openModal, setOpenModal] = useState(false);
-  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [subtripDetail, setSubtripDetail] = useState(null);
   const [openSubtripModal, setOpenSubtripModal] = useState(false);
 
@@ -275,16 +221,6 @@ function TripDetail() {
       });
   }, [id]);
 
-  const handleClose = () => setOpenModal(false);
-
-  const handleNext = () => {
-    setCurrentPhotoIndex((prevIndex) => (prevIndex + 1) % (trip.subtrips.flatMap(subtrip => subtrip.photos).length));
-  };
-
-  const handlePrev = () => {
-    setCurrentPhotoIndex((prevIndex) => (prevIndex - 1 + trip.subtrips.flatMap(subtrip => subtrip.photos).length) % (trip.subtrips.flatMap(subtrip => subtrip.photos).length));
-  };
-
   const photos = trip ? trip.subtrips.flatMap(subtrip => subtrip.photos) : [];
 
   const handleSubtripDetailOpen = (subtrip) => {
@@ -301,45 +237,36 @@ function TripDetail() {
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
         {trip && trip.subtrips.length > 0 && <TripMap subtrips={trip.subtrips} />}
-        {/* Přidání Podvýlety */}
         {trip && trip.subtrips.length > 0 && (
           <div style={{ marginTop: '20px', width: '80%', textAlign: 'left' }}>
             <h2 style={{ margin: '0' }}>Podvýlety:</h2>
+            <hr style={{border: '2px solid white'}}/>
             {trip.subtrips.map((subtrip, index) => (
               <div key={index} style={{ marginBottom: '10px' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '10px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
                     <Button variant="outlined" color="primary" onClick={() => handleSubtripDetailOpen(subtrip)}>
-                      <InfoIcon /> {/* Ikona pro detail */}
+                      <MapIcon />
                     </Button>
                     <h3 style={{ margin: '10px', marginBottom: '0', marginRight: '0', marginTop: '0' }}>{subtrip.name}</h3>
                   </div>
                   <p style={{ margin: '10px', marginBottom: '0', marginRight: '0', marginTop: '0' }}>Popis: {subtrip.description}</p>
-                  {/* Zobrazení obrázků pod názvem podvýletu */}
                   {subtrip.photos && subtrip.photos.length > 0 && (
                     <Gallery
-                      subtrips={[subtrip]} // Pass single subtrip for its photos
-                      openModal={openModal}
-                      setOpenModal={setOpenModal}
-                      currentPhotoIndex={currentPhotoIndex}
-                      setCurrentPhotoIndex={setCurrentPhotoIndex}
+                      subtrips={[subtrip]}
                     />
                   )}
                 </div>
+                <hr style={{color: 'white'}}/>
               </div>
             ))}
           </div>
         )}
-        {/*TODO: Nezařazené fotografie: budou se zobrazovat fotografie výletu a ne podvýletů */}
         {trip && trip.photos && trip.photos.length > 0 && (
         <div style={{ marginTop: '20px', width: '80%', textAlign: 'left' }}>
           <h3>Ostatní fotografie</h3>
           <Gallery
-            subtrips={[{ photos: trip.photos }]} // Pass photos directly from the trip
-            openModal={openModal}
-            setOpenModal={setOpenModal}
-            currentPhotoIndex={currentPhotoIndex}
-            setCurrentPhotoIndex={setCurrentPhotoIndex}
+            subtrips={[{ photos: trip.photos }]}
           />
         </div>
       )}
@@ -356,33 +283,6 @@ function TripDetail() {
           </div>
         )}
       </div>
-
-      <Modal open={openModal} onClose={handleClose} aria-labelledby="modal-title" aria-describedby="modal-description">
-        <Box sx={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', bgcolor: 'black', border: '2px solid #000', boxShadow: 24, p: 4 }}>
-          <IconButton
-            sx={{ position: 'absolute', top: 10, right: 10 }}
-            onClick={handleClose}
-          >
-            <CloseIcon />
-          </IconButton>
-          <IconButton
-            sx={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)' }}
-            onClick={handlePrev}
-            disabled={photos.length <= 1}
-          >
-            <ArrowBackIosIcon />
-          </IconButton>
-          <img src={photos[currentPhotoIndex]} alt={`Photo ${currentPhotoIndex + 1}`} style={{ width: '100%', height: 'auto', maxWidth: '90%', maxHeight: '80vh', borderRadius: '8px' }} />
-          <IconButton
-            sx={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)' }}
-            onClick={handleNext}
-            disabled={photos.length <= 1}
-          >
-            <ArrowForwardIosIcon />
-          </IconButton>
-        </Box>
-      </Modal>
-      {/* Modální okno pro detail podvýletu */}
       {subtripDetail && (
         <SubtripDetail subtrip={subtripDetail} open={openSubtripModal} handleClose={() => setOpenSubtripModal(false)} />
       )}

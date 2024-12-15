@@ -1,3 +1,8 @@
+/*
+  Autor: Dominik Borek (xborek12)
+  Stránka galerie
+*/
+
 import React, { useState, useEffect } from 'react';
 import PhotoGallery from 'react-photo-gallery';
 import Lightbox from 'react-images';
@@ -5,24 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../assets/App.css';
 import Header from '../Header';
 
-// Gallery komponenta
 const Gallery = ({ tripData }) => {
-  const [currentImage, setCurrentImage] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
-
-  const openLightbox = (event, { photo, index }) => {
-    setCurrentImage(index);
-    setIsOpen(true);
-  };
-
-  const closeLightbox = () => {
-    setCurrentImage(0);
-    setIsOpen(false);
-  };
-
-  const goToNext = () => setCurrentImage(currentImage + 1);
-  const goToPrevious = () => setCurrentImage(currentImage - 1);
-
   const renderPhotos = (photos, isSubtrip = false) => {
     const photoData = photos.map((photo, index) => {
       if (isSubtrip) {
@@ -73,16 +61,14 @@ const Gallery = ({ tripData }) => {
   );
 };
 
-// Hlavní komponenta
 const TripsPage = () => {
   const [trips, setTrips] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Mock dat nebo fetch ze serveru
     const fetchTrips = async () => {
       try {
-        const response = await fetch('http://localhost:5000/trips'); // Endpoint API
+        const response = await fetch('http://localhost:5000/trips');
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }

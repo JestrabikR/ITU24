@@ -1,3 +1,8 @@
+/*
+  Autor: Dominik Borek (xborek12)
+  Stránka zobrazující všechny minulé cesty
+*/
+
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from '@mui/material/Card';
@@ -43,7 +48,6 @@ function AllPastTrips() {
         </div>
       ) : (
         <div>
-            {/* Optionally, you can add a button to navigate back to the main page */}
             <Button
             variant="outlined"
             color="primary"

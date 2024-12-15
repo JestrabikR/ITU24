@@ -1,3 +1,8 @@
+/*
+  Autor: Dominik Borek (xborek12)
+  Hlavní stránka s kartami
+*/
+
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../Header';
@@ -5,9 +10,10 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-import AllTripsMap from '../components/AllTripsMap'; // Komponenta pro mapu
 import '../assets/App.css';
 import dayjs from 'dayjs';
+import MapIcon from '@mui/icons-material/Map';
+
 
 function Main() {
   const [trips, setTrips] = useState([]);
@@ -60,10 +66,14 @@ function Main() {
         </div>
       ) : (
         <div>
-          {/* Aktuální cesta */}
           {currentTrips.length > 0 && (
             <>
-              <h2 className="section-title">Právě probíhající cesta</h2>
+              <div className="title-container">
+                <h2 className="section-title">Právě probíhající cesta</h2>
+                <button className="allMapButton" onClick={() => navigate('/AllTripsMap')}>
+                  <MapIcon />
+                </button>
+              </div>
               <div className="trips-grid">
                 <Card
                   className="trip-card"
@@ -90,7 +100,6 @@ function Main() {
             </>
           )}
 
-          {/* Plánované cesty */}
           <h2 className="section-title">Plánované cesty</h2>
           <Button
             variant="outlined"
@@ -127,9 +136,7 @@ function Main() {
             ))}
           </div>
 
-          {/* Minulé cesty */}
           <h2 className="section-title">Minulé cesty</h2>
-          {/* Button to view all trips */}
           <Button
             variant="outlined"
             color="primary"
