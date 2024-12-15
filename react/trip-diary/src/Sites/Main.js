@@ -12,8 +12,6 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import '../assets/App.css';
 import dayjs from 'dayjs';
-import MapIcon from '@mui/icons-material/Map';
-
 
 function Main() {
   const [trips, setTrips] = useState([]);
@@ -21,6 +19,7 @@ function Main() {
   const [mapView, setMapView] = useState(false);
   const navigate = useNavigate();
 
+  // Získání dat
   useEffect(() => {
     fetch('http://127.0.0.1:5000/trips')
       .then((response) => response.json())
@@ -41,18 +40,17 @@ function Main() {
     (trip) => dayjs(trip.from_date).isBefore(today) && dayjs(trip.until_date).isAfter(today)
   );
 
+  // Zpracování kliknutí na kartu
   const handleTripClick = (tripId) => {
     navigate(`/TripDetail/${tripId}`);
   };
 
-  const toggleMapView = () => {
-    setMapView(!mapView);
-  };
-
+  // Zpracování kliknutí na tlačítko pro zobrazení všech minulých cest
   const handleViewAllPastClick = () => {
     navigate('/AllPastTrips');
   };
 
+  // Zpracování kliknutí na tlačítko pro zobrazení všech budoucích cest
   const handleViewAllFutureClick = () => {
     navigate('/AllFutureTrips');
   };
@@ -71,7 +69,7 @@ function Main() {
               <div className="title-container">
                 <h2 className="section-title">Právě probíhající cesta</h2>
                 <button className="allMapButton" onClick={() => navigate('/AllTripsMap')}>
-                  <MapIcon />
+                  Zobrazení mapy výletů
                 </button>
               </div>
               <div className="trips-grid">

@@ -19,6 +19,7 @@ function AllPastTrips() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  // Získání dat
   useEffect(() => {
     fetch('http://127.0.0.1:5000/trips')
       .then((response) => response.json())
@@ -35,6 +36,7 @@ function AllPastTrips() {
   const today = dayjs();
   const pastTrips = trips.filter((trip) => dayjs(trip.until_date).isBefore(today));
 
+  // Zpracování kliknutí na kartu
   const handleTripClick = (tripId) => {
     navigate(`/TripDetail/${tripId}`);
   };

@@ -18,6 +18,7 @@ function AllFutureTrips() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  // Získání dat
   useEffect(() => {
     fetch('http://127.0.0.1:5000/trips')
       .then((response) => response.json())
@@ -34,6 +35,7 @@ function AllFutureTrips() {
   const today = dayjs();
   const futureTrips = trips.filter((trip) => dayjs(trip.from_date).isAfter(today));
 
+  // Zpracování kliknutí na kartu
   const handleTripClick = (tripId) => {
     navigate(`/TripDetail/${tripId}`);
   };

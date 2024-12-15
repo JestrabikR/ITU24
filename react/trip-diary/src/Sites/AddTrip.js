@@ -38,7 +38,11 @@ function TripForm() {
   const [subtripName, setSubtripName] = useState('');
   const [subtripDescription, setSubtripDescription] = useState('');
   const [images, setImages] = useState([]);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [subtripToEdit, setSubtripToEdit] = useState(null);
 
+
+  // Propojení s api
   useEffect(() => {
     if (id) {
       axios
@@ -68,6 +72,7 @@ function TripForm() {
     }));
   };
 
+  // Zpracování požadavku a ověření dat
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -99,6 +104,7 @@ function TripForm() {
     }
   };
 
+  // Zpracování nahrané fotografie
   const handlePhotoUpload = async (e) => {
     const files = e.target.files;
     if (!files) return;
@@ -112,6 +118,7 @@ function TripForm() {
     }
   };
 
+  // Odstranění fotografie
   const removePhoto = (index) => {
     setTrip((prevTrip) => {
       const newPhotos = prevTrip.photos.filter((_, i) => i !== index);
@@ -119,6 +126,7 @@ function TripForm() {
     });
   };
 
+  // Přidání výhod
   const addAdvantage = () => {
     setTrip((prevTrip) => ({
       ...prevTrip,
@@ -126,6 +134,7 @@ function TripForm() {
     }));
   };
 
+  // Odstranění výhod
   const removeAdvantage = (index) => {
     setTrip((prevTrip) => {
       const newAdvantages = prevTrip.advantages.filter((_, i) => i !== index);
@@ -133,6 +142,7 @@ function TripForm() {
     });
   };
 
+  // Přidání nevýhod
   const addDisadvantage = () => {
     setTrip((prevTrip) => ({
       ...prevTrip,
@@ -140,6 +150,7 @@ function TripForm() {
     }));
   };
 
+  // Odstranění nevýhod
   const removeDisadvantage = (index) => {
     setTrip((prevTrip) => {
       const newDisadvantages = prevTrip.disadvantages.filter((_, i) => i !== index);
@@ -147,26 +158,29 @@ function TripForm() {
     });
   };
 
+  // Definování stylů pro sx
   const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
     maxHeight: '80vh',
     overflowY: 'auto',
-    color: 'black', 
+    color: '#333',
   };
 
+  // Definice custom ikony
   const customIcon = L.icon({
     iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
     iconSize: [25, 41],
     iconAnchor: [12, 41],
   });
 
+
+  // Přidání podvýletu
   const addSubtrip = () => {
     if (!subtripName || !selectedLocation) {
       toast.error('Prosím vyplňte název a lokaci podvýletu.');
@@ -193,10 +207,11 @@ function TripForm() {
     setIsModalOpen(false);
   };
 
+  // Zpracování modálního okna
   const handleModalOpen = () => setIsModalOpen(true);
-
   const handleModalClose = () => setIsModalOpen(false);
 
+   // Zpracování výběru lokace
   const LocationPicker = ({ setSelectedLocation }) => {
     useMapEvents({
       click: (e) => {
@@ -211,6 +226,7 @@ function TripForm() {
     return <div>Loading...</div>;
   }
 
+  // Zpracování požadavku pro uložení podvýletu
   const saveSubtrip = (newSubtrip) => {
     setTrip((prevTrip) => ({
       ...prevTrip,
@@ -218,6 +234,7 @@ function TripForm() {
     }));
   };
   
+  // Vytvoření modálního okna pro podvýlet
   const AddSubtripModal = ({ isModalOpen, handleClose, onSaveSubtrip }) => {
     const [localSubtripName, setLocalSubtripName] = useState('');
     const [localSubtripDescription, setLocalSubtripDescription] = useState('');
@@ -266,7 +283,7 @@ function TripForm() {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Box sx={{ mt: 2 }}>
+          <Box sx={{mt: 2}}>
             <MapContainer
               center={[50.0755, 14.4378]}
               zoom={13}
@@ -333,8 +350,141 @@ function TripForm() {
     );
   };
   
+  // Zpracování editace
+  const handleEditSubtrip = (subtrip) => {
+    setSubtripToEdit(subtrip);
+    setEditModalOpen(true);
+  };
   
+  // Uložení editace
+  const handleSaveEditedSubtrip = (updatedSubtrip) => {
+    const updatedSubtrips = trip.subtrips.map((subtrip) =>
+      subtrip === subtripToEdit ? updatedSubtrip : subtrip
+    );
+    setTrip((prevTrip) => ({ ...prevTrip, subtrips: updatedSubtrips }));
+    setEditModalOpen(false);
+  };
 
+  // Komponenta pro editaci podvýletu
+  const EditSubtripModal = ({
+    isModalOpen,
+    handleClose,
+    subtripData,
+    onSaveSubtrip,
+  }) => {
+    const [localSubtripName, setLocalSubtripName] = useState(subtripData.name || '');
+    const [localSubtripDescription, setLocalSubtripDescription] = useState(subtripData.description || '');
+    const [localSelectedLocation, setLocalSelectedLocation] = useState(subtripData.gps || null);
+    const [localImages, setLocalImages] = useState(subtripData.photos || []);
+  
+    const handleImageUpload = (event) => {
+      const files = Array.from(event.target.files);
+      setLocalImages((prevImages) => [
+        ...prevImages,
+        ...files.map((file) => URL.createObjectURL(file)),
+      ]);
+    };
+  
+    const handleSave = () => {
+      if (!localSubtripName || !localSelectedLocation) {
+        toast.error('Prosím vyplňte název a lokaci podvýletu.');
+        return;
+      }
+  
+      const updatedSubtrip = {
+        ...subtripData,
+        name: localSubtripName,
+        description: localSubtripDescription,
+        gps: localSelectedLocation,
+        photos: localImages,
+      };
+  
+      onSaveSubtrip(updatedSubtrip);
+      handleClose();
+    };
+  
+    return (
+      <Modal
+        open={isModalOpen}
+        onClose={handleClose}
+        aria-labelledby="edit-subtrip-modal-title"
+        aria-describedby="edit-subtrip-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="edit-subtrip-modal-title" variant="h6">
+            Upravit podvýlet
+          </Typography>
+          <Box sx={{ mt: 2}}>
+            <TextField
+              fullWidth
+              label="Název podvýletu*"
+              variant="outlined"
+              value={localSubtripName}
+              onChange={(e) => setLocalSubtripName(e.target.value)}
+              sx={{ mt: 2 }}
+            />
+            <TextField
+              fullWidth
+              label="Popis podvýletu"
+              variant="outlined"
+              multiline
+              rows={4}
+              value={localSubtripDescription}
+              onChange={(e) => setLocalSubtripDescription(e.target.value)}
+              sx={{ mt: 2 }}
+            />
+            <Typography sx={{ mt: 2 }}>Klikněte na mapu pro výběr nové lokace:</Typography>
+            <MapContainer
+              center={localSelectedLocation || [50.0755, 14.4378]}
+              zoom={13}
+              style={{ height: '300px', width: '100%', marginBottom: '16px' }}
+            >
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution="&copy; OpenStreetMap contributors"
+              />
+              <LocationPicker setSelectedLocation={setLocalSelectedLocation} />
+              {localSelectedLocation && (
+                <Marker position={localSelectedLocation} icon={customIcon} />
+              )}
+            </MapContainer>
+            {localSelectedLocation && Array.isArray(localSelectedLocation) ? (
+              <Typography>
+                Vybraný bod: {localSelectedLocation[0]?.toFixed(5)}, {localSelectedLocation[1]?.toFixed(5)}
+              </Typography>
+            ) : (
+              <Typography style={{ color: 'white' }}>Klikněte na mapu pro výběr bodu</Typography>
+            )}
+            <Button variant="contained" component="label" sx={{ mt: 2 }}>
+              Přidat obrázky
+              <input
+                type="file"
+                hidden
+                accept="image/*"
+                multiple
+                onChange={handleImageUpload}
+              />
+            </Button>
+            {localImages.length > 0 && (
+              <Typography sx={{ mt: 1 }}>
+                Počet přidaných obrázků: {localImages.length}
+              </Typography>
+            )}
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
+              <Button variant="outlined" onClick={handleClose} sx={{ mr: 2 }}>
+                Zrušit
+              </Button>
+              <Button variant="contained" onClick={handleSave}>
+                Uložit změny
+              </Button>
+            </Box>
+          </Box>
+        </Box>
+      </Modal>
+    );
+  };
+
+  // Převedení obrázku na Base64
   const toBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -348,6 +498,7 @@ function TripForm() {
     return <div>Loading...</div>;
   }
 
+  // View stránky
   return (
     <div>
       <Header />
@@ -668,7 +819,14 @@ function TripForm() {
             </Typography>
             <Button
               variant="outlined"
-              color="secondary"
+              onClick={() => handleEditSubtrip(subtrip)}
+              sx={{ mr: 2 }}
+            >
+              Upravit podvýlet
+            </Button>
+            <Button
+              variant="outlined"
+              color="error"
               onClick={() => {
                 const newSubtrips = trip.subtrips.filter((_, i) => i !== index);
                 setTrip((prevTrip) => ({ ...prevTrip, subtrips: newSubtrips }));
@@ -688,6 +846,12 @@ function TripForm() {
           onSaveSubtrip={saveSubtrip}
         />
 
+        <EditSubtripModal
+          isModalOpen={editModalOpen}
+          handleClose={() => setEditModalOpen(false)}
+          subtripData={subtripToEdit || {}}
+          onSaveSubtrip={handleSaveEditedSubtrip}
+        />
           <div className="form-group">
             <h3>Obrázky</h3>
             <label htmlFor="photo-upload" className="add-photo-btn">

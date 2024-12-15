@@ -113,12 +113,75 @@ Jako CSS framework byla vybrána knihovna BeerCSS. Pomocí ní bylo implementov�
 Odkaz na video prezentaci: https://youtu.be/NdahhZeO5L4
 
 ### Spuštění
+#### 1. Spuštění API
+1. Přejít v příkazovém řádku do rozbaleného souboru
+2. Přejít do složky /api
+3. Zadat následující příkazy:
+<br>
+```python -m venv .venv```
+<br>
+```.venv\Scripts\activate```
+<br>
+```pip install -r requirements.txt```
+<br>
+```python main.py```
 
-Nezapomenout na popis spuštění
+
+#### 2. Spuštění aplikace
+1. Stáhnout a nainstalovavt [nodejs](https://nodejs.org/en/download/prebuilt-installer), pokud nemáte v počítači.
+2. Otevřít si nové okno příkazového řádku a přejít do složky rozbaleného adresáře
+3. Přejít do složky /react/trip-diary
+4. Zadat následující příkazy
+<br>
+Nainstalujeme potřebné balíčky projektu pomocí:
+<br>
+```npm install ajv ajv-keywords --save --legacy-peer-deps```
+<br>
+```npm start```
+
 ### Implementace
+Aplikace je vytvořena pomocí frontendového frameworku React, který umožňuje efektivní a modulární vývoj uživatelských rozhraní. K implementaci byly využity knihovny MUI, která nabízí širokou škálu předpřipravených komponent optimalizovaných pro React, a Bootstrap, jenž zjednodušuje vytváření responzivního designu a stylizaci aplikace.
+
+### Implementace stránek:
+- Všechny soubory implementující aplikaci jsou ve složce src. Přesněji ve složce /assets jsou .css soubory, ve složce /fonts jsou definované fonty využívající se v projektu. Ve složce /router je soubor index.js, kde se definují routy pro jednotlivé cesty stránek. Ve složce /Sites jsou implementovány všechny stránky. 
+
+#### Jednotlivé stránky:
+`AddTrip.js` 
+- Soubor pro editaci cesty nebo vytvoření nové cesty
+
+`AllFutureTrips.js`
+- Soubor zobrazuje všechny budoucí cesty ve formě karet
+
+`AllPastTrips.js`
+- Soubor zobrazuje všechny cesty, které již proběhly ve formě karet
+
+`AllTripsMap.js`
+- Soubor, která zobrazuje na mapě všechny výlety a propojuje jejich jednotlivé podvýlety mezi sebou. Zkrze tuto stránku se lze prokliknout na detail jednotlivého podvýletu
+
+`Gallery.js`
+- Galerie zobrazující všechny fotografie přiřazené k jednotlivým výletům
+
+`Main.js`
+- Hlavní Soubor aplikace, která zobrazuje jednotlivé výlety ve formě karet a rozdělené, jestli zrovna probíhají, jestli již byly, nebo jestli teprve budou
+
+`NotFound.js`
+- Soubor, která se zobrazuje při nevalidní adrese
+
+`TripDetail.js`
+- Soubor zobrazující detaily cesty. Je zde zobrazen na mapě, kde výlet probíhal a propojené jejich podvýlety, dále je zde datum, kdy výlet probíhal, budget, popis, plusy, mínusy a jednotlivé podvýlety s fotografiemi.
+
+`VisitedMap.js`
+- Soubor zobrazující editovatelnou mapu, na které si může uživatel zakliknout země, ve kterých již byl a kam se chce teprve podívat.
+
+#### Komponenty:
+`Header.js`
+- Soubor, kde je implementován navbar. Nachází se ve složce src.
+
+#### Zajímavé části implementace:
+- zajímavou částí v implementace je určitě zpracování map, které je zobrazené pomocí balíčku leaflet. S tímto balíčkem byla velmi pěkná práce, ovšem byl zde problém v tom, že při naplňování databáze api jednotlivými daty se využíval různý formát pro GPS lokalitu. Každopádně, leaflet si dokáže poradit i s tímto pomocí jednoduché podmínky. Společně s mapou leaflet a souborem countries.geo.json bylo možné poměrně jednoduchým způsobem implementovat stránku `VisitedMap.js`, která zobrazuje mapu světa s tím, že si uživatel může zakliknout, kde již byl a kam se chce podívat.
 
 ### Testování
-
+Testování výsledné aplikace proběhlo se studentkou vysoké školy, která studuje obor všeobecné ošetřovatelství, která není . Test probíhal poměrně dobře, studentka se v aplikaci poměrně dobře orientovala. Jen byla zmatená z navbaru, jelikož nepochopila zprvu, jak to funguje, jelikož není zvýrazněná stránka, na které se uživatel zrovna nachází, to by šlo jednoduše vyřešit upravením headeru tak, aby byla například aktuální stránka podtrhlá. Dále byla zmatená z přepínání na stránce 'Navštívené země' mezi barvami "chci navštívit" a "navštívit", v tomto případě by bylo dobré dát nad switch tlačítko nápis například "režim zaklikávání". V poslední řadě ji vadilo, že přidat obrázek se muselo v detailu v editaci a nešlo ho přidat automaticky už ze stránky detailu. To by také nebyl problém vyřešit jednoduchým tlačítkem, které umožní import obrázku ze zařízení.
 
 ## Aplikace ve Vue (Radek Jestřabík)
 Celá aplikace byla implementována Radkem Jestřabíkem.
