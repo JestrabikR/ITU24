@@ -6,7 +6,11 @@ Adresářová struktura
 		- /svelte/lib/ - pomocné soubory
 		- autorství: Ondřej Hruboš
 	- react:
-		- /react/trip-diary/
+		- /react/trip-diary/src/
+		- /react/trip-diary/src/Sites - jednotlivé stránky aplikace
+		- /react/trip-diary/src/router - definují se routy pro jednotlivé stránky
+		- /react/assets/src/ - css soubory
+		- /react/fonts/src/ - fonty
 		- autorství: Dominik Borek 
 	- vue:
 		- /vue/travel-journal/

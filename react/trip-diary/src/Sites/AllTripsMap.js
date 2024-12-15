@@ -10,7 +10,6 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import Button from '@mui/material/Button';
 import Header from '../Header';
-import GridViewIcon from '@mui/icons-material/GridView';
 const customIcon = new L.Icon({
   iconUrl: require('leaflet/dist/images/marker-icon.png'),
   iconSize: [25, 41],
@@ -35,6 +34,7 @@ const AllTripsMap = () => {
   const [trips, setTrips] = useState([]);
   const navigate = useNavigate();
 
+  // Získání dat
   useEffect(() => {
     fetch('http://127.0.0.1:5000/trips')
       .then((response) => response.json())
@@ -42,6 +42,7 @@ const AllTripsMap = () => {
       .catch((error) => console.error('Error fetching trips:', error));
   }, []);
 
+  // Zpracování dat do mapy
   const getTripData = () => {
     return trips.map((trip, tripIndex) => {
       const gpsPoints = trip.subtrips
@@ -63,9 +64,9 @@ const AllTripsMap = () => {
     <div>
       <Header />
       <div style={{ minHeight: '100vh', textAlign: 'center' }}>
-        <h1>Mapa všech cest</h1>
+        <h1>Mapa všech výletů</h1>
         <button className="allMapButton" onClick={() => navigate('/')}>
-          <GridViewIcon />
+          Zpět na karty výletů
         </button>
         <br/>
         <MapContainer center={[50, 10]} zoom={3} style={{ height: '80vh', width: '100%' }}>

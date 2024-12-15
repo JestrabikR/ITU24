@@ -14,8 +14,8 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import L from 'leaflet';
 
-const visitedColor = '#8ac43f';
-const wantedColor = '#f51d57';
+const visitedColor = '#4dff00';
+const wantedColor = '#ff0000';
 
 function VisitedMap() {
   const [countries, setCountries] = useState([]);
@@ -25,6 +25,7 @@ function VisitedMap() {
   const [selectedCountry, setSelectedCountry] = useState('');
   const mapRef = useRef(null);
 
+  // Získání dat
   useEffect(() => {
     const fetchCountries = async () => {
       try {
@@ -40,6 +41,7 @@ function VisitedMap() {
     fetchCountries();
   }, []);
 
+  // Vybarvení států
   const getCountryStyle = (feature) => {
     const country = countries.find((c) => c.code === feature.id);
 
@@ -62,6 +64,7 @@ function VisitedMap() {
     return { fillColor: '#D3D3D3', weight: 1, color: '#777', fillOpacity: 0.5 };
   };
 
+  // Zpracování kliknutí
   const onEachCountry = (feature, layer) => {
     const countryCode = feature.id;
     const countryData = countries.find((c) => c.code === countryCode);
@@ -92,6 +95,7 @@ function VisitedMap() {
     });
   };
 
+  // Přidání do api
   const addCountry = (countryCode, countryName) => {
     const newCountry = {
       code: countryCode,
@@ -120,6 +124,7 @@ function VisitedMap() {
       });
   };
 
+  // odstranění z api
   const removeCountry = (countryCode) => {
     axios
       .delete(`http://127.0.0.1:5000/country/del/${countryCode}`)
@@ -151,6 +156,7 @@ function VisitedMap() {
   const totalCountries =180;
   const visitedPercentage = (visitedCountries.length / totalCountries) * 100;
 
+  // Legenda
   const addLegend = (map) => {
     const legend = L.control({ position: 'bottomright' });
   
@@ -208,10 +214,9 @@ function VisitedMap() {
 
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
           <FormControl style={{ width: '48%' }}>
-            <InputLabel style={{ color: 'white' }}>Visited Countries</InputLabel>
+            <InputLabel style={{ color: 'green' }}>Seznam navštívených zemí</InputLabel>
             <Select
               value={selectedCountry}
-              onChange={(e) => setSelectedCountry(e.target.value)}
               style={{
                 color: 'white',
                 borderColor: 'white',
@@ -227,7 +232,11 @@ function VisitedMap() {
               }}
             >
               {visitedCountries.map((country) => (
-                <MenuItem key={country.code} value={country.name} style={{ color: 'white' }}>
+                <MenuItem 
+                  key={country.code} 
+                  value={country.name} 
+                  style={{ color: 'white' }}
+                >
                   {country.name}
                 </MenuItem>
               ))}
@@ -235,10 +244,9 @@ function VisitedMap() {
           </FormControl>
 
           <FormControl style={{ width: '48%' }}>
-            <InputLabel style={{ color: 'white' }}>Wanted Countries</InputLabel>
+            <InputLabel style={{ color: 'red' }}>Wanted Countries</InputLabel>
             <Select
               value={selectedCountry}
-              onChange={(e) => setSelectedCountry(e.target.value)}
               style={{
                 color: 'white',
                 borderColor: 'white',

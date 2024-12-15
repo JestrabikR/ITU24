@@ -10,7 +10,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../assets/App.css';
 import Header from '../Header';
 
+// Komponenta galerie
 const Gallery = ({ tripData }) => {
+  // vygenerování mapy fotek
   const renderPhotos = (photos, isSubtrip = false) => {
     const photoData = photos.map((photo, index) => {
       if (isSubtrip) {
@@ -65,6 +67,7 @@ const TripsPage = () => {
   const [trips, setTrips] = useState([]);
   const [error, setError] = useState(null);
 
+  // Získání dat
   useEffect(() => {
     const fetchTrips = async () => {
       try {

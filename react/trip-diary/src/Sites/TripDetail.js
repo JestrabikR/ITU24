@@ -42,6 +42,7 @@ const FitBounds = ({ bounds }) => {
   return null;
 };
 
+// Zpracování informací o výletu
 const TripInfo = ({ trip }) => (
   <div style={{ textAlign: 'center' }}>
     <h1 style={{ margin: 0 }}>Detail cesty {trip.name}</h1>
@@ -52,6 +53,7 @@ const TripInfo = ({ trip }) => (
   </div>
 );
 
+// Zobrazení mapy
 const TripMap = ({ subtrips }) => (
   <div style={{ width: '80%' }}>
     <MapContainer
@@ -106,7 +108,7 @@ const TripMap = ({ subtrips }) => (
 );
 
 
-
+// Zobrazení galerie
 const Gallery = ({ subtrips}) => {
   return (
     <div style={{ display: 'flex', justifyContent: 'flex-start', flexWrap: 'wrap', width: '80%' }}>
@@ -131,6 +133,7 @@ const Gallery = ({ subtrips}) => {
   );
 };
 
+// Zobrazení podvýletu
 const SubtripDetail = ({ subtrip, open, handleClose }) => {
   return (
     <Modal open={open} onClose={handleClose}>
@@ -174,7 +177,7 @@ const SubtripDetail = ({ subtrip, open, handleClose }) => {
 };
 
 
-
+// Zobrazení výhod a nevýhod
 const AdvantagesDisadvantages = ({ advantages, disadvantages }) => (
   <div style={{ display: 'flex', justifyContent: 'space-between', width: '80%', marginTop: '20px' }}>
     <div style={{ flex: 1 }}>
@@ -205,6 +208,7 @@ function TripDetail() {
   const [subtripDetail, setSubtripDetail] = useState(null);
   const [openSubtripModal, setOpenSubtripModal] = useState(false);
 
+  // Získání dat
   useEffect(() => {
     axios.get(`http://127.0.0.1:5000/trips`)
       .then(response => {
@@ -223,6 +227,7 @@ function TripDetail() {
 
   const photos = trip ? trip.subtrips.flatMap(subtrip => subtrip.photos) : [];
 
+  // Zpracování tlačítka
   const handleSubtripDetailOpen = (subtrip) => {
     setSubtripDetail(subtrip);
     setOpenSubtripModal(true);
