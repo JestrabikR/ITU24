@@ -40,7 +40,8 @@ Při kontrolní prezentaci nebyly vzneseny žádné připomínky k návrhu aplik
 ## Aplikace ve SvelteKit (Ondřej Hruboš)
 
 ### Video
-TODO
+
+Představení projektu ve formě videoprezentace naleznete na adrese [https://youtu.be/_oA2Tvl0v1o](https://youtu.be/_oA2Tvl0v1o)
 
 ### Spuštění
 
