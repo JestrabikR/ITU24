@@ -45,7 +45,7 @@ Představení projektu ve formě videoprezentace naleznete na adrese [https://yo
 
 ### Spuštění
 
-Aplikace se spustí příkazem `npm run dev -- --open` **v složce /svelte/** (přepínače `-- --open` slouží k přímému otevření aplikace ve výchozím prohlížeči).
+Nejprve je potřeba nainstalovat balíčky potřebné k sestavení aplikace pomocí příkazu `npm install` v složce /svelte/.Aplikace se spustí příkazem `npm run dev -- --open` **v složce /svelte/** (přepínače `-- --open` slouží k přímému otevření aplikace ve výchozím prohlížeči).
 *Před spuštěním aplikace* je potřeba spustit API v hlavní složce pomocí příkazu `make` nebo pomocí sekvence příkazů ve složce ```api/``` (vytvoření a stažení knihoven stačí udělat jednou, spustit se musí vždy při otevření nové konzole):
   - Vytvoření virtuálního prostředí: ```python -m venv .venv```
   - Aktivování virtuálního prostředí: ```.venv\Scripts\activate```
