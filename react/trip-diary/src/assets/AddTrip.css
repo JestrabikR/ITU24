@@ -1,0 +1,179 @@
+/* Container for the entire form */
+.trip-form-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #3434348a;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form header */
+.form-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+/* Form style */
+.trip-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Grouping form items */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+/* Label styling */
+label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+}
+
+/* General input styling */
+.form-input {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  margin-top: 5px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  transition: border-color 0.3s;
+}
+
+/* Add hover effect for inputs */
+.form-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Date Range: Fields next to each other */
+.date-range-container {
+  display: flex;
+  gap: 20px;
+}
+
+/* Button styles */
+.add-btn{
+  padding: 10px 20px;
+  font-size: 1rem;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  background-color: lightblue;
+}
+
+.submit-btn{
+  padding: 10px 20px;
+  font-size: 1rem;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  background-color: lightgreen;
+}
+
+.remove-btn{
+  padding: 10px 20px;
+  font-size: 1rem;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  background-color: lightcoral;
+}
+
+
+/* Button for adding photos, same as in the modal */
+.add-photo-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border: none;
+}
+
+.add-photo-btn:hover {
+  background-color: #0056b3;
+}
+
+.add-photo-btn input {
+  display: none;
+}
+
+.add-photo-btn span {
+  margin-left: 10px;
+}
+
+.add-photo-btn svg {
+  margin-right: 5px;
+}
+
+
+/* Photos preview */
+.photos-preview {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.photo-item img {
+  width: 100px;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.photo-item button {
+  background-color: transparent;
+  border: none;
+  color: #dc3545;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+.photo-item button:hover {
+  color: #c82333;
+}
+
+/* Modal Styles */
+.MuiModal-root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(5px);
+}
+
+.MuiBox-root {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading inside modal */
+.MuiTypography-root {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #ffffff;
+}

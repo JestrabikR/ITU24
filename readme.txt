@@ -1,0 +1,13 @@
+Adresářová struktura
+	- svelte:
+		- /svelte/
+		- autorství: Ondřej Hruboš
+	- react:
+		- /react/trip-diary/
+		- autorství: Dominik Borek 
+	- vue:
+		- /vue/travel-journal/
+		- autorství: Radek Jestřabík
+	- api:
+		- /api
+		- autorství: celý tým 
