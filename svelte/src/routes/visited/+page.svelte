@@ -259,9 +259,9 @@ File: visited/page.svelte
 	<Navbar />
 	<div class="row right-align right-padding bottom-padding">
 		{#if isVisitedToggle}
-			Visited
+			<b>Marking mode:</b> Visited
 		{:else}
-			Want to visit
+			<b>Marking mode:</b> Want to visit
 		{/if}
 		<label class="switch icon">
 			<input type="checkbox" bind:checked={isVisitedToggle}>
