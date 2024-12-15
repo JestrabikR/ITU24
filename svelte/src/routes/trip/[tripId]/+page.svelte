@@ -550,12 +550,12 @@ File: trip/page.svelte
 			{#if currentlyEditing }
 			<div class="field border label textarea round small-height">
 				<textarea id="advantages" bind:value={data.trip.advantages}></textarea>
-				<label for="advantages">Advantages</label>
+				<label for="advantages">Likes</label>
 			</div>
 			{:else}
 			<div class="border left-padding right-padding round"  style="height: 100%">
 				{#if defaultTrip.advantages.length < 1}
-					<p class="italic">Advantages</p>
+					<p class="italic">Likes</p>
 				{:else}
 					{#each defaultTrip.advantages as advantage }
 					<span><i style="color: lightgreen">add</i>{advantage}<br/></span>
@@ -568,12 +568,12 @@ File: trip/page.svelte
 			{#if currentlyEditing }
 			<div class="field border label textarea round small-height">
 				<textarea id="disadvantages" bind:value={data.trip.disadvantages}></textarea>
-				<label for="disadvantages">Disadvantages</label>
+				<label for="disadvantages">Dislikes</label>
 			</div>
 			{:else}
 			<div class="border left-padding right-padding round" style="height: 100%">
 				{#if defaultTrip.disadvantages.length < 1}
-					<p class="italic">Disadvantages</p>
+					<p class="italic">Dislikes</p>
 				{:else}
 					{#each defaultTrip.disadvantages as disadvantage }
 					<span><i style="color: red">remove</i>{disadvantage}<br/></span>
