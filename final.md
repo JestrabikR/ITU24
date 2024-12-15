@@ -190,7 +190,7 @@ Celá aplikace byla implementována Radkem Jestřabíkem.
 Odkaz na video prezentaci nahranou na youtube: https://youtu.be/96_JvVEUEI0
 
 ### Spuštění
-Pro spuštění aplikace je nutné mít nainstalovaný *nodejs* verze *20.12.x*. Aplikace se spouští pomocí příkazu `npm run dev` ve složce /vue/travel-journal/. Před spuštěním aplikace musí být spuštěno také API. Popis spuštění API:
+Pro spuštění aplikace je nutné mít nainstalovaný *nodejs* verze *20.12.x*. Před spuštěním je potřeba nainstalovat moduly node pomocí `npm install` ve složce /vue/travel-journal/. Aplikace se spouští pomocí příkazu `npm run dev` ve složce /vue/travel-journal/. Před spuštěním aplikace musí být spuštěno také API. Popis spuštění API:
 - Ve složce ```api/``` proveďte následující příkazy (vytvoření a stažení knihoven stačí udělat jednou, spustit se musí vždy při otevření nové konzole):
   - Vytvoření virtuálního prostředí: ```python -m venv .venv```
   - Aktivování virtuálního prostředí: ```.venv\Scripts\activate```
