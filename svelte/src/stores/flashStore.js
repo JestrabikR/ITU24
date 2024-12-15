@@ -1,3 +1,6 @@
+// Author: Ondřej Hruboš (xhrubo01)
+// File: flashStore.js
+
 import { writable } from "svelte/store";
 
 export const flashMessage = writable(null);

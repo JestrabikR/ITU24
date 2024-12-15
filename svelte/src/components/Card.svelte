@@ -1,3 +1,10 @@
+<!--
+
+Author: Ondřej Hruboš (xhrubo01)
+File: Card.svelte
+
+-->
+
 <script>
 	import { truncate } from "$lib/helper.js";
 

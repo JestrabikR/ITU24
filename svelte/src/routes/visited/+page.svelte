@@ -1,3 +1,10 @@
+<!--
+
+Author: Ondřej Hruboš (xhrubo01)
+File: visited/page.svelte
+
+-->
+
 <script>
 	import { onMount } from "svelte";
 	import { APIURL } from "$lib/helper"

@@ -1,3 +1,10 @@
+<!--
+
+Author: Ondřej Hruboš (xhrubo01)
+File: error.svelte
+
+-->
+
 <script>
   import { page } from "$app/stores";
   import Navbar from "@components/Navbar.svelte";

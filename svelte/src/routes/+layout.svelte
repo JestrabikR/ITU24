@@ -1,3 +1,10 @@
+<!--
+
+Author: Ondřej Hruboš (xhruboé1)
+File: layout.svelte
+
+-->
+
 <script>
 import { onNavigate } from '$app/navigation';
 

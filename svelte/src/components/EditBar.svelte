@@ -1,3 +1,10 @@
+<!--
+
+Author: Ondřej Hruboš (xhrubo01)
+File: EditBar.svelte
+
+-->
+
 <script>
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation'; 

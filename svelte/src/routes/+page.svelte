@@ -1,3 +1,10 @@
+<!--
+
+Author: Ondřej Hruboš (xhrubo01)
+File: page.svelte
+
+-->
+
 <script>
 	import Navbar from "@components/Navbar.svelte";
 	import Card from "@components/Card.svelte";

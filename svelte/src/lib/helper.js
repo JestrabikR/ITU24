@@ -1,3 +1,6 @@
+// Author: Ondřej Hruboš (xhrubo01)
+// File: helper.js
+
 export const APIURL = "http://127.0.0.1:5000";
 
 export function truncate(str){

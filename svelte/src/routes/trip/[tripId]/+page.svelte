@@ -1,3 +1,10 @@
+<!--
+
+Author: Ondřej Hruboš (xhrubo01)
+File: trip/page.svelte
+
+-->
+
 <script>
 	import Navbar from "@components/Navbar.svelte";
 	import EditBar from "@components/EditBar.svelte";

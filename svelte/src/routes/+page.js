@@ -1,3 +1,6 @@
+// Author: Ondřej Hruboš (xhrubo01)
+// File: page.js
+
 import { APIURL } from "$lib/helper.js";
 
 /** @type {import('./$types').PageLoad} */
