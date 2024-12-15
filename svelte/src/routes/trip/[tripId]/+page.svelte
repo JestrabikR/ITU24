@@ -686,6 +686,6 @@ File: trip/page.svelte
 		</nav>
 	</dialog>
 
-	<div id="info-snackbar" class="snackbar primary">{messageSnackbar}</div>
+	<div id="info-snackbar" class="snackbar primary" style="z-index: 100000000;">{messageSnackbar}</div>
 
 </main>

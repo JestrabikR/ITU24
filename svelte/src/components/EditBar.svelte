@@ -6,9 +6,10 @@ File: EditBar.svelte
 -->
 
 <script>
-	import { page } from '$app/stores';
-	import { goto } from '$app/navigation'; 
-	
+	import { page } from "$app/stores";
+	import { goto } from "$app/navigation"; 
+	import { setFlashMessage } from "../stores/flashStore";
+
 	export let currentlyEditing = false;
 	export let editFunction = () => {};
 	export let saveFunction = () => {};
@@ -17,6 +18,13 @@ File: EditBar.svelte
 
 	export let error = false;
 	let current = $page.url.pathname;
+
+	async function saveAndGoBack(){
+		setFlashMessage("Trip saved", "success");
+		saveFunction();
+
+		await goto("/");
+	}
 </script>
 
 <nav class="l m fixed right top-padding">
@@ -26,7 +34,7 @@ File: EditBar.svelte
 		<button class="border square round extra bottom-margin" on:click={() => {ui("#delete-trip-confirm")}}>
 			<i class="extra error-text">delete</i>
 		</button>
-		<button class="border square round extra bottom-margin" on:click={() => goto("/")}>
+		<button class="border square round extra bottom-margin" on:click={saveAndGoBack}>
 			<i class="extra">apps</i>
 		</button>
 		{#if currentlyEditing }
