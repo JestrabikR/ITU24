@@ -51,7 +51,6 @@
 		data.trip.description = sanitize(data.trip.description);
 		const updatedTrip = data.trip;
 
-		delete updatedTrip["country"] // adhere to update endpoint
 
 		try{
 			const response = await fetch(`${APIURL}/trip/update/${tripId}`, {
