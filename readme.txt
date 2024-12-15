@@ -1,6 +1,9 @@
 Adresářová struktura
 	- svelte:
 		- /svelte/
+		- /svelte/components/ - komponenty
+		- /svelte/routes/ - jedotlivé stránky aplikace
+		- /svelte/lib/ - pomocné soubory
 		- autorství: Ondřej Hruboš
 	- react:
 		- /react/trip-diary/
