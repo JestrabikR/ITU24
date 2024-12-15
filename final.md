@@ -75,6 +75,36 @@ Jako CSS framework byla vybrána knihovna BeerCSS. Pomocí ní bylo implementov�
 
 ### Testování
 
+- Uživatelka:
+    - *Studentka vysoké školy (věk 20 let)*
+    - Pohlaví: ženské
+    - Technická zdatnost: průměrná
+    - Pracovní zaměření: archivnictví
+
+- Průběh testu:
+    - Test probíhal prezenčně po dobu 15 minut.
+    - Uživatelka dostala základní informace o aplikaci a scénáře, které měla splnit.
+        - Scénář 1: Zaznamenání informací o výletu, na který se připravuje
+        - Scénář 2: Zaznamenání informací o výletu, který  nedávno absolvovala
+        - Scénář 3: Úprava některého z přidaných výletů
+        - Scénář 4: Přidání navštívených zemí do aplikace
+        - Scénář 5: Přidání zemí, kam se chce v budoucnu podívat, do aplikace
+    - Uživatelka byla instruována, aby nahlas popisovala, co se snaží udělat, co očekává, nebo co jí není jasné. Byla sledována její práce s uživatelským rozhraním, chápání funkcí a reakce na neočekávané situace.
+
+- Výsledky testování:
+    - Scénář 1: proběhl víceméně bez problému, jediný problém nastal při prvotním přidávání místa v rámci podvýletu, kdy nebylo jasné jak přidat místo. Na základě této
+    zpětné vazby byl přidán popisek k mapě vyzívající zvolit lokaci na mapě.
+    - Scénář 2: proběhl bez problému.
+    - Scénář 3: bylo zjištěno, že uživatelka často zapomínala kliknout na uložení změn. Na základě tohoto pozorování bylo přidáno automatické uložení pokud uživatel
+    klikne na tlačítko Apps (9 teček) v EditBaru.
+    - Scénář 4: proběhl bez problému
+    - Scénář 5: uživatelka na první pohled neviděla tlačítko přepnutí pro označení země na mapě, jelikož odscrollovala na stránce dolů. Také jí nebylo na první pohled
+    jasné, co vlastně tlačítko dělalo. Nejprve myslela, že sloužilo pro filtrování (zobrazování) pouze jedné vybrané kategorie.
+    - Uživatelka byla schopna se zorientovat v aplikace poměrně rychle. Pozitivním zjištěním bylo, že uživatelka byla schopna split všechny scénáře bez nápovědy.
+
+- Klíčové poznatky:
+    - Uživatelka velmi často zapomínala na manuální ukládání provedených změn. Z tohoto důvodu bylo přidáno automatické ukládání po přepnutí na hlavní stránku z detailu výletu.
+    - Přepínací tlačítko na stránce "Visited" nevyjadřuje přesně svou funkci. Z důvodu tohoto zjištění byl přidán vysvětlující text vedle tlačítka.
 
 ## Aplikace v React (Dominik Borek)
 
