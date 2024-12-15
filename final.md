@@ -190,7 +190,12 @@ Celá aplikace byla implementována Radkem Jestřabíkem.
 Odkaz na video prezentaci nahranou na youtube: https://youtu.be/96_JvVEUEI0
 
 ### Spuštění
-Aplikace se spouští pomocí příkazu `npm run dev` ve složce /vue/travel-journal/. Před spuštěním aplikace musí být spuštěno také API. popis spuštění API lze nalézt v souboru *README.md*.
+Pro spuštění aplikace je nutné mít nainstalovaný *nodejs* verze *20.12.x*. Aplikace se spouští pomocí příkazu `npm run dev` ve složce /vue/travel-journal/. Před spuštěním aplikace musí být spuštěno také API. Popis spuštění API:
+- Ve složce ```api/``` proveďte následující příkazy (vytvoření a stažení knihoven stačí udělat jednou, spustit se musí vždy při otevření nové konzole):
+  - Vytvoření virtuálního prostředí: ```python -m venv .venv```
+  - Aktivování virtuálního prostředí: ```.venv\Scripts\activate```
+  - Stažení knihoven: ```pip install -r requirements.txt```
+  - Spuštění backendu: ```python main.py```
 
 ### Implementace
 Aplikace byla implementována ve frontendovém frameworku Vue.js, což je open-source framework pro Javascript. Také bylo využito Tailwind CSS, což je CSS framework, který usnadňuje práci při vytváření stylů a komponent.
