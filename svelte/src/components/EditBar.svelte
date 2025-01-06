@@ -21,7 +21,7 @@ File: EditBar.svelte
 
 	async function saveAndGoBack(){
 		setFlashMessage("Trip saved", "success");
-		saveFunction();
+		//saveFunction();
 
 		await goto("/");
 	}
